@@ -331,13 +331,99 @@ def run_simulation(params):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+#  PWA ASSETS
+# ══════════════════════════════════════════════════════════════════════════════
+
+MANIFEST = json.dumps({
+    "name": "WSN-LAF Dashboard — Shajan PhD",
+    "short_name": "WSN-LAF",
+    "description": "Wireless Sensor Network LAF Protocol Simulation Dashboard",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#faf7f2",
+    "theme_color": "#f97316",
+    "orientation": "any",
+    "icons": [
+        {"src": "/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable"},
+        {"src": "/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable"}
+    ]
+})
+
+APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <circle cx="256" cy="200" r="24" fill="#fff" opacity=".9"/>
+  <circle cx="180" cy="280" r="18" fill="#fff" opacity=".7"/>
+  <circle cx="332" cy="280" r="18" fill="#fff" opacity=".7"/>
+  <circle cx="210" cy="360" r="16" fill="#fff" opacity=".5"/>
+  <circle cx="302" cy="360" r="16" fill="#fff" opacity=".5"/>
+  <circle cx="256" cy="420" r="14" fill="#fff" opacity=".4"/>
+  <line x1="256" y1="200" x2="180" y2="280" stroke="#fff" stroke-width="3" opacity=".5"/>
+  <line x1="256" y1="200" x2="332" y2="280" stroke="#fff" stroke-width="3" opacity=".5"/>
+  <line x1="180" y1="280" x2="210" y2="360" stroke="#fff" stroke-width="2" opacity=".4"/>
+  <line x1="332" y1="280" x2="302" y2="360" stroke="#fff" stroke-width="2" opacity=".4"/>
+  <line x1="180" y1="280" x2="332" y2="280" stroke="#fff" stroke-width="2" opacity=".3"/>
+  <line x1="210" y1="360" x2="302" y2="360" stroke="#fff" stroke-width="2" opacity=".3"/>
+  <text x="256" y="155" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif"
+    font-size="72" font-weight="900" letter-spacing="-2">LAF</text>
+</svg>'''
+
+SERVICE_WORKER = '''
+const CACHE_NAME = "wsn-laf-v1";
+const URLS_TO_CACHE = [
+  "/",
+  "/api/data",
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap",
+  "https://fonts.googleapis.com/icon?family=Material+Icons+Round",
+  "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+];
+
+self.addEventListener("install", e => {
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(URLS_TO_CACHE)));
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+
+self.addEventListener("fetch", e => {
+  e.respondWith(
+    fetch(e.request).then(r => {
+      if (r && r.status === 200) {
+        const clone = r.clone();
+        caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+      }
+      return r;
+    }).catch(() => caches.match(e.request))
+  );
+});
+'''
+
+# ══════════════════════════════════════════════════════════════════════════════
 #  HTML TEMPLATE  (full interactive SPA)
 # ══════════════════════════════════════════════════════════════════════════════
 HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WSN-LAF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f97316">
+<meta name="description" content="WSN-LAF Simulation Dashboard — Shajan PhD Project">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.svg">
 <title>WSN-LAF Dashboard — Shajan PhD Project</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -540,11 +626,13 @@ tr:hover td{background:rgba(249,115,22,.03)}
 }
 @media(max-width:768px){
   :root{--sidebar:280px}
-  body{display:block}
-  .sidebar{transform:translateX(-100%);width:280px;box-shadow:8px 0 30px rgba(0,0,0,.15)}
+  body{display:block;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+  .sidebar{transform:translateX(-100%);width:280px;box-shadow:8px 0 30px rgba(0,0,0,.15);
+    padding-top:env(safe-area-inset-top)}
   .sidebar.open{transform:translateX(0)}
-  .hamburger{display:flex}
-  .main{margin-left:0;padding:16px;padding-top:68px}
+  .hamburger{display:flex;top:calc(12px + env(safe-area-inset-top))}
+  .main{margin-left:0;padding:16px;padding-top:calc(68px + env(safe-area-inset-top));
+    padding-bottom:calc(16px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
   /* Sidebar internals — tighter on mobile */
   .sb-header{padding:18px 16px 14px}
   .sb-logo{width:36px;height:36px;font-size:13px;margin-bottom:10px}
@@ -552,8 +640,8 @@ tr:hover td{background:rgba(249,115,22,.03)}
   .sb-phd{font-size:10px}
   .sb-sub{font-size:9px}
   .sb-nav{padding:10px 10px}
-  .nav-item{padding:9px 12px;font-size:12px;margin-bottom:2px}
-  .nav-item .material-icons-round{font-size:16px}
+  .nav-item{padding:12px 14px;font-size:13px;margin-bottom:2px;min-height:44px;display:flex;align-items:center}
+  .nav-item .material-icons-round{font-size:18px}
   .sb-params{padding:8px 10px}
   .sb-params-header{padding:6px 6px 8px}
   .param-section{margin-bottom:10px}
@@ -968,6 +1056,8 @@ body.dark .pdg-note.partial{color:#fb923c}
       <span class="material-icons-round">verified</span> PD Goals</div>
     <div class="nav-item" onclick="showPage('help',this)">
       <span class="material-icons-round">help_outline</span> Help Guide</div>
+    <div class="nav-item" id="pwa-install" onclick="installPWA()" style="display:none;color:var(--accent);font-weight:700">
+      <span class="material-icons-round">install_mobile</span> Install App</div>
   </div>
 
   <div class="sb-params" id="sb-params">
@@ -2430,6 +2520,28 @@ async function recalcPDGoals(){
   btn.innerHTML='<span class="material-icons-round" style="font-size:18px">refresh</span> Recalculate Live';
 }
 
+// ── PWA: service worker + install prompt ─────────────────────────────────────
+let deferredInstall=null;
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(()=>{});
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredInstall=e;
+  const b=document.getElementById('pwa-install');
+  if(b)b.style.display='flex';
+});
+
+function installPWA(){
+  if(!deferredInstall)return;
+  deferredInstall.prompt();
+  deferredInstall.userChoice.then(r=>{
+    if(r.outcome==='accepted'){
+      const b=document.getElementById('pwa-install');if(b)b.style.display='none';
+    }
+    deferredInstall=null;
+  });
+}
+
 // ── INIT: load pre-computed data ──────────────────────────────────────────────
 window.addEventListener('load',async()=>{
   // restore dark mode
@@ -2492,6 +2604,12 @@ class Handler(BaseHTTPRequestHandler):
             self._run_sim(qs)
         elif path == '/api/paper2':
             self._send_json(_get_paper2())
+        elif path == '/manifest.json':
+            self._send(200, MANIFEST.encode(), 'application/json')
+        elif path == '/sw.js':
+            self._send(200, SERVICE_WORKER.encode(), 'application/javascript')
+        elif path.startswith('/icon-'):
+            self._send(200, APP_ICON.encode(), 'image/svg+xml')
         else:
             self._send(404, b'Not found', 'text/plain')
 
