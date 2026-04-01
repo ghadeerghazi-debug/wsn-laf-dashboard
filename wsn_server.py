@@ -1337,7 +1337,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   </div>
   <div class="card"><div class="ct"><div class="dot" style="background:var(--a2)"></div>Summary Table</div>
     <table><thead><tr><th>Protocol</th><th>Type</th><th>FND</th><th>HND</th><th>PDR</th><th>Avg Energy</th><th>Throughput</th><th>Trust</th></tr></thead>
-    <tbody id="sum-table"></tbody></table></div>
+    <tbody id="sum-table"></tbody></table>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets.</div></div>
 </div>
 
 <!-- PERFORMANCE -->
@@ -1477,7 +1478,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   </div>
   <div class="card"><div class="ct">Full Protocol Comparison</div>
     <table><thead><tr><th>Protocol</th><th>FND ↑</th><th>HND ↑</th><th>PDR ↑</th><th>Avg Energy ↑</th><th>Throughput ↑</th><th>Trust</th><th>vs LAF PDR</th></tr></thead>
-    <tbody id="cmp-tbody"></tbody></table></div>
+    <tbody id="cmp-tbody"></tbody></table>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets.</div></div>
 </div>
 
 <!-- TOPOLOGY -->
@@ -1848,7 +1850,7 @@ function buildOverview(){
     const n=N[p];
     const trust=p==='LAF'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):(p==='TEARP'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):'—');
     tb.innerHTML+=`<tr>
-      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span></td>
+      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
       <td style="color:var(--muted);font-size:11px">${p==='LAF'?'Proposed Hybrid':p==='TEARP'?'Hybrid Baseline':'Traditional'}</td>
       <td ${n.fnd===bestFND?'class="best"':''}>${n.fnd||'—'}</td>
       <td>${n.hnd||'—'}</td>
@@ -2116,7 +2118,7 @@ function buildComparison(){
     const n=N[p]; const diff=((n.final_pdr-laf_pdr)/laf_pdr*100).toFixed(1);
     const trust=((avg(n.trust_accuracy||[])*100).toFixed(1))+'%';
     tb.innerHTML+=`<tr>
-      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span></td>
+      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
       <td ${p==='LAF'?'class="best"':''}>${n.fnd||'—'}</td>
       <td ${p==='LAF'?'class="best"':''}>${n.hnd||'—'}</td>
       <td ${p==='LAF'?'class="best"':''}>${((n.final_pdr||0)*100).toFixed(1)}%</td>
