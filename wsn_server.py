@@ -2085,12 +2085,26 @@ window.addEventListener('load',async()=>{
   // restore dark mode
   if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
   try{
-    const r=await fetch('/api/data'); DATA=await r.json();
+    let r=await fetch('/api/data'); DATA=await r.json();
+    // If empty or no normal data, fallback to Paper 2
+    if(!DATA||!DATA.normal||Object.keys(DATA.normal).length===0){
+      console.log('Primary data empty, falling back to /api/paper2');
+      r=await fetch('/api/paper2'); DATA=await r.json();
+      document.getElementById('p2-badge').style.display='inline';
+      document.getElementById('p2-badge').textContent='📄 Paper 2 Data (fallback)';
+    }
     renderAll();
     updateStatsTicker();
     updateHealthGauge();
-    setStatus('Pre-computed results loaded — click ▶ Run to simulate with custom parameters');
-  }catch(e){setStatus('Ready — click ▶ Run to start first simulation','');}
+    setStatus('Results loaded — click ▶ Run to simulate with custom parameters');
+  }catch(e){
+    // Last resort: try paper2
+    try{
+      const r2=await fetch('/api/paper2'); DATA=await r2.json();
+      renderAll();updateStatsTicker();updateHealthGauge();
+      setStatus('Paper 2 results loaded (fallback)');
+    }catch(e2){setStatus('Ready — click ▶ Run to start first simulation','');}
+  }
   // hide splash
   setTimeout(()=>{const sp=document.getElementById('splash');if(sp)sp.classList.add('hide');
     setTimeout(()=>{if(sp)sp.style.display='none'},600);
@@ -2186,6 +2200,22 @@ def _get_cached():
                         _cached_data = json.load(fp)
                     print(f'[DATA] Loaded pre-computed results from {f}')
                     break
+            # Fallback: try Paper 2 results
+            if _cached_data is None:
+                p2 = os.path.join(os.path.dirname(__file__), 'wsn_results_paper2.json')
+                if os.path.exists(p2):
+                    with open(p2) as fp:
+                        _cached_data = json.load(fp)
+                    print(f'[DATA] Fallback: loaded Paper 2 results from {p2}')
+            # Last resort: generate Paper 2 on the fly
+            if _cached_data is None:
+                try:
+                    from wsn_simulation import Simulator
+                    sim = Simulator(100,500,1,42)
+                    _cached_data = sim.get_paper2_results()
+                    print('[DATA] Fallback: generated Paper 2 results on the fly')
+                except Exception as e:
+                    print(f'[DATA] Error generating fallback: {e}')
         return _cached_data or {}
 
 _paper2_data = None
