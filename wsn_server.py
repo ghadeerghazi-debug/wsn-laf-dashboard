@@ -1167,16 +1167,16 @@ body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
 <!-- LONG-TERM -->
 <div id="page-longterm" class="page">
   <div class="g2">
-    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>Network Lifetime — 1,500 Rounds (≈125 Days Deployment)</div>
-      <div class="ch-lg"><canvas id="c-lt-alive"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>Network Lifetime — 1,500 Rounds</div>
+      <div style="position:relative;height:320px;min-height:300px"><canvas id="c-lt-alive"></canvas></div></div>
     <div class="card"><div class="ct"><div class="dot" style="background:var(--green)"></div>Residual Energy Over Time</div>
-      <div class="ch-lg"><canvas id="c-lt-energy"></canvas></div></div>
+      <div style="position:relative;height:320px;min-height:300px"><canvas id="c-lt-energy"></canvas></div></div>
   </div>
   <div class="g2">
     <div class="card"><div class="ct"><div class="dot" style="background:var(--cyan)"></div>PDR Stability Long-Term</div>
-      <div class="ch"><canvas id="c-lt-pdr"></canvas></div></div>
-    <div class="card"><div class="ct"><div class="dot" style="background:var(--warn)"></div>Blockchain Ledger Footprint (KB)</div>
-      <div class="ch"><canvas id="c-lt-ledger"></canvas></div></div>
+      <div style="position:relative;height:300px;min-height:260px"><canvas id="c-lt-pdr"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>Blockchain Ledger Footprint (KB)</div>
+      <div style="position:relative;height:300px;min-height:260px"><canvas id="c-lt-ledger"></canvas></div></div>
   </div>
   <div class="card" style="margin-top:18px">
     <div class="ct">Long-Term Summary</div>
@@ -1187,8 +1187,8 @@ body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
 <!-- RECOVERY -->
 <div id="page-recovery" class="page">
   <div class="g2">
-    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>PDR During Node Failure Event (20% Failure at Round 150)</div>
-      <div class="ch-lg"><canvas id="c-rec-pdr"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>PDR During Node Failure Event (20% Failure at Round 200)</div>
+      <div style="position:relative;height:320px;min-height:300px"><canvas id="c-rec-pdr"></canvas></div></div>
     <div class="card" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:32px">
       <div style="text-align:center">
         <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Mean Recovery Time</div>
@@ -1389,8 +1389,8 @@ function showPage(name,el){
   if(name==='performance')buildPerf();
   if(name==='security')buildSec();
   if(name==='scalability')buildScale();
-  if(name==='longterm')buildLongTerm();
-  if(name==='recovery')buildRecovery();
+  if(name==='longterm')setTimeout(buildLongTerm,50);
+  if(name==='recovery')setTimeout(buildRecovery,50);
   if(name==='ablation')buildAblation();
   if(name==='comparison')buildComparison();
   if(name==='topology')initTopology();
