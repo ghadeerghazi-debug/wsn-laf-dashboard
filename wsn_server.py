@@ -710,63 +710,48 @@ body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
   font-size:11px;color:var(--muted);line-height:1.8}
 .footer a{color:var(--accent);text-decoration:none;font-weight:600}
 .footer a:hover{text-decoration:underline}
-/* ── PD TARGETS ───────────────────────────────────── */
-.pd-btn{position:fixed;bottom:24px;left:24px;z-index:100;padding:10px 20px;
-  border-radius:24px;border:none;cursor:pointer;font-size:13px;font-weight:700;
-  background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;
-  box-shadow:0 4px 16px rgba(249,115,22,.3);transition:all .2s;
-  display:flex;align-items:center;gap:6px}
-.pd-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(249,115,22,.4)}
-.pd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
-  z-index:500;align-items:center;justify-content:center;padding:20px}
-.pd-overlay.on{display:flex}
-.pd-panel{background:#fff;border-radius:18px;max-width:720px;width:100%;
-  max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);
-  animation:fadeInUp .3s ease-out}
-body.dark .pd-panel{background:#1c1c24}
-.pd-header{background:linear-gradient(135deg,#f97316,#fb923c);padding:24px 30px;
-  border-radius:18px 18px 0 0;position:relative}
-.pd-header h2{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
-.pd-header p{font-size:13px;color:rgba(255,255,255,.85);font-weight:500}
-.pd-close{position:absolute;top:16px;right:20px;width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.2);border:none;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;
-  transition:all .2s}
-.pd-close:hover{background:rgba(255,255,255,.35)}
-.pd-body{padding:24px 30px}
-.pd-table{width:100%;border-collapse:collapse;font-size:14px}
-.pd-table th{text-align:left;padding:12px 14px;background:var(--card2);
-  font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);
-  border-bottom:2px solid var(--border);font-weight:700}
-.pd-table td{padding:14px 14px;border-bottom:1px solid rgba(236,220,200,.4);
-  font-size:14px;line-height:1.4}
-.pd-table tr.met{background:rgba(22,163,74,.06)}
-.pd-table tr.partial{background:rgba(249,115,22,.06)}
-.pd-table tr.future{background:rgba(8,145,178,.06)}
-body.dark .pd-table tr.met{background:rgba(22,163,74,.1)}
-body.dark .pd-table tr.partial{background:rgba(249,115,22,.1)}
-body.dark .pd-table tr.future{background:rgba(8,145,178,.1)}
-.pd-table .status-met{color:#16a34a;font-weight:700}
-.pd-table .status-partial{color:#f97316;font-weight:700}
-.pd-table .status-future{color:#0891b2;font-weight:700}
-.pd-table .target-name{font-weight:700;color:var(--text)}
-.pd-table .target-goal{color:var(--muted);font-size:13px}
-.pd-table .target-achieved{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px}
-.pd-badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
-.pd-badge{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700}
-.pd-badge-green{background:rgba(22,163,74,.1);color:#16a34a;border:1px solid rgba(22,163,74,.25)}
-.pd-badge-orange{background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.25)}
-.pd-badge-blue{background:rgba(8,145,178,.1);color:#0891b2;border:1px solid rgba(8,145,178,.25)}
-.pd-note{font-size:12px;color:var(--muted);margin-top:16px;line-height:1.6;
-  padding-top:14px;border-top:1px solid var(--border)}
+/* ── PD GOALS PAGE ────────────────────────────────── */
+.pdg-header{background:linear-gradient(135deg,#f97316,#fb923c);padding:24px 30px;
+  border-radius:16px;margin-bottom:24px;position:relative}
+.pdg-header h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+.pdg-header p{font-size:13px;color:rgba(255,255,255,.85);font-weight:500}
+.pdg-summary{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.pdg-ring{display:flex;align-items:center;gap:14px;padding:16px 22px;
+  border-radius:14px;background:var(--card);border:1px solid var(--border);flex:1;min-width:140px}
+.pdg-ring .num{font-size:32px;font-weight:900;font-family:'JetBrains Mono',monospace}
+.pdg-ring .lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.pdg-ring.green .num{color:#16a34a}
+.pdg-ring.orange .num{color:#f97316}
+.pdg-ring.blue .num{color:#0891b2}
+.pdg-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:20px 22px;margin-bottom:14px;transition:all .2s}
+.pdg-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.pdg-card.met{border-left:4px solid #16a34a}
+.pdg-card.partial{border-left:4px solid #f97316}
+.pdg-card.future{border-left:4px solid #0891b2}
+.pdg-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.pdg-title{font-size:15px;font-weight:700;color:var(--text)}
+.pdg-status{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+.pdg-status.met{background:rgba(22,163,74,.1);color:#16a34a}
+.pdg-status.partial{background:rgba(249,115,22,.1);color:#f97316}
+.pdg-status.future{background:rgba(8,145,178,.1);color:#0891b2}
+.pdg-row{display:flex;gap:24px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.pdg-metric{display:flex;flex-direction:column;gap:2px}
+.pdg-metric .label{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600;letter-spacing:.4px}
+.pdg-metric .value{font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--text)}
+.pdg-bar-wrap{flex:1;min-width:120px;height:8px;background:var(--card2);border-radius:8px;overflow:hidden}
+.pdg-bar{height:100%;border-radius:8px;transition:width .6s ease}
+.pdg-bar.met{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.pdg-bar.partial{background:linear-gradient(90deg,#f97316,#fb923c)}
+.pdg-bar.future{background:linear-gradient(90deg,#0891b2,#22d3ee)}
+.pdg-note{font-size:12px;line-height:1.5;padding:8px 12px;border-radius:8px;font-weight:500}
+.pdg-note.met{color:#16a34a;background:rgba(22,163,74,.06)}
+.pdg-note.partial{color:#b45309;background:rgba(180,83,9,.06)}
+.pdg-note.future{color:#0891b2;background:rgba(8,145,178,.06)}
+body.dark .pdg-note.partial{color:#fb923c}
 @media(max-width:768px){
-  .pd-btn{bottom:16px;left:16px;padding:8px 14px;font-size:11px}
-  .pd-panel{max-width:100%;border-radius:14px}
-  .pd-header{padding:18px 20px}
-  .pd-header h2{font-size:17px}
-  .pd-body{padding:16px 18px}
-  .pd-table{font-size:12px}
-  .pd-table td{padding:10px 10px}
+  .pdg-summary{flex-direction:column}
+  .pdg-row{flex-direction:column;gap:8px;align-items:flex-start}
   .pd-badges{gap:8px}
   .pd-badge{font-size:11px;padding:6px 12px}
 }
@@ -915,28 +900,6 @@ body.dark .pd-table tr.future{background:rgba(8,145,178,.1)}
   </button>
 </div>
 
-<!-- PD TARGETS BUTTON -->
-<button class="pd-btn" onclick="openPDTargets()">🎯 PD Targets</button>
-
-<!-- PD TARGETS MODAL -->
-<div class="pd-overlay" id="pd-overlay" onclick="if(event.target===this)closePDTargets()">
-  <div class="pd-panel">
-    <div class="pd-header">
-      <h2>PD Proposal Defense — Target Achievement</h2>
-      <p>Shajan Mohammed Mahdi · Mustansiriyah University · 2025</p>
-      <button class="pd-close" onclick="closePDTargets()">✕</button>
-    </div>
-    <div class="pd-body">
-      <table class="pd-table">
-        <thead><tr><th>Target</th><th>Goal</th><th>Achieved</th><th>Status</th></tr></thead>
-        <tbody id="pd-tbody"></tbody>
-      </table>
-      <div class="pd-badges" id="pd-badges"></div>
-      <div class="pd-note">PDR at 30% compromise represents an extreme adversarial scenario. All targets are documented and discussed in Chapter 7.</div>
-    </div>
-  </div>
-</div>
-
 <!-- MOBILE HAMBURGER -->
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
   <span class="material-icons-round">menu</span>
@@ -972,6 +935,8 @@ body.dark .pd-table tr.future{background:rgba(8,145,178,.1)}
       <span class="material-icons-round">compare_arrows</span> Compare</div>
     <div class="nav-item" onclick="showPage('topology',this)">
       <span class="material-icons-round">hub</span> Topology</div>
+    <div class="nav-item" onclick="showPage('pdgoals',this)">
+      <span class="material-icons-round">verified</span> PD Goals</div>
     <div class="nav-item" onclick="showPage('help',this)">
       <span class="material-icons-round">help_outline</span> Help Guide</div>
   </div>
@@ -1333,6 +1298,16 @@ body.dark .pd-table tr.future{background:rgba(8,145,178,.1)}
   </div>
 </div>
 
+<!-- PD GOALS -->
+<div id="page-pdgoals" class="page">
+  <div class="pdg-header">
+    <h2>Proposal Defense — Target Achievement</h2>
+    <p>Shajan Mohammed Mahdi · Mustansiriyah University · 2025</p>
+  </div>
+  <div class="pdg-summary" id="pdg-summary"></div>
+  <div id="pdg-cards"></div>
+</div>
+
 <!-- HELP -->
 <div id="page-help" class="page">
   <div class="help-section-title"><span class="material-icons-round" style="color:var(--accent)">menu_book</span> Help Guide</div>
@@ -1460,7 +1435,7 @@ function setStatus(msg,cls=''){
 // ── BREADCRUMB NAMES ─────────────────────────────────────────────────────────
 const PAGE_NAMES={overview:'Overview',performance:'Performance',security:'Security',
   scalability:'Scalability',ablation:'Ablation',longterm:'Long-Term',recovery:'Recovery',
-  comparison:'Compare',topology:'Topology',help:'Help Guide'};
+  comparison:'Compare',topology:'Topology',pdgoals:'PD Goals',help:'Help Guide'};
 
 // ── pages ─────────────────────────────────────────────────────────────────────
 function showPage(name,el){
@@ -1476,6 +1451,7 @@ function showPage(name,el){
   if(name==='ablation')buildAblation();
   if(name==='comparison')buildComparison();
   if(name==='topology')initTopology();
+  if(name==='pdgoals')buildPDGoals();
   // breadcrumb
   const bc=document.getElementById('bc-page');
   if(bc)bc.textContent=PAGE_NAMES[name]||name;
@@ -2249,10 +2225,8 @@ function showTourStep(){
   document.querySelector('.tour-next').textContent=tourStep>=tourSteps.length-1?'Finish':'Next';
 }
 
-// ── PD TARGETS ───────────────────────────────────────────────────────────────
-function openPDTargets(){
-  const tb=document.getElementById('pd-tbody');
-  // Pull live data if available
+// ── PD GOALS PAGE ────────────────────────────────────────────────────────────
+function buildPDGoals(){
   const laf=DATA?.normal?.LAF||{};
   const adv=DATA?.adversarial?.Sinkhole||{};
   const rec=DATA?.recovery||{};
@@ -2267,62 +2241,62 @@ function openPDTargets(){
   const recTime=rec.mean_recovery_rounds||3.2;
   const energyImp=summ.energy_improvement||14.3;
   const rows=[
-    {target:'End-to-end latency',goal:'≤ 30 ms',achieved:latency.toFixed(1)+' ms',
-     status:'✅ Met',cls:'met',
-     note:'Proposal defense latency target has been achieved — LAF delivers '+latency.toFixed(1)+' ms, within the 30 ms goal.'},
-    {target:'Blockchain ledger size',goal:'≤ 50 KB / year',achieved:ledger.toFixed(1)+' KB',
-     status:'✅ Met',cls:'met',
-     note:'Proposal defense ledger target has been achieved — lightweight blockchain uses only '+ledger.toFixed(1)+' KB, well under the 50 KB limit.'},
-    {target:'Network scalability',goal:'300 – 500 nodes',achieved:'N = 500 tested',
-     status:'✅ Met',cls:'met',
-     note:'Proposal defense scalability target has been achieved — LAF successfully tested with up to 500 nodes.'},
-    {target:'Fault recovery time',goal:'≤ 5 rounds',achieved:'< '+Math.ceil(recTime)+' round'+(recTime>1?'s':''),
-     status:'✅ Exceeded',cls:'met',
-     note:'Proposal defense recovery target has been exceeded — LAF recovers in under '+Math.ceil(recTime)+' round, far below the 5-round goal.'},
-    {target:'PDR under light attack (5%)',goal:'≥ 95%',achieved:(pdr5*100).toFixed(1)+'%',
-     status:'✅ Met',cls:'met',
-     note:'Proposal defense PDR target has been achieved — '+(pdr5*100).toFixed(1)+'% delivery ratio under 5% node compromise.'},
-    {target:'PDR under heavy attack (30%)',goal:'≥ 95%',achieved:(pdr30*100).toFixed(1)+'%',
-     status:'⚠️ Partial',cls:'partial',
-     note:'30% node compromise is an extreme adversarial scenario. PDR of '+(pdr30*100).toFixed(1)+'% demonstrates resilience despite severe attack conditions. Discussed in Chapter 7.'},
-    {target:'Attack blocking accuracy',goal:'≥ 95%',
-     achieved:(trust30*100).toFixed(1)+' – '+(trust5*100).toFixed(1)+'%',
-     status:'⚠️ Near miss',cls:'partial',
-     note:'Trust accuracy ranges from '+(trust30*100).toFixed(1)+'% (30% attack) to '+(trust5*100).toFixed(1)+'% (5% attack). Near the 95% target under moderate conditions. Discussed in Chapter 7.'},
-    {target:'Energy improvement',goal:'≥ 97% savings',achieved:'+'+energyImp.toFixed(1)+'% vs LEACH',
-     status:'⚠️ Metric differs',cls:'partial',
-     note:'The proposal goal used a different energy metric. LAF achieves +'+energyImp.toFixed(1)+'% energy improvement over LEACH, demonstrating significant efficiency gains. Clarified in Chapter 7.'},
-    {target:'Long-term stability',goal:'12 months operation',achieved:'1,500 rounds ≈ 125 days',
-     status:'⚠️ Partial',cls:'partial',
-     note:'Simulation covers 1,500 rounds (≈125 days). Full 12-month validation requires extended deployment or hardware testbed. Discussed in Chapter 7.'},
-    {target:'Physical testbed',goal:'Hardware validation',achieved:'Simulation only',
-     status:'🔬 Future work',cls:'future',
-     note:'Hardware validation is proposed as future work in Phase 2. Current results are based on comprehensive Python simulation with Monte Carlo runs.'}
+    {target:'End-to-end Latency',goal:'≤ 30 ms',achieved:latency.toFixed(1)+' ms',
+     pct:Math.min(100,(30/Math.max(latency,0.1))*100),cls:'met',status:'Achieved',
+     note:'LAF delivers '+latency.toFixed(1)+' ms end-to-end latency, within the 30 ms proposal goal.'},
+    {target:'Blockchain Ledger Size',goal:'≤ 50 KB/year',achieved:ledger.toFixed(1)+' KB',
+     pct:Math.min(100,(50/Math.max(ledger,0.1))*100),cls:'met',status:'Achieved',
+     note:'Lightweight blockchain uses only '+ledger.toFixed(1)+' KB — well under the 50 KB annual limit.'},
+    {target:'Network Scalability',goal:'300–500 nodes',achieved:'N = 500 tested',
+     pct:100,cls:'met',status:'Achieved',
+     note:'LAF successfully tested with up to 500 nodes, meeting the full scalability range.'},
+    {target:'Fault Recovery Time',goal:'≤ 5 rounds',achieved:'< '+Math.ceil(recTime)+' round'+(recTime>1?'s':''),
+     pct:100,cls:'met',status:'Exceeded',
+     note:'Recovery in under '+Math.ceil(recTime)+' round — far below the 5-round proposal goal.'},
+    {target:'PDR (5% Attack)',goal:'≥ 95%',achieved:(pdr5*100).toFixed(1)+'%',
+     pct:Math.min(100,(pdr5*100/95)*100),cls:'met',status:'Achieved',
+     note:(pdr5*100).toFixed(1)+'% packet delivery under 5% node compromise.'},
+    {target:'PDR (30% Attack)',goal:'≥ 95%',achieved:(pdr30*100).toFixed(1)+'%',
+     pct:Math.min(100,(pdr30*100/95)*100),cls:'partial',status:'Partial',
+     note:'30% compromise is extreme. '+(pdr30*100).toFixed(1)+'% PDR shows resilience. See Chapter 7.'},
+    {target:'Attack Blocking Accuracy',goal:'≥ 95%',
+     achieved:(trust30*100).toFixed(1)+'–'+(trust5*100).toFixed(1)+'%',
+     pct:Math.min(100,(trust5*100/95)*100),cls:'partial',status:'Near Target',
+     note:'Trust accuracy: '+(trust30*100).toFixed(1)+'% (heavy) to '+(trust5*100).toFixed(1)+'% (light attack). See Chapter 7.'},
+    {target:'Energy Improvement',goal:'≥ 97% savings',achieved:'+'+energyImp.toFixed(1)+'% vs LEACH',
+     pct:Math.min(100,(energyImp/97)*100),cls:'partial',status:'Metric Differs',
+     note:'Different metric used. +'+energyImp.toFixed(1)+'% energy improvement over LEACH. Clarified in Chapter 7.'},
+    {target:'Long-term Stability',goal:'12 months',achieved:'1,500 rounds ≈ 125 days',
+     pct:Math.min(100,(125/365)*100),cls:'partial',status:'Partial',
+     note:'Covers ~125 days. Full 12-month validation needs hardware testbed. See Chapter 7.'},
+    {target:'Physical Testbed',goal:'Hardware validation',achieved:'Simulation only',
+     pct:0,cls:'future',status:'Future Work',
+     note:'Hardware validation proposed as Phase 2 future work. Current results from Monte Carlo simulation.'}
   ];
-  tb.innerHTML='';
-  rows.forEach(r=>{
-    const sc=r.cls==='met'?'status-met':r.cls==='partial'?'status-partial':'status-future';
-    const nc=r.cls==='met'?'#16a34a':r.cls==='partial'?'#b45309':'#0891b2';
-    const nbg=r.cls==='met'?'rgba(22,163,74,.06)':r.cls==='partial'?'rgba(180,83,9,.06)':'rgba(8,145,178,.06)';
-    tb.innerHTML+=`<tr class="${r.cls}">
-      <td class="target-name">${r.target}</td>
-      <td class="target-goal">${r.goal}</td>
-      <td class="target-achieved">${r.achieved}</td>
-      <td class="${sc}">${r.status}</td></tr>
-      <tr><td colspan="4" style="padding:4px 14px 14px;border-bottom:1px solid var(--border)">
-        <div style="font-size:12px;color:${nc};background:${nbg};padding:8px 12px;border-radius:8px;line-height:1.5;font-weight:500">
-          ${r.note}</div></td></tr>`;
-  });
   const met=rows.filter(r=>r.cls==='met').length;
   const partial=rows.filter(r=>r.cls==='partial').length;
   const future=rows.filter(r=>r.cls==='future').length;
-  document.getElementById('pd-badges').innerHTML=
-    `<div class="pd-badge pd-badge-green">${met} Targets Fully Met</div>`+
-    `<div class="pd-badge pd-badge-orange">${partial} Targets Partially Met</div>`+
-    `<div class="pd-badge pd-badge-blue">${future} Future Work</div>`;
-  document.getElementById('pd-overlay').classList.add('on');
+  document.getElementById('pdg-summary').innerHTML=
+    `<div class="pdg-ring green"><div class="num">${met}</div><div><div class="lbl">Fully Met</div></div></div>`+
+    `<div class="pdg-ring orange"><div class="num">${partial}</div><div><div class="lbl">Partially Met</div></div></div>`+
+    `<div class="pdg-ring blue"><div class="num">${future}</div><div><div class="lbl">Future Work</div></div></div>`;
+  let html='';
+  rows.forEach((r,i)=>{
+    html+=`<div class="pdg-card ${r.cls}">
+      <div class="pdg-top">
+        <div class="pdg-title">${i+1}. ${r.target}</div>
+        <div class="pdg-status ${r.cls}">${r.status}</div>
+      </div>
+      <div class="pdg-row">
+        <div class="pdg-metric"><div class="label">Goal</div><div class="value">${r.goal}</div></div>
+        <div class="pdg-metric"><div class="label">Result</div><div class="value">${r.achieved}</div></div>
+        <div class="pdg-bar-wrap"><div class="pdg-bar ${r.cls}" style="width:${r.pct}%"></div></div>
+      </div>
+      <div class="pdg-note ${r.cls}">${r.note}</div>
+    </div>`;
+  });
+  document.getElementById('pdg-cards').innerHTML=html;
 }
-function closePDTargets(){document.getElementById('pd-overlay').classList.remove('on')}
 
 // ── INIT: load pre-computed data ──────────────────────────────────────────────
 window.addEventListener('load',async()=>{
