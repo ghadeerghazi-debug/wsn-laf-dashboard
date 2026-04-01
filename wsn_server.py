@@ -338,200 +338,226 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WSN-LAF Dashboard</title>
+<title>WSN-LAF Dashboard — Shajan PhD Project</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-:root{--bg:#fdf6ef;--card:#ffffff;--card2:#fff7ed;--border:#f5d5b8;
+:root{--bg:#faf7f2;--card:#ffffff;--card2:#fdf8f3;--border:#ecdcc8;
   --accent:#f97316;--a2:#fb923c;--green:#16a34a;--orange:#f97316;
-  --red:#dc2626;--yellow:#ca8a04;--cyan:#0891b2;--text:#4a2c0a;--muted:#9a7355;
+  --red:#dc2626;--yellow:#ca8a04;--cyan:#0891b2;--text:#3d2b14;--muted:#8a7058;
   --laf:#f97316;--leach:#dc2626;--spin:#ca8a04;--dd:#0891b2;--tearp:#16a34a;
-  --glow:rgba(249,115,22,.2);--glow2:rgba(251,146,60,.12)}
+  --sidebar:280px}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
-body{background:var(--bg);color:var(--text);min-height:100vh;
-     background-image:radial-gradient(ellipse at 20% 0%,rgba(249,115,22,.06) 0%,transparent 50%),
-                      radial-gradient(ellipse at 80% 100%,rgba(251,146,60,.05) 0%,transparent 50%)}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-@keyframes glowPulse{0%,100%{box-shadow:0 0 15px var(--glow)}50%{box-shadow:0 0 30px var(--glow),0 0 60px var(--glow2)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.page.on{animation:fadeIn .5s ease-out}
-.card{animation:fadeInUp .5s ease-out both}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes nodeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar{width:var(--sidebar);height:100vh;position:fixed;left:0;top:0;
+  background:#fff;border-right:1px solid var(--border);z-index:200;
+  display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;
+  box-shadow:4px 0 24px rgba(0,0,0,.03);transition:transform .3s ease}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sb-header{padding:24px 22px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-logo{width:44px;height:44px;background:linear-gradient(135deg,#f97316,#fb923c);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px;color:#fff;font-family:'JetBrains Mono',monospace;
+  box-shadow:0 4px 14px rgba(249,115,22,.25);margin-bottom:14px}
+.sb-title{font-size:16px;font-weight:800;color:var(--text);line-height:1.3;letter-spacing:-.3px;margin-bottom:2px}
+.sb-phd{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.sb-sub{font-size:10px;color:var(--muted);line-height:1.4}
+/* NAV */
+.sb-nav{padding:16px 14px;flex-shrink:0}
+.sb-nav-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);padding:0 8px;margin-bottom:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;
+  cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all .2s;
+  margin-bottom:3px;border:1px solid transparent}
+.nav-item:hover{background:#fff7ed;color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,#fff7ed,#ffedd5);color:var(--accent);
+  border-color:rgba(249,115,22,.2);font-weight:700}
+.nav-item .material-icons-round{font-size:18px}
+.nav-item.active .material-icons-round{color:var(--accent)}
+/* PARAMS */
+.sb-params{padding:10px 14px;border-top:1px solid var(--border);flex:1}
+.sb-params-header{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 8px 12px;cursor:pointer}
+.sb-params-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.param-section{margin-bottom:14px}
+.param-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.param-row{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.param-row label{font-size:10px;color:var(--muted);display:flex;justify-content:space-between}
+.param-row label span{color:var(--accent);font-weight:700;font-size:11px;font-family:'JetBrains Mono',monospace}
+.param-row input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;height:4px}
+.param-row input[type=number]{width:100%;background:var(--card2);border:1px solid var(--border);
+  color:var(--text);padding:6px 10px;border-radius:8px;font-size:11px;outline:none;
+  font-family:'JetBrains Mono',monospace;transition:border-color .2s}
+.param-row input[type=number]:focus{border-color:var(--accent)}
+.range-wrap{display:flex;align-items:center;gap:6px}
+.range-wrap input[type=range]{flex:1}
+.range-val{min-width:32px;text-align:right;font-size:11px;color:var(--accent);font-weight:700;
+  font-family:'JetBrains Mono',monospace}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.toggle-label{font-size:11px;color:var(--text)}
+.toggle{position:relative;width:34px;height:18px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.slider-t{position:absolute;inset:0;background:#e0d5c8;border-radius:9px;transition:.25s}
+.slider-t:before{content:'';position:absolute;width:14px;height:14px;
+  background:#fff;border-radius:50%;left:2px;top:2px;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.toggle input:checked+.slider-t{background:var(--accent)}
+.toggle input:checked+.slider-t:before{transform:translateX(16px)}
+/* SIDEBAR BUTTONS */
+.sb-actions{padding:14px;border-top:1px solid var(--border);flex-shrink:0}
+.btn{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;
+  font-size:13px;font-weight:700;transition:all .2s;display:flex;align-items:center;
+  justify-content:center;gap:7px;width:100%}
+.btn-primary{background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;
+  box-shadow:0 4px 14px rgba(249,115,22,.25);margin-bottom:8px}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(249,115,22,.35);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-paper2{background:#fff7ed;border:2px solid var(--accent);color:var(--accent)}
+.btn-paper2:hover{background:#ffedd5}
+.btn-ghost{background:var(--card2);border:1px solid var(--border);color:var(--text);font-size:11px;padding:7px 12px}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:8px;width:auto}
+/* ── MOBILE HAMBURGER ─────────────────────────────── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:300;
+  width:42px;height:42px;border-radius:12px;background:#fff;border:1px solid var(--border);
+  cursor:pointer;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.hamburger .material-icons-round{font-size:22px;color:var(--accent)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150}
+.overlay.on{display:block}
+/* ── MAIN CONTENT ─────────────────────────────────── */
+.main{margin-left:var(--sidebar);flex:1;min-height:100vh;padding:32px 36px}
+.page{display:none;max-width:1200px;margin:0 auto}
+.page.on{display:block;animation:fadeIn .4s ease-out}
+/* HERO */
+.hero{background:linear-gradient(135deg,#fff9f0,#ffedd5 50%,#fff9f0);
+  border:1px solid var(--border);border-radius:18px;padding:32px 36px;margin-bottom:28px;
+  position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-10%;width:450px;height:450px;
+  background:radial-gradient(circle,rgba(249,115,22,.07),transparent 70%);pointer-events:none}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap;gap:16px}
+.hero-title{font-size:26px;font-weight:800;margin-bottom:6px;letter-spacing:-.5px;
+  background:linear-gradient(135deg,#ea580c,#f97316,#c2410c);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.7;font-weight:500}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:20px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.kpi:hover{transform:translateY(-3px);border-color:rgba(249,115,22,.35);
+  box-shadow:0 8px 24px rgba(249,115,22,.08)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.4}
+.kpi-val{font-size:30px;font-weight:900;margin-bottom:5px;font-family:'JetBrains Mono','Inter',monospace}
+.kpi-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.kpi-paper{font-size:10px;color:var(--accent);margin-top:5px;font-weight:600}
+/* STATUS */
+.status-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;
+  background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:24px;font-size:12px;font-weight:500}
+.status-bar.running{border-color:rgba(249,115,22,.4);background:#fff7ed}
+.status-bar.error{border-color:rgba(220,38,38,.3);background:#fef2f2}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(22,163,74,.4)}
+.status-dot.pulse{animation:pulse 1.4s ease-in-out infinite}
+.p2badge{background:#fff7ed;border:1px solid rgba(249,115,22,.3);color:var(--accent);
+  border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+/* CARD */
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;
+  transition:all .3s;animation:fadeInUp .5s ease-out both}
 .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}
 .card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.2s}
-/* NAV */
-nav{background:linear-gradient(135deg,#f97316,#fb923c 50%,#f59e0b);
-    border-bottom:1px solid rgba(249,115,22,.3);
-    padding:0 20px;display:flex;align-items:center;justify-content:space-between;
-    height:62px;position:sticky;top:0;z-index:200;
-    box-shadow:0 4px 20px rgba(249,115,22,.15)}
-.nav-brand{display:flex;align-items:center;gap:12px}
-.nav-logo{width:38px;height:38px;background:#fff;
-          border-radius:10px;display:flex;align-items:center;justify-content:center;
-          font-weight:900;font-size:14px;color:#f97316;flex-shrink:0;
-          box-shadow:0 2px 10px rgba(0,0,0,.1);
-          font-family:'JetBrains Mono',monospace}
-.nav-title{font-size:15px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.3px}
-.nav-sub{font-size:10px;color:rgba(255,255,255,.8);font-weight:500}
-.tabs{display:flex;gap:3px}
-.tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;
-     border:none;background:transparent;color:rgba(255,255,255,.7);transition:all .25s ease}
-.tab:hover{background:rgba(255,255,255,.15);color:#fff;transform:translateY(-1px)}
-.tab.active{background:#fff;color:#f97316;font-weight:700;
-            box-shadow:0 2px 10px rgba(0,0,0,.1)}
-/* PAGES */
-.page{display:none;padding:20px;max-width:1380px;margin:0 auto}
-.page.on{display:block}
-/* HERO */
-.hero{background:linear-gradient(135deg,#fff7ed,#ffedd5 40%,#fff7ed 80%);
-      border:1px solid var(--border);border-radius:16px;padding:30px;margin-bottom:22px;
-      position:relative;overflow:hidden;animation:fadeInUp .6s ease-out;
-      box-shadow:0 4px 20px rgba(249,115,22,.06)}
-.hero::before{content:'';position:absolute;top:-40%;right:-5%;width:400px;height:400px;
-              background:radial-gradient(circle,rgba(249,115,22,.08),transparent 70%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-30%;left:10%;width:300px;height:300px;
-             background:radial-gradient(circle,rgba(251,146,60,.05),transparent 70%);pointer-events:none}
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap;gap:12px}
-.hero-title{font-size:24px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px;
-            background:linear-gradient(135deg,#ea580c,#f97316,#c2410c);-webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:13px;color:var(--muted);line-height:1.6;font-weight:500}
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kpi{background:#fff;
-     border:1px solid var(--border);border-radius:12px;
-     padding:16px 18px;text-align:center;transition:all .3s ease;position:relative;overflow:hidden}
-.kpi:hover{transform:translateY(-3px);border-color:rgba(249,115,22,.4);
-           box-shadow:0 8px 25px rgba(249,115,22,.1)}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-             background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
-.kpi-val{font-size:28px;font-weight:900;margin-bottom:4px;font-family:'JetBrains Mono','Inter',monospace}
-.kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
-.kpi-paper{font-size:10px;color:var(--accent);margin-top:4px;font-weight:600}
-/* GRIDS */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
-/* CARD */
-.card{background:#fff;
-      border:1px solid var(--border);border-radius:14px;padding:20px;
-      transition:all .3s ease;position:relative}
-.card:hover{border-color:rgba(249,115,22,.3);box-shadow:0 6px 25px rgba(249,115,22,.08)}
+.card:hover{border-color:rgba(249,115,22,.25);box-shadow:0 6px 24px rgba(249,115,22,.06)}
 .ct{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
-    letter-spacing:.7px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
-.ch{position:relative;height:240px}
-.ch-lg{position:relative;height:300px}
-.ch-xl{position:relative;height:360px}
-/* PARAM PANEL */
-.param-panel{display:none;position:fixed;right:0;top:62px;bottom:0;width:340px;
-             background:#fff;border-left:1px solid var(--border);
-             z-index:150;overflow-y:auto;padding:20px;
-             box-shadow:-10px 0 40px rgba(249,115,22,.08)}
-.param-panel.open{display:block;animation:slideInRight .3s ease-out}
-.param-section{margin-bottom:18px}
-.param-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
-             letter-spacing:.6px;margin-bottom:10px;padding-bottom:6px;
-             border-bottom:1px solid var(--border)}
-.param-row{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-.param-row label{font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
-.param-row label span{color:var(--accent);font-weight:700;font-size:12px}
-.param-row input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
-.param-row input[type=number]{width:100%;background:#fff7ed;border:1px solid var(--border);
-  color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;outline:none;
-  font-family:'JetBrains Mono',monospace;transition:border-color .2s}
-.param-row input[type=number]:focus{border-color:var(--accent);box-shadow:0 0 10px rgba(249,115,22,.1)}
-/* BUTTONS */
-.btn{padding:10px 20px;border-radius:10px;border:none;cursor:pointer;
-     font-size:13px;font-weight:700;transition:all .25s ease;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:linear-gradient(135deg,#f97316,#fb923c);color:#1a0e05;
-             box-shadow:0 4px 15px rgba(249,115,22,.3)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(249,115,22,.5)}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn-paper2{background:linear-gradient(135deg,#f59e0b,#f97316);color:#1a0e05;
-            box-shadow:0 0 20px rgba(249,115,22,.3)}
-.btn-paper2:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(249,115,22,.5)}
-.btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:#fff7ed}
-.btn-params{background:#fff;border:1px solid var(--border);color:var(--text)}
-.btn-params.open{border-color:var(--accent);color:var(--accent);background:#fff7ed}
-.btn-sm{padding:6px 12px;font-size:11px;border-radius:8px}
-/* CONTROLS BAR */
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px}
-.ctrl{display:flex;flex-direction:column;gap:4px}
-.ctrl-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  letter-spacing:.7px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+.ch{position:relative;height:260px}
+.ch-lg{position:relative;height:320px}
+.ch-xl{position:relative;height:380px}
+/* CONTROLS */
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:24px}
+.ctrl{display:flex;flex-direction:column;gap:5px}
+.ctrl-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
 select{background:#fff;border:1px solid var(--border);color:var(--text);
-       padding:8px 12px;border-radius:8px;font-size:12px;outline:none;cursor:pointer;
-       font-family:'Inter',sans-serif;transition:all .2s}
-select:focus{border-color:var(--accent);box-shadow:0 0 10px rgba(249,115,22,.1)}
+  padding:9px 14px;border-radius:10px;font-size:12px;outline:none;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .2s}
+select:focus{border-color:var(--accent)}
 /* PROTO TOGGLES */
 .proto-toggles{display:flex;gap:6px;flex-wrap:wrap}
-.ptog{padding:5px 12px;border-radius:16px;border:1.5px solid;cursor:pointer;
-      font-size:11px;font-weight:700;transition:all .18s;opacity:.45}
-.ptog.on{opacity:1}
+.ptog{padding:6px 14px;border-radius:20px;border:2px solid;cursor:pointer;
+  font-size:11px;font-weight:700;transition:all .2s;opacity:.4}
+.ptog.on{opacity:1;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 /* TABLE */
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{text-align:left;padding:10px 14px;background:#fff7ed;
-   color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.6px;
-   border-bottom:1px solid var(--border);font-weight:700}
-td{padding:10px 14px;border-bottom:1px solid rgba(245,213,184,.4);transition:background .2s}
-tr:hover td{background:rgba(249,115,22,.04)}
+th{text-align:left;padding:12px 16px;background:var(--card2);
+  color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.7px;
+  border-bottom:1px solid var(--border);font-weight:700}
+td{padding:12px 16px;border-bottom:1px solid rgba(236,220,200,.5);transition:background .2s}
+tr:hover td{background:rgba(249,115,22,.03)}
 .best{color:var(--accent);font-weight:800}
 .worst{color:var(--red)}
 /* PILLS */
-.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
-      border-radius:14px;font-size:11px;font-weight:700}
-.pup{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)}
-.pdown{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
-/* LOADER */
-.loader{display:none;position:fixed;inset:0;background:rgba(253,246,239,.92);
-        backdrop-filter:blur(8px);
-        z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px}
-.loader.on{display:flex}
-.spinner{width:52px;height:52px;border:4px solid var(--border);
-          border-top-color:var(--accent);border-right-color:var(--a2);
-          border-radius:50%;animation:spin .7s linear infinite;
-          box-shadow:0 0 20px rgba(249,115,22,.2)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loader-text{color:var(--text);font-size:15px;font-weight:700;letter-spacing:-.3px}
-.loader-sub{color:var(--muted);font-size:12px;font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;
+  border-radius:16px;font-size:10px;font-weight:700}
+.pup{background:rgba(22,163,74,.08);color:var(--green);border:1px solid rgba(22,163,74,.2)}
+.pdown{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2)}
 /* HEATMAP */
-.hmg{display:grid;grid-template-columns:auto repeat(4,1fr);gap:3px;font-size:11px}
-.hmc{padding:7px 4px;text-align:center;border-radius:5px;font-weight:700;font-size:10px}
-.hmh{color:var(--muted);padding:7px 4px;text-align:center;font-size:9px;text-transform:uppercase}
-.hml{color:var(--muted);padding:7px 8px;display:flex;align-items:center;font-size:10px}
-/* PAPER2 BADGE */
-.p2badge{background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.4);
-          color:var(--accent);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700}
-/* STATUS BAR */
-.status-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;
-            background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);
-            border-radius:10px;margin-bottom:18px;font-size:12px;font-weight:500;
-            animation:fadeIn .4s ease-out}
-.status-bar.running{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.3)}
-.status-bar.error{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);
-            box-shadow:0 0 6px rgba(34,197,94,.5)}
-.status-dot.pulse{animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-/* RANGE DISPLAY */
-.range-wrap{display:flex;align-items:center;gap:8px}
-.range-wrap input[type=range]{flex:1}
-.range-val{min-width:38px;text-align:right;font-size:12px;color:var(--accent);font-weight:700}
-/* TOGGLE */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.toggle-label{font-size:12px;color:var(--text)}
-.toggle{position:relative;width:36px;height:20px;cursor:pointer}
-.toggle input{opacity:0;width:0;height:0}
-.slider-t{position:absolute;inset:0;background:#e5ddd5;border-radius:10px;
-           border:1px solid var(--border);transition:.25s}
-.slider-t:before{content:'';position:absolute;width:14px;height:14px;
-                  background:#fff;border-radius:50%;left:2px;top:2px;transition:.25s}
-.toggle input:checked+.slider-t{background:linear-gradient(135deg,#f97316,#fb923c);border-color:var(--accent);
-  box-shadow:0 0 10px rgba(249,115,22,.2)}
-.toggle input:checked+.slider-t:before{transform:translateX(16px);background:#fff}
-/* COMPARISON DIFF */
-.diff-badge{padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.hmg{display:grid;grid-template-columns:auto repeat(4,1fr);gap:4px;font-size:11px}
+.hmc{padding:8px 5px;text-align:center;border-radius:6px;font-weight:700;font-size:10px}
+.hmh{color:var(--muted);padding:8px 5px;text-align:center;font-size:9px;text-transform:uppercase;font-weight:600}
+.hml{color:var(--muted);padding:8px;display:flex;align-items:center;font-size:10px;font-weight:600}
+/* LOADER */
+.loader{display:none;position:fixed;inset:0;background:rgba(250,247,242,.92);
+  backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px}
+.loader.on{display:flex}
+.spinner{width:48px;height:48px;border:3px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.loader-text{color:var(--text);font-size:15px;font-weight:700}
+.loader-sub{color:var(--muted);font-size:12px}
+/* TOPOLOGY */
+#topo-canvas{width:100%;border-radius:14px;background:#fff;border:1px solid var(--border);cursor:grab}
+#topo-canvas:active{cursor:grabbing}
+.topo-legend{display:flex;gap:18px;flex-wrap:wrap;padding:14px 0;font-size:12px;font-weight:600;color:var(--muted)}
+.topo-legend span{display:flex;align-items:center;gap:6px}
+.topo-legend .tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media(max-width:1100px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .g2{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  :root{--sidebar:270px}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .hamburger{display:flex}
+  .main{margin-left:0;padding:70px 16px 24px}
+  .hero{padding:22px 18px}
+  .hero-title{font-size:20px}
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .g2,.g3{grid-template-columns:1fr}
+  .g4{grid-template-columns:1fr 1fr}
+  .card{padding:16px}
+  .ch{height:220px}.ch-lg{height:260px}.ch-xl{height:300px}
+}
+@media(max-width:480px){
+  .kpi-row{grid-template-columns:1fr}
+  .g4{grid-template-columns:1fr}
+  .hero-title{font-size:18px}
+  .kpi-val{font-size:24px}
+  .main{padding:70px 12px 20px}
+}
 </style>
 </head>
 <body>
@@ -543,145 +569,152 @@ tr:hover td{background:rgba(249,115,22,.04)}
   <div class="loader-sub" id="loader-sub">Initialising network</div>
 </div>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-brand">
-    <div class="nav-logo">LAF</div>
-    <div>
-      <div class="nav-title">WSN-LAF Simulation Dashboard</div>
-      <div class="nav-sub">Lightweight Adaptive Framework · PhD Research · Shajan Mohammed Mahdi</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <div class="tabs">
-      <button class="tab active" onclick="showPage('overview',this)">Overview</button>
-      <button class="tab" onclick="showPage('performance',this)">Performance</button>
-      <button class="tab" onclick="showPage('security',this)">Security</button>
-      <button class="tab" onclick="showPage('scalability',this)">Scalability</button>
-      <button class="tab" onclick="showPage('ablation',this)">Ablation</button>
-      <button class="tab" onclick="showPage('longterm',this)">Long-Term</button>
-      <button class="tab" onclick="showPage('recovery',this)">Recovery</button>
-      <button class="tab" onclick="showPage('comparison',this)">Compare</button>
-    </div>
-    <button class="btn btn-paper2 btn-sm" onclick="applyPaper2Params()">🎯 Paper 2 Mode</button>
-    <button class="btn btn-params btn-sm" id="params-btn" onclick="toggleParams()">⚙️ Parameters</button>
-    <button class="btn btn-primary btn-sm" id="run-btn" onclick="runSim()">▶ Run</button>
-  </div>
-</nav>
+<!-- MOBILE HAMBURGER -->
+<button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
+  <span class="material-icons-round">menu</span>
+</button>
+<div class="overlay" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('on')"></div>
 
-<!-- PARAMETER PANEL -->
-<div class="param-panel" id="param-panel">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="font-size:14px;font-weight:700;color:var(--text)">Simulation Parameters</div>
-    <button class="btn btn-ghost btn-sm" onclick="resetParams()">Reset</button>
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo">LAF</div>
+    <div class="sb-title">WSN-LAF Simulation Dashboard</div>
+    <div class="sb-phd">Shajan PhD Project</div>
+    <div class="sb-sub">Lightweight Adaptive Framework<br>Shajan Mohammed Mahdi — Mustansiriyah University</div>
   </div>
 
-  <div class="param-section">
-    <div class="param-title">Network Setup</div>
-    <div class="param-row">
-      <label>Nodes <span id="lbl-nodes">100</span></label>
-      <div class="range-wrap"><input type="range" id="p-nodes" min="30" max="200" step="10" value="100"
-        oninput="updLbl('nodes',this.value)"><span class="range-val" id="rv-nodes">100</span></div>
+  <div class="sb-nav">
+    <div class="sb-nav-label">Dashboard</div>
+    <div class="nav-item active" onclick="showPage('overview',this)">
+      <span class="material-icons-round">dashboard</span> Overview</div>
+    <div class="nav-item" onclick="showPage('performance',this)">
+      <span class="material-icons-round">speed</span> Performance</div>
+    <div class="nav-item" onclick="showPage('security',this)">
+      <span class="material-icons-round">shield</span> Security</div>
+    <div class="nav-item" onclick="showPage('scalability',this)">
+      <span class="material-icons-round">expand</span> Scalability</div>
+    <div class="nav-item" onclick="showPage('ablation',this)">
+      <span class="material-icons-round">science</span> Ablation</div>
+    <div class="nav-item" onclick="showPage('longterm',this)">
+      <span class="material-icons-round">schedule</span> Long-Term</div>
+    <div class="nav-item" onclick="showPage('recovery',this)">
+      <span class="material-icons-round">healing</span> Recovery</div>
+    <div class="nav-item" onclick="showPage('comparison',this)">
+      <span class="material-icons-round">compare_arrows</span> Compare</div>
+    <div class="nav-item" onclick="showPage('topology',this)">
+      <span class="material-icons-round">hub</span> Topology</div>
+  </div>
+
+  <div class="sb-params" id="sb-params">
+    <div class="sb-params-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="sb-params-title">Simulation Parameters</div>
+      <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();resetParams()">Reset</button>
     </div>
-    <div class="param-row">
-      <label>Rounds <span id="lbl-rounds">500</span></label>
-      <div class="range-wrap"><input type="range" id="p-rounds" min="100" max="1000" step="50" value="500"
-        oninput="updLbl('rounds',this.value)"><span class="range-val" id="rv-rounds">500</span></div>
+
+    <div class="param-section">
+      <div class="param-title">Network</div>
+      <div class="param-row">
+        <label>Nodes <span id="lbl-nodes">100</span></label>
+        <div class="range-wrap"><input type="range" id="p-nodes" min="30" max="200" step="10" value="100"
+          oninput="updLbl('nodes',this.value)"><span class="range-val" id="rv-nodes">100</span></div>
+      </div>
+      <div class="param-row">
+        <label>Rounds <span id="lbl-rounds">500</span></label>
+        <div class="range-wrap"><input type="range" id="p-rounds" min="100" max="1000" step="50" value="500"
+          oninput="updLbl('rounds',this.value)"><span class="range-val" id="rv-rounds">500</span></div>
+      </div>
+      <div class="param-row">
+        <label>MC Runs <span id="lbl-runs">10</span></label>
+        <div class="range-wrap"><input type="range" id="p-runs" min="3" max="30" step="1" value="10"
+          oninput="updLbl('runs',this.value)"><span class="range-val" id="rv-runs">10</span></div>
+      </div>
     </div>
-    <div class="param-row">
-      <label>MC Runs <span id="lbl-runs">10</span></label>
-      <div class="range-wrap"><input type="range" id="p-runs" min="3" max="30" step="1" value="10"
-        oninput="updLbl('runs',this.value)"><span class="range-val" id="rv-runs">10</span></div>
+
+    <div class="param-section">
+      <div class="param-title">Routing Weights</div>
+      <div class="param-row">
+        <label>α Energy <span id="lbl-alpha">0.40</span></label>
+        <div class="range-wrap"><input type="range" id="p-alpha" min="0.1" max="0.8" step="0.05" value="0.4"
+          oninput="updLbl('alpha',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-alpha">0.40</span></div>
+      </div>
+      <div class="param-row">
+        <label>β Delay <span id="lbl-beta">0.30</span></label>
+        <div class="range-wrap"><input type="range" id="p-beta" min="0.1" max="0.7" step="0.05" value="0.3"
+          oninput="updLbl('beta',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-beta">0.30</span></div>
+      </div>
+      <div class="param-row">
+        <label>γ Trust <span id="lbl-gamma">0.30</span></label>
+        <div class="range-wrap"><input type="range" id="p-gamma" min="0.1" max="0.7" step="0.05" value="0.3"
+          oninput="updLbl('gamma',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-gamma">0.30</span></div>
+      </div>
+    </div>
+
+    <div class="param-section">
+      <div class="param-title">CH Selection</div>
+      <div class="param-row">
+        <label>λ₁ Energy <span id="lbl-l1">0.50</span></label>
+        <div class="range-wrap"><input type="range" id="p-l1" min="0.1" max="0.8" step="0.05" value="0.5"
+          oninput="updLbl('l1',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l1">0.50</span></div>
+      </div>
+      <div class="param-row">
+        <label>λ₂ Link <span id="lbl-l2">0.25</span></label>
+        <div class="range-wrap"><input type="range" id="p-l2" min="0.1" max="0.5" step="0.05" value="0.25"
+          oninput="updLbl('l2',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l2">0.25</span></div>
+      </div>
+      <div class="param-row">
+        <label>λ₃ Trust <span id="lbl-l3">0.25</span></label>
+        <div class="range-wrap"><input type="range" id="p-l3" min="0.1" max="0.5" step="0.05" value="0.25"
+          oninput="updLbl('l3',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l3">0.25</span></div>
+      </div>
+    </div>
+
+    <div class="param-section">
+      <div class="param-title">Energy &amp; Trust</div>
+      <div class="param-row">
+        <label>Initial Energy (J)</label>
+        <input type="number" id="p-einit" value="0.5" step="0.1" min="0.1" max="2.0">
+      </div>
+      <div class="param-row">
+        <label>CH ratio <span id="lbl-popt">0.05</span></label>
+        <div class="range-wrap"><input type="range" id="p-popt" min="0.02" max="0.15" step="0.01" value="0.05"
+          oninput="updLbl('popt',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-popt">0.05</span></div>
+      </div>
+      <div class="param-row">
+        <label>Trust ρ <span id="lbl-rho">0.40</span></label>
+        <div class="range-wrap"><input type="range" id="p-rho" min="0.1" max="0.9" step="0.05" value="0.4"
+          oninput="updLbl('rho',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-rho">0.40</span></div>
+      </div>
+      <div class="param-row">
+        <label>Threshold τ <span id="lbl-tau">0.50</span></label>
+        <div class="range-wrap"><input type="range" id="p-tau" min="0.2" max="0.8" step="0.05" value="0.5"
+          oninput="updLbl('tau',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-tau">0.50</span></div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Adaptive routing</span>
+        <label class="toggle"><input type="checkbox" id="p-adaptive" checked><span class="slider-t"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Blockchain</span>
+        <label class="toggle"><input type="checkbox" id="p-blockchain" checked><span class="slider-t"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Trust cost</span>
+        <label class="toggle"><input type="checkbox" id="p-trustcost" checked><span class="slider-t"></span></label>
+      </div>
     </div>
   </div>
 
-  <div class="param-section">
-    <div class="param-title">Routing Cost Weights (α+β+γ=1)</div>
-    <div class="param-row">
-      <label>α — Energy weight <span id="lbl-alpha">0.40</span></label>
-      <div class="range-wrap"><input type="range" id="p-alpha" min="0.1" max="0.8" step="0.05" value="0.4"
-        oninput="updLbl('alpha',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-alpha">0.40</span></div>
-    </div>
-    <div class="param-row">
-      <label>β — Delay weight <span id="lbl-beta">0.30</span></label>
-      <div class="range-wrap"><input type="range" id="p-beta" min="0.1" max="0.7" step="0.05" value="0.3"
-        oninput="updLbl('beta',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-beta">0.30</span></div>
-    </div>
-    <div class="param-row">
-      <label>γ — Trust weight <span id="lbl-gamma">0.30</span></label>
-      <div class="range-wrap"><input type="range" id="p-gamma" min="0.1" max="0.7" step="0.05" value="0.3"
-        oninput="updLbl('gamma',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-gamma">0.30</span></div>
-    </div>
+  <div class="sb-actions">
+    <button class="btn btn-primary" id="run-btn" onclick="runSim()">
+      <span class="material-icons-round" style="font-size:16px">play_arrow</span> Run Simulation</button>
+    <button class="btn btn-paper2" onclick="applyPaper2Params()">
+      <span class="material-icons-round" style="font-size:16px">auto_fix_high</span> Paper 2 Mode</button>
   </div>
+</aside>
 
-  <div class="param-section">
-    <div class="param-title">CH Selection Weights (λ₁+λ₂+λ₃=1)</div>
-    <div class="param-row">
-      <label>λ₁ — Energy factor <span id="lbl-l1">0.50</span></label>
-      <div class="range-wrap"><input type="range" id="p-l1" min="0.1" max="0.8" step="0.05" value="0.5"
-        oninput="updLbl('l1',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l1">0.50</span></div>
-    </div>
-    <div class="param-row">
-      <label>λ₂ — Link quality <span id="lbl-l2">0.25</span></label>
-      <div class="range-wrap"><input type="range" id="p-l2" min="0.1" max="0.5" step="0.05" value="0.25"
-        oninput="updLbl('l2',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l2">0.25</span></div>
-    </div>
-    <div class="param-row">
-      <label>λ₃ — Trust factor <span id="lbl-l3">0.25</span></label>
-      <div class="range-wrap"><input type="range" id="p-l3" min="0.1" max="0.5" step="0.05" value="0.25"
-        oninput="updLbl('l3',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-l3">0.25</span></div>
-    </div>
-  </div>
-
-  <div class="param-section">
-    <div class="param-title">Energy Model</div>
-    <div class="param-row">
-      <label>Initial Energy (J) <span></span></label>
-      <input type="number" id="p-einit" value="0.5" step="0.1" min="0.1" max="2.0">
-    </div>
-    <div class="param-row">
-      <label>Optimal CH ratio (p)</label>
-      <div class="range-wrap"><input type="range" id="p-popt" min="0.02" max="0.15" step="0.01" value="0.05"
-        oninput="updLbl('popt',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-popt">0.05</span></div>
-    </div>
-  </div>
-
-  <div class="param-section">
-    <div class="param-title">Trust &amp; Consensus</div>
-    <div class="param-row">
-      <label>Trust EMA ρ <span id="lbl-rho">0.40</span></label>
-      <div class="range-wrap"><input type="range" id="p-rho" min="0.1" max="0.9" step="0.05" value="0.4"
-        oninput="updLbl('rho',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-rho">0.40</span></div>
-    </div>
-    <div class="param-row">
-      <label>Switch threshold τ <span id="lbl-tau">0.50</span></label>
-      <div class="range-wrap"><input type="range" id="p-tau" min="0.2" max="0.8" step="0.05" value="0.5"
-        oninput="updLbl('tau',parseFloat(this.value).toFixed(2))"><span class="range-val" id="rv-tau">0.50</span></div>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">Adaptive routing (C5)</span>
-      <label class="toggle"><input type="checkbox" id="p-adaptive" checked>
-        <span class="slider-t"></span></label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">Blockchain layer (C3)</span>
-      <label class="toggle"><input type="checkbox" id="p-blockchain" checked>
-        <span class="slider-t"></span></label>
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">Trust cost in routing (C6)</span>
-      <label class="toggle"><input type="checkbox" id="p-trustcost" checked>
-        <span class="slider-t"></span></label>
-    </div>
-  </div>
-
-  <button class="btn btn-paper2" style="width:100%;margin-bottom:10px" onclick="applyPaper2Params()">
-    🎯 Load Paper 2 Exact Parameters
-  </button>
-  <button class="btn btn-primary" style="width:100%" onclick="runSim()">▶ Run Simulation</button>
-</div>
-
-<!-- ════════════════════════════  PAGES  ══════════════════════════════════════ -->
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<div class="main">
 
 <!-- OVERVIEW -->
 <div id="page-overview" class="page on">
@@ -697,11 +730,6 @@ tr:hover td{background:rgba(249,115,22,.04)}
         <div class="hero-title">LAF vs Traditional Protocols — Simulation Results</div>
         <div class="hero-sub">100 nodes · 100×100 m · 500 rounds · Python simulation<br>
         Baselines: LEACH · SPIN · Directed Diffusion · TEARP</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-paper2 btn-sm" onclick="applyPaper2Params()">🎯 Paper 2 Mode</button>
-        <button class="btn btn-ghost btn-sm" onclick="toggleParams()">⚙️ Edit Params</button>
-        <button class="btn btn-primary btn-sm" onclick="runSim()">▶ Run Simulation</button>
       </div>
     </div>
     <div class="kpi-row" id="kpi-row">
@@ -873,9 +901,40 @@ tr:hover td{background:rgba(249,115,22,.04)}
     <tbody id="cmp-tbody"></tbody></table></div>
 </div>
 
+<!-- TOPOLOGY -->
+<div id="page-topology" class="page">
+  <div class="card" style="margin-bottom:24px">
+    <div class="ct"><div class="dot" style="background:var(--accent)"></div>Interactive WSN Topology</div>
+    <canvas id="topo-canvas" width="900" height="550"></canvas>
+    <div class="topo-legend">
+      <span><div class="tl-dot" style="background:var(--accent)"></div> Normal Node</span>
+      <span><div class="tl-dot" style="background:#16a34a"></div> Cluster Head</span>
+      <span><div class="tl-dot" style="background:var(--red)"></div> Attack Node</span>
+      <span><div class="tl-dot" style="background:#1e293b;width:14px;height:14px"></div> Base Station</span>
+      <span style="color:var(--accent)">— Active Route</span>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card" style="text-align:center;padding:20px">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:6px">Alive Nodes</div>
+      <div id="topo-alive" style="font-size:36px;font-weight:900;color:var(--accent);font-family:'JetBrains Mono',monospace">100</div>
+    </div>
+    <div class="card" style="text-align:center;padding:20px">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:6px">Cluster Heads</div>
+      <div id="topo-chs" style="font-size:36px;font-weight:900;color:#16a34a;font-family:'JetBrains Mono',monospace">5</div>
+    </div>
+    <div class="card" style="text-align:center;padding:20px">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:6px">Attack Nodes</div>
+      <div id="topo-atk" style="font-size:36px;font-weight:900;color:var(--red);font-family:'JetBrains Mono',monospace">10</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
 <!-- ════════════════════════  SCRIPT  ══════════════════════════════════════════ -->
 <script>
-const COLORS={LAF:'#f97316',LEACH:'#ef4444',SPIN:'#eab308',DD:'#06b6d4',TEARP:'#22c55e'};
+const COLORS={LAF:'#f97316',LEACH:'#dc2626',SPIN:'#ca8a04',DD:'#0891b2',TEARP:'#16a34a'};
 const PROTOS=['LAF','LEACH','SPIN','DD','TEARP'];
 let activeP=new Set(['LAF','LEACH','TEARP']);
 let DATA=null; let charts={};
@@ -924,7 +983,7 @@ function setStatus(msg,cls=''){
 // ── pages ─────────────────────────────────────────────────────────────────────
 function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('on');
   if(el)el.classList.add('active');
   if(name==='performance')buildPerf();
@@ -934,15 +993,14 @@ function showPage(name,el){
   if(name==='recovery')buildRecovery();
   if(name==='ablation')buildAblation();
   if(name==='comparison')buildComparison();
+  if(name==='topology')initTopology();
+  // close mobile sidebar
+  document.querySelector('.sidebar').classList.remove('open');
+  document.querySelector('.overlay').classList.remove('on');
 }
 
 // ── param panel ───────────────────────────────────────────────────────────────
-function toggleParams(){
-  const p=document.getElementById('param-panel');
-  const b=document.getElementById('params-btn');
-  p.classList.toggle('open');
-  b.classList.toggle('open');
-}
+function toggleParams(){}
 function updLbl(k,v){
   document.getElementById('rv-'+k).textContent=v;
   document.getElementById('lbl-'+k).textContent=v;
@@ -975,7 +1033,6 @@ function applyPaper2Params(){
   document.getElementById('p-trustcost').checked=true;
   document.getElementById('p2-badge').style.display='inline';
   document.getElementById('p2-badge').textContent='✓ Paper 2 Mode Active';
-  if(!document.getElementById('param-panel').classList.contains('open'))toggleParams();
   setStatus('Paper 2 exact parameters loaded — click ▶ Run to reproduce Paper 2 results','');
   // Flash kpis
   ['kv-energy','kv-life','kv-tput','kv-pdr'].forEach(id=>{
@@ -1277,6 +1334,119 @@ function buildComparison(){
       <td>${p==='LAF'?'<span class="pill pup">Baseline</span>':
            `<span class="pill ${parseFloat(diff)>=0?'pup':'pdown'}">${diff}%</span>`}</td></tr>`;
   });
+}
+
+// ── TOPOLOGY ─────────────────────────────────────────────────────────────────
+let topoInited=false;
+let topoNodes=[];let topoBS={x:450,y:30};let topoDrag=null;let topoMouse={x:0,y:0};let topoAnim=null;
+function initTopology(){
+  if(topoInited)return;topoInited=true;
+  const cv=document.getElementById('topo-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  // generate nodes
+  const rng=k=>{let s=k;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}};
+  const r=rng(42);
+  const N=100,ATK=10,CHS=5;
+  topoNodes=[];
+  for(let i=0;i<N;i++){
+    const isCH=i<CHS;const isAtk=!isCH&&i<CHS+ATK;
+    topoNodes.push({x:50+r()*(W-100),y:80+r()*(H-130),
+      energy:.3+r()*.7,trust:isAtk?.3:(.7+r()*.3),
+      isCH,isAtk,vx:(r()-.5)*.3,vy:(r()-.5)*.3,
+      baseX:0,baseY:0,phase:r()*Math.PI*2});
+  }
+  topoNodes.forEach(n=>{n.baseX=n.x;n.baseY=n.y});
+  topoBS={x:W/2,y:28};
+  document.getElementById('topo-alive').textContent=N;
+  document.getElementById('topo-chs').textContent=CHS;
+  document.getElementById('topo-atk').textContent=ATK;
+  // mouse
+  cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();
+    topoMouse.x=(e.clientX-r.left)*(cv.width/r.width);
+    topoMouse.y=(e.clientY-r.top)*(cv.height/r.height)});
+  cv.addEventListener('mousedown',e=>{const r=cv.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(cv.width/r.width),my=(e.clientY-r.top)*(cv.height/r.height);
+    topoNodes.forEach(n=>{if(Math.hypot(n.x-mx,n.y-my)<14){topoDrag=n}})});
+  cv.addEventListener('mouseup',()=>{if(topoDrag){topoDrag.baseX=topoDrag.x;topoDrag.baseY=topoDrag.y}topoDrag=null});
+  cv.addEventListener('mouseleave',()=>{topoDrag=null});
+  // animate
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const t=Date.now()/1000;
+    // drag
+    if(topoDrag){topoDrag.x=topoMouse.x;topoDrag.y=topoMouse.y}
+    // float nodes
+    topoNodes.forEach(n=>{
+      if(n===topoDrag)return;
+      n.x=n.baseX+Math.sin(t*0.5+n.phase)*3;
+      n.y=n.baseY+Math.cos(t*0.7+n.phase)*2;
+    });
+    // find cluster heads
+    const chs=topoNodes.filter(n=>n.isCH);
+    // draw routes: CH -> BS
+    chs.forEach(ch=>{
+      ctx.beginPath();ctx.moveTo(ch.x,ch.y);ctx.lineTo(topoBS.x,topoBS.y);
+      ctx.strokeStyle='rgba(249,115,22,.2)';ctx.lineWidth=2;
+      ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
+      // animated packet
+      const prog=(t*0.3+ch.x/W)%1;
+      const px=ch.x+(topoBS.x-ch.x)*prog,py=ch.y+(topoBS.y-ch.y)*prog;
+      ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+    });
+    // draw routes: node -> nearest CH
+    topoNodes.forEach(n=>{
+      if(n.isCH)return;
+      let minD=Infinity,best=chs[0];
+      chs.forEach(c=>{const d=Math.hypot(n.x-c.x,n.y-c.y);if(d<minD){minD=d;best=c}});
+      if(!best)return;
+      // mouse proximity highlight
+      const dm=Math.hypot(n.x-topoMouse.x,n.y-topoMouse.y);
+      const alpha=dm<80?.3:.06;
+      ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(best.x,best.y);
+      ctx.strokeStyle=n.isAtk?`rgba(220,38,38,${alpha})`:`rgba(249,115,22,${alpha})`;
+      ctx.lineWidth=1;ctx.stroke();
+    });
+    // draw BS
+    ctx.beginPath();ctx.arc(topoBS.x,topoBS.y,16,0,Math.PI*2);
+    ctx.fillStyle='#1e293b';ctx.fill();
+    ctx.beginPath();ctx.arc(topoBS.x,topoBS.y,20,0,Math.PI*2);
+    ctx.strokeStyle='rgba(30,41,59,.2)';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 9px Inter';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('BS',topoBS.x,topoBS.y);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px Inter';ctx.fillText('Base Station',topoBS.x,topoBS.y-26);
+    // draw nodes
+    topoNodes.forEach(n=>{
+      const dm=Math.hypot(n.x-topoMouse.x,n.y-topoMouse.y);
+      const hover=dm<20;
+      const rad=n.isCH?10:hover?8:6;
+      // glow
+      if(n.isCH||hover){
+        ctx.beginPath();ctx.arc(n.x,n.y,rad+6,0,Math.PI*2);
+        ctx.fillStyle=n.isCH?'rgba(22,163,74,.12)':n.isAtk?'rgba(220,38,38,.1)':'rgba(249,115,22,.1)';
+        ctx.fill();
+      }
+      // node
+      ctx.beginPath();ctx.arc(n.x,n.y,rad,0,Math.PI*2);
+      const col=n.isCH?'#16a34a':n.isAtk?'#dc2626':'#f97316';
+      const grad=ctx.createRadialGradient(n.x-2,n.y-2,1,n.x,n.y,rad);
+      grad.addColorStop(0,col);grad.addColorStop(1,col+'bb');
+      ctx.fillStyle=grad;ctx.fill();
+      ctx.strokeStyle=col+'44';ctx.lineWidth=1.5;ctx.stroke();
+      // tooltip on hover
+      if(hover){
+        ctx.fillStyle='#fff';ctx.strokeStyle='#ecdcc8';ctx.lineWidth=1;
+        const tw=120,th=50,tx=n.x+15,ty=n.y-30;
+        ctx.beginPath();ctx.roundRect(tx,ty,tw,th,8);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#3d2b14';ctx.font='bold 10px Inter';ctx.textAlign='left';
+        ctx.fillText(n.isCH?'Cluster Head':n.isAtk?'Attack Node':'Sensor Node',tx+8,ty+16);
+        ctx.font='10px JetBrains Mono';ctx.fillStyle='#8a7058';
+        ctx.fillText('E: '+(n.energy).toFixed(2)+'J  T: '+(n.trust).toFixed(2),tx+8,ty+34);
+      }
+    });
+    topoAnim=requestAnimationFrame(draw);
+  }
+  draw();
 }
 
 // ── INIT: load pre-computed data ──────────────────────────────────────────────
