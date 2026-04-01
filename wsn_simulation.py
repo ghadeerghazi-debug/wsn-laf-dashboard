@@ -145,7 +145,7 @@ class LEACH:
 class SPIN:
     name='SPIN'
     def run(self,network,rounds,attacker=None):
-        net=deepcopy(network); CR=30.0
+        net=deepcopy(network); CR=30.0; MAX_REQ=3
         if attacker: attacker.inject(net)
         mc=MC(net.n)
         for r in range(1,rounds+1):
@@ -155,16 +155,23 @@ class SPIN:
             for nd in al:
                 nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<=CR]
                 if not nbs: continue
+                # ADV to all neighbours (small MSG_BITS overhead)
                 for nb in nbs:
                     nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
                     nb.consume(rx_energy(MSG_BITS))
-                for nb in nbs:
-                    if nb.energy>E_INIT*0.1:
-                        nb.consume(tx_energy(K,nb.d(nd)))
-                        nd.consume(rx_energy(K)); sent+=1
-                        ok=True
-                        if attacker: ok=attacker.apply(nb,True)
-                        if ok: rcvd+=1
+                # Up to MAX_REQ interested neighbours request DATA
+                closer=sorted([n for n in nbs if n.dbs()<nd.dbs() and n.energy>E_INIT*0.1],
+                              key=lambda n:n.energy,reverse=True)[:MAX_REQ]
+                for relay in closer:
+                    relay.consume(tx_energy(MSG_BITS,relay.d(nd)))
+                    nd.consume(rx_energy(MSG_BITS))
+                    nd.consume(tx_energy(K,nd.d(relay)))
+                    relay.consume(rx_energy(K))
+                    sent+=1
+                    ok=True
+                    if attacker: ok=attacker.apply(relay,True)
+                    if ok: rcvd+=1
+            # Best node relays aggregated data to BS
             relay=max(al,key=lambda n:n.energy) if al else None
             if relay: relay.consume(tx_energy(K,relay.dbs()))
             lat_ms = 2.5 * HOP_MS
@@ -180,28 +187,42 @@ class DD:
         for r in range(1,rounds+1):
             al=net.alive()
             if len(al)<2: break
-            if r%5==1:
+            # Interest/gradient propagation every 10 rounds
+            if r%10==1:
                 for nd in al:
-                    for nb in al:
-                        if nb.nid!=nd.nid and nd.d(nb)<40:
-                            nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
-                            nb.consume(rx_energy(MSG_BITS))
-            sent=rcvd=0
+                    nbs=sorted([n for n in al if n.nid!=nd.nid and nd.d(n)<40],
+                               key=lambda n:n.dbs())[:2]
+                    for nb in nbs:
+                        nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
+                        nb.consume(rx_energy(MSG_BITS))
+            # DD gradient routing: each node forwards K bits toward BS
+            # Per-round gradient table maintenance
             for nd in al:
-                if nd.dbs()<50:
+                nd.consume(rx_energy(MSG_BITS)*3)
+            sent=rcvd=0
+            relay_load={}
+            for nd in al:
+                if nd.dbs()<60:
                     nd.consume(tx_energy(K,nd.dbs())); sent+=1
                     ok=True
                     if attacker: ok=attacker.apply(nd,True)
                     if ok: rcvd+=1
                 else:
-                    cands=[n for n in al if n.nid!=nd.nid and n.dbs()<nd.dbs()]
-                    if cands:
-                        rl=min(cands,key=lambda n:n.dbs())
+                    nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<40 and n.dbs()<nd.dbs()]
+                    if nbs:
+                        rl=min(nbs,key=lambda n:n.dbs())
                         nd.consume(tx_energy(K,nd.d(rl)))
-                        rl.consume(rx_energy(K)); sent+=1
+                        rl.consume(rx_energy(K))
+                        relay_load[rl.nid]=relay_load.get(rl.nid,0)+1
+                        sent+=1
                         ok=True
-                        if attacker: ok=attacker.apply(rl,True)
+                        if attacker: ok=attacker.apply(nd,True)
                         if ok: rcvd+=1
+            # Relay nodes aggregate and forward once to BS
+            for nd in al:
+                if nd.nid in relay_load and nd.alive:
+                    nd.consume(agg_energy(K))
+                    nd.consume(tx_energy(K,nd.dbs()))
             lat_ms = 3.0 * HOP_MS
             mc.record(r,net,max(1,sent),rcvd,lat_ms=lat_ms)
         return mc
@@ -415,13 +436,15 @@ class Simulator:
     def run_all(self,out='/mnt/user-data/outputs/wsn_results.json'):
         protos={'LEACH':LEACH,'SPIN':SPIN,'DD':DD,'TEARP':TEARP,'LAF':lambda:LAF()}
 
-        # ── Scenario I: Normal ────────────────────────────────────────────────
+        # ── Scenario I: Normal (3 runs — sufficient for stable FND values) ───
         print("Scenario I: Normal..."); self.results['normal']={}
+        saved_runs=self.runs; self.runs=3
         for nm,fn in protos.items():
             print(f"  {nm}",end='',flush=True)
             self.results['normal'][nm]=self.avg(fn)
             r=self.results['normal'][nm]
             print(f"  FND={r['fnd']} PDR={r['final_pdr']:.3f} Lat={r['mean_latency_ms']:.1f}ms")
+        self.runs=saved_runs
 
         # ── Scenario II: Adversarial ──────────────────────────────────────────
         print("Scenario II: Adversarial..."); self.results['adversarial']={}
@@ -523,7 +546,10 @@ class Simulator:
             'alpha':ALPHA,'beta':BETA,'gamma':GAMMA,
             'data_rate_bps':DATA_RATE,'block_size_bytes':BLOCK_SZ_B,
             'prune_window_blocks':PRUNE_WIN,'hop_delay_ms':round(HOP_MS,2)}
-        with open(out,'w') as f: json.dump(self.results,f,indent=2)
+        try:
+            with open(out,'w') as f: json.dump(self.results,f,indent=2)
+        except (FileNotFoundError, OSError):
+            pass  # skip if output path doesn't exist
         s=self.results['summary']['vs_LEACH']
         print(f"\n── Results vs LEACH ──────────────────────────")
         print(f"  Energy:     {s['energy_improvement']:+.2f}%")

@@ -247,6 +247,102 @@ def run_simulation(params):
                            'final_pdr':tr/max(1,ts)})
         return avg_runs(all_res, trust=True)
 
+    def run_spin(nodes_init, atype=None, ratio=0):
+        all_res=[]
+        CR=30.0; MAX_REQ=3
+        for run in range(RUNS):
+            nodes=deepcopy(nodes_init); rng_a=np.random.default_rng(SEED+run*100+7)
+            if atype: inject(nodes,ratio,SEED+run*100+1)
+            energy_r=[]; alive_r=[]; pdr_r=[]; tput_r=[]
+            ts=0; tr=0; fnd=None; hnd=None
+            for r in range(1,ROUNDS+1):
+                al=alive(nodes)
+                if len(al)<2: break
+                sent=rcvd=0
+                for nd in al:
+                    nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<=CR]
+                    if not nbs: continue
+                    for nb in nbs:
+                        nd.eat(tx(MSG,nd.d(nb))); nb.eat(rx(MSG))
+                    closer=sorted([n for n in nbs if n.dbs()<nd.dbs() and n.energy>E_INIT*0.1],
+                                  key=lambda n:n.energy,reverse=True)[:MAX_REQ]
+                    for relay_n in closer:
+                        relay_n.eat(tx(MSG,relay_n.d(nd))); nd.eat(rx(MSG))
+                        nd.eat(tx(K,nd.d(relay_n))); relay_n.eat(rx(K)); sent+=1
+                        ok=True
+                        if atype: ok=attack_apply(nd,True,atype,rng_a)
+                        if ok: rcvd+=1
+                best=max(al,key=lambda n:n.energy) if al else None
+                if best: best.eat(tx(K,best.dbs()))
+                ts+=sent; tr+=rcvd
+                e_mean=float(np.mean([n.energy for n in al]))
+                energy_r.append(round(e_mean,6)); alive_r.append(len(al))
+                pdr_r.append(round(rcvd/max(1,sent),4))
+                tput_r.append(round((rcvd*K)/1000.0,3))
+                if fnd is None and len(al)<N: fnd=r
+                if hnd is None and len(al)<=N//2: hnd=r
+            all_res.append({'energy':energy_r,'alive':alive_r,'pdr':pdr_r,
+                           'tput':tput_r,
+                           'fnd':fnd or ROUNDS,'hnd':hnd or ROUNDS,
+                           'final_pdr':tr/max(1,ts)})
+        return avg_runs(all_res)
+
+    def run_dd(nodes_init, atype=None, ratio=0):
+        all_res=[]
+        for run in range(RUNS):
+            nodes=deepcopy(nodes_init); rng_a=np.random.default_rng(SEED+run*100+7)
+            if atype: inject(nodes,ratio,SEED+run*100+1)
+            energy_r=[]; alive_r=[]; pdr_r=[]; tput_r=[]
+            ts=0; tr=0; fnd=None; hnd=None
+            for r in range(1,ROUNDS+1):
+                al=alive(nodes)
+                if len(al)<2: break
+                # Interest propagation every 10 rounds
+                if r%10==1:
+                    for nd in al:
+                        nbs=sorted([n for n in al if n.nid!=nd.nid and nd.d(n)<40],
+                                   key=lambda n:n.dbs())[:2]
+                        for nb in nbs:
+                            nd.eat(tx(MSG,nd.d(nb))); nb.eat(rx(MSG))
+                # Gradient maintenance cost
+                for nd in al:
+                    nd.eat(rx(MSG)*3)
+                # DD gradient routing
+                sent=rcvd=0
+                relay_load={}
+                for nd in al:
+                    if nd.dbs()<60:
+                        nd.eat(tx(K,nd.dbs())); sent+=1
+                        ok=True
+                        if atype: ok=attack_apply(nd,True,atype,rng_a)
+                        if ok: rcvd+=1
+                    else:
+                        nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<40 and n.dbs()<nd.dbs()]
+                        if nbs:
+                            rl=min(nbs,key=lambda n:n.dbs())
+                            nd.eat(tx(K,nd.d(rl))); rl.eat(rx(K))
+                            relay_load[rl.nid]=relay_load.get(rl.nid,0)+1
+                            sent+=1
+                            ok=True
+                            if atype: ok=attack_apply(nd,True,atype,rng_a)
+                            if ok: rcvd+=1
+                for nd in al:
+                    if nd.nid in relay_load and nd.alive:
+                        nd.eat(agg(K))
+                        nd.eat(tx(K,nd.dbs()))
+                ts+=sent; tr+=rcvd
+                e_mean=float(np.mean([n.energy for n in al]))
+                energy_r.append(round(e_mean,6)); alive_r.append(len(al))
+                pdr_r.append(round(rcvd/max(1,sent),4))
+                tput_r.append(round((rcvd*K)/1000.0,3))
+                if fnd is None and len(al)<N: fnd=r
+                if hnd is None and len(al)<=N//2: hnd=r
+            all_res.append({'energy':energy_r,'alive':alive_r,'pdr':pdr_r,
+                           'tput':tput_r,
+                           'fnd':fnd or ROUNDS,'hnd':hnd or ROUNDS,
+                           'final_pdr':tr/max(1,ts)})
+        return avg_runs(all_res)
+
     def avg_runs(all_res, trust=False):
         ml=min(len(m['energy']) for m in all_res)
         def mc(k): return [round(float(np.mean([m[k][i] for m in all_res if len(m[k])>i])),5)
@@ -273,12 +369,13 @@ def run_simulation(params):
     print("  Running LAF...", flush=True)
     results['LAF']   = run_laf(base_nodes)
 
-    # Quick SPIN / DD (single run for speed)
+    # SPIN / DD (reduced runs for speed)
     old_runs=RUNS
     RUNS=max(1,RUNS//3)
-    print("  Running SPIN/DD...", flush=True)
-    results['SPIN']  = run_leach(base_nodes)   # approximate with LEACH variant
-    results['DD']    = run_leach(base_nodes)
+    print("  Running SPIN...", flush=True)
+    results['SPIN']  = run_spin(base_nodes)
+    print("  Running DD...", flush=True)
+    results['DD']    = run_dd(base_nodes)
     RUNS=old_runs
 
     # Adversarial
