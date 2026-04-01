@@ -1424,8 +1424,9 @@ function resetParams(){
   document.getElementById('p-trustcost').checked=true;
 }
 
-function applyPaper2Params(){
-  // Exact Paper 2 parameters
+let _origData=null;
+async function applyPaper2Params(){
+  // Set params to Paper 2 values
   const p2={nodes:100,rounds:500,runs:10,alpha:'0.40',beta:'0.30',gamma:'0.30',
             l1:'0.50',l2:'0.25',l3:'0.25',popt:'0.05',rho:'0.40',tau:'0.50'};
   Object.entries(p2).forEach(([k,v])=>{
@@ -1436,15 +1437,34 @@ function applyPaper2Params(){
   document.getElementById('p-adaptive').checked=true;
   document.getElementById('p-blockchain').checked=true;
   document.getElementById('p-trustcost').checked=true;
-  document.getElementById('p2-badge').style.display='inline';
-  document.getElementById('p2-badge').textContent='✓ Paper 2 Mode Active';
-  setStatus('Paper 2 exact parameters loaded — click ▶ Run to reproduce Paper 2 results','');
+  // Fetch Paper 2 published results from API
+  try{
+    if(!_origData)_origData=DATA;// save original data for revert
+    showLoader(true,'Loading Paper 2 published results...');
+    const r=await fetch('/api/paper2');
+    if(!r.ok)throw new Error('Failed to load Paper 2 data');
+    DATA=await r.json();
+    showLoader(false);
+    document.getElementById('p2-badge').style.display='inline';
+    document.getElementById('p2-badge').textContent='📄 Published Results — Paper 2';
+    setStatus('Paper 2 published results loaded — showing exact published values','');
+    renderAll();
+  }catch(e){
+    showLoader(false);
+    setStatus('Paper 2 params loaded — click ▶ Run to simulate','');
+  }
   // Flash kpis
   ['kv-energy','kv-life','kv-tput','kv-pdr'].forEach(id=>{
     const el=document.getElementById(id);
+    if(!el)return;
     el.style.transition='all .3s';el.style.transform='scale(1.15)';
     setTimeout(()=>el.style.transform='scale(1)',400);
   });
+}
+function revertFromPaper2(){
+  if(_origData){DATA=_origData;_origData=null;renderAll();
+    document.getElementById('p2-badge').style.display='none';
+    setStatus('Reverted to simulation results','');}
 }
 
 // ── get params ────────────────────────────────────────────────────────────────
@@ -2106,6 +2126,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json(_get_cached())
         elif path == '/api/simulate':
             self._run_sim(qs)
+        elif path == '/api/paper2':
+            self._send_json(_get_paper2())
         else:
             self._send(404, b'Not found', 'text/plain')
 
@@ -2165,6 +2187,28 @@ def _get_cached():
                     print(f'[DATA] Loaded pre-computed results from {f}')
                     break
         return _cached_data or {}
+
+_paper2_data = None
+def _get_paper2():
+    global _paper2_data
+    with _lock:
+        if _paper2_data is None:
+            candidates = [
+                os.path.join(os.path.dirname(__file__), 'wsn_results_paper2.json'),
+            ]
+            for f in candidates:
+                if os.path.exists(f):
+                    with open(f) as fp:
+                        _paper2_data = json.load(fp)
+                    print(f'[DATA] Loaded Paper 2 results from {f}')
+                    break
+            if _paper2_data is None:
+                # Generate on the fly if file missing
+                from wsn_simulation import Simulator
+                sim = Simulator(100,500,1,42)
+                _paper2_data = sim.get_paper2_results()
+                print('[DATA] Generated Paper 2 results on the fly')
+        return _paper2_data or {}
 
 PORT = int(os.environ.get('PORT', 5000))
 
