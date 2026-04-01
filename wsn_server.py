@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v3";
+const CACHE_NAME = "wsn-laf-v4";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1128,6 +1128,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div class="sb-nav-label">Dashboard</div>
     <div class="nav-item active" onclick="showPage('overview',this)">
       <span class="material-icons-round">dashboard</span> Overview</div>
+    <div class="nav-item" onclick="showPage('paper1',this)">
+      <span class="material-icons-round">menu_book</span> Paper 1</div>
     <div class="nav-item" onclick="showPage('performance',this)">
       <span class="material-icons-round">speed</span> Performance</div>
     <div class="nav-item" onclick="showPage('security',this)">
@@ -1339,6 +1341,31 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <table><thead><tr><th>Protocol</th><th>Type</th><th>FND</th><th>HND</th><th>PDR</th><th>Avg Energy</th><th>Throughput</th><th>Trust</th></tr></thead>
     <tbody id="sum-table"></tbody></table>
     <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets.</div></div>
+</div>
+
+<!-- PAPER 1 — Literature Review -->
+<div id="page-paper1" class="page">
+  <div class="hero">
+    <div class="hero-top"><div>
+      <div class="hero-title">Paper 1 — Systematic Literature Review</div>
+      <div class="hero-sub">A comprehensive review of WSN security and routing protocols (2018–2025)</div>
+    </div></div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val" style="color:var(--accent)">44</div><div class="kpi-label">Studies Reviewed</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:var(--green)">2018–2025</div><div class="kpi-label">Publication Range</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:var(--cyan)">3</div><div class="kpi-label">Protocol Families</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:var(--yellow)">6</div><div class="kpi-label">Gaps Found</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct"><div class="dot" style="background:var(--accent)"></div>Protocol Family Breakdown</div>
+      <div class="ch"><canvas id="c-p1-donut"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="dot" style="background:var(--green)"></div>Studies per Year</div>
+      <div class="ch"><canvas id="c-p1-bar"></canvas></div></div>
+  </div>
+  <div class="card"><div class="ct"><div class="dot" style="background:var(--yellow)"></div>Research Gaps Identified</div>
+    <table><thead><tr><th>Gap ID</th><th>Gap Title</th><th>Addressed By</th></tr></thead>
+    <tbody id="p1-gaps"></tbody></table></div>
 </div>
 
 <!-- PERFORMANCE -->
@@ -1663,6 +1690,7 @@ function showPage(name,el){
   document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('on');
   if(el)el.classList.add('active');
+  if(name==='paper1')buildPaper1();
   if(name==='performance')buildPerf();
   if(name==='security')buildSec();
   if(name==='scalability')buildScale();
@@ -1817,6 +1845,43 @@ function renderAll(){
   buildComparison();
   updateStatsTicker();
   updateHealthGauge();
+}
+
+// ── PAPER 1 — Literature Review ──────────────────────────────────────────────
+let p1Built=false;
+function buildPaper1(){
+  if(p1Built)return; p1Built=true;
+  // Donut — protocol families
+  const dCtx=document.getElementById('c-p1-donut');
+  new Chart(dCtx,{type:'doughnut',data:{
+    labels:['Blockchain-based','Learning-based','Hybrid'],
+    datasets:[{data:[14,18,12],
+      backgroundColor:['#f97316','#22c55e','#06b6d4'],
+      borderColor:['#fff7ed','#fff7ed','#fff7ed'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+      plugins:{legend:{position:'bottom',labels:{color:'#9a7355',font:{family:'Inter',size:12},padding:16}}}}});
+  // Bar — studies per year
+  const bCtx=document.getElementById('c-p1-bar');
+  new Chart(bCtx,{type:'bar',data:{
+    labels:['2018','2019','2020','2021','2022','2023','2024','2025'],
+    datasets:[{label:'Studies',data:[3,4,5,6,8,9,7,2],
+      backgroundColor:'#f9731699',borderColor:'#f97316',borderWidth:1.5,borderRadius:7}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{color:'#9a7355',font:{family:'Inter'}}},
+              y:{beginAtZero:true,grid:{color:'rgba(245,213,184,.5)'},ticks:{color:'#9a7355',font:{family:'Inter'}}}}}});
+  // Gaps table
+  const gaps=[
+    ['Gap 1','CH election ignores node trust','C1'],
+    ['Gap 2','No unified multi-criteria routing','C2'],
+    ['Gap 3','Blockchain too heavy for Class 1','C3'],
+    ['Gap 4','Limited multi-metric evaluation','C4'],
+    ['Gap 5','Static routing weights','C5'],
+    ['Gap 6','Security and routing are siloed','C6']];
+  const tb=document.getElementById('p1-gaps');
+  gaps.forEach(g=>{
+    tb.innerHTML+=`<tr><td style="font-weight:700;color:var(--accent)">${g[0]}</td><td>${g[1]}</td><td><span class="pill pup">${g[2]}</span></td></tr>`;
+  });
 }
 
 function buildOverview(){
