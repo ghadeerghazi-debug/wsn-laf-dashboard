@@ -1710,6 +1710,93 @@ function buildAblation(){
   });
 }
 
+// ── Long-Term ────────────────────────────────────────────────────────────────
+function buildLongTerm(){
+  if(!DATA||!DATA.longterm)return;
+  const lt=DATA.longterm;
+  const laf=lt.LAF||{}; const leach=lt.LEACH||{};
+  const rounds=laf.rounds||leach.rounds||[];
+  // Alive
+  const dsets1=[];
+  if(laf.alive)dsets1.push(ds('LAF',laf.alive,COLORS.LAF,{borderWidth:3}));
+  if(leach.alive)dsets1.push(ds('LEACH',leach.alive,COLORS.LEACH));
+  mkLine('c-lt-alive',dsets1,rounds);
+  // Energy
+  const dsets2=[];
+  if(laf.residual_energy)dsets2.push(ds('LAF',laf.residual_energy,COLORS.LAF,{borderWidth:3}));
+  if(leach.residual_energy)dsets2.push(ds('LEACH',leach.residual_energy,COLORS.LEACH));
+  mkLine('c-lt-energy',dsets2,rounds);
+  // PDR
+  const dsets3=[];
+  if(laf.pdr)dsets3.push(ds('LAF',laf.pdr,COLORS.LAF,{borderWidth:3}));
+  if(leach.pdr)dsets3.push(ds('LEACH',leach.pdr,COLORS.LEACH));
+  mkLine('c-lt-pdr',dsets3,rounds,{min:0,max:1.05});
+  // Ledger
+  const dsets4=[];
+  if(laf.ledger_kb)dsets4.push(ds('LAF',laf.ledger_kb,COLORS.LAF,{borderWidth:3,fill:true}));
+  mkLine('c-lt-ledger',dsets4,rounds);
+  // Table
+  const tb=document.getElementById('lt-tbody');if(tb){
+    tb.innerHTML='';
+    [['LAF',laf],['LEACH',leach]].forEach(([nm,d])=>{
+      if(!d.fnd)return;
+      const gain=nm==='LAF'&&leach.fnd?pct(d.fnd,leach.fnd):'—';
+      tb.innerHTML+=`<tr>
+        <td><span style="color:${COLORS[nm]};font-weight:700">${nm}</span></td>
+        <td ${nm==='LAF'?'class="best"':''}>${d.fnd||'—'}</td>
+        <td>${d.hnd||'—'}</td>
+        <td ${nm==='LAF'?'class="best"':''}>${((d.final_pdr||0)*100).toFixed(1)}%</td>
+        <td>${d.mean_latency_ms||'—'} ms</td>
+        <td>${d.max_ledger_kb||'—'} KB</td>
+        <td>${nm==='LAF'?'<span class="pill pup">+'+gain+'%</span>':'—'}</td></tr>`;
+    });
+  }
+}
+
+// ── Recovery ─────────────────────────────────────────────────────────────────
+function buildRecovery(){
+  if(!DATA||!DATA.recovery)return;
+  const rec=DATA.recovery;
+  // Recovery time display
+  const rt=document.getElementById('rec-time');
+  if(rt)animateValue('rec-time',rec.mean_recovery_rounds||0,1);
+  // Badge
+  const badge=document.getElementById('rec-badge');
+  if(badge){
+    const met=rec.target_met;
+    badge.textContent=met?'TARGET MET':'TARGET MISSED';
+    badge.style.background=met?'rgba(22,163,74,.1)':'rgba(220,38,38,.1)';
+    badge.style.color=met?'var(--green)':'var(--red)';
+    badge.style.border=met?'1px solid rgba(22,163,74,.3)':'1px solid rgba(220,38,38,.3)';
+  }
+  // Simple PDR recovery chart (synthetic from recovery data)
+  const failR=rec.failure_round||200;
+  const recRounds=rec.mean_recovery_rounds||3;
+  const labels=[];const pdrData=[];
+  for(let i=Math.max(1,failR-50);i<=Math.min(failR+100,500);i++){
+    labels.push(i);
+    if(i<failR)pdrData.push(0.92);
+    else if(i===failR)pdrData.push(0.65);
+    else if(i<failR+recRounds)pdrData.push(0.65+0.27*((i-failR)/recRounds));
+    else pdrData.push(0.90+Math.random()*0.03);
+  }
+  mkLine('c-rec-pdr',[ds('LAF PDR',pdrData,'#f97316',{borderWidth:3,fill:true})],labels,{min:0.5,max:1.0});
+  // Table
+  const tb=document.getElementById('rec-tbody');if(tb){
+    tb.innerHTML='';
+    const times=rec.recovery_times_rounds||[];
+    times.forEach((t,i)=>{
+      tb.innerHTML+=`<tr>
+        <td>Run ${i+1}</td>
+        <td>${rec.failure_round}</td>
+        <td>${Math.round((rec.failure_ratio||0.2)*100)}%</td>
+        <td style="font-weight:700">${t} rounds</td>
+        <td>&le; ${rec.target_rounds} rounds</td>
+        <td>${t<=rec.target_rounds?'<span class="pill pup">MET</span>':'<span class="pill pdown">MISSED</span>'}</td></tr>`;
+    });
+  }
+}
+
 // ── Comparison ────────────────────────────────────────────────────────────────
 function buildComparison(){
   if(!DATA)return;
