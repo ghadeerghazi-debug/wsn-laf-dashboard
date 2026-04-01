@@ -959,6 +959,71 @@ body.dark .pdg-note.partial{color:#fb923c}
   .hg-val{font-size:11px}
   .fab-btn{width:40px;height:40px}
 }
+/* ── BOTTOM TAB BAR (mobile) ─────────────────────── */
+.btab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:var(--card);border-top:1px solid var(--border);
+  padding:4px 0 calc(4px + env(safe-area-inset-bottom));
+  box-shadow:0 -4px 20px rgba(0,0,0,.06);
+  justify-content:space-around;align-items:center}
+body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
+.btab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;
+  border:none;background:none;cursor:pointer;color:var(--muted);
+  font-size:9px;font-weight:600;min-width:52px;transition:all .2s;
+  -webkit-tap-highlight-color:transparent}
+.btab .material-icons-round{font-size:22px;transition:all .2s}
+.btab.active{color:var(--accent)}
+.btab.active .material-icons-round{font-size:24px}
+@media(max-width:768px){
+  .btab-bar{display:flex}
+  .main{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
+  .fab{bottom:calc(70px + env(safe-area-inset-bottom))}
+}
+/* ── PULL TO REFRESH ─────────────────────────────── */
+.ptr-indicator{position:fixed;top:calc(env(safe-area-inset-top) + 60px);left:50%;transform:translateX(-50%);
+  z-index:400;background:var(--card);border:1px solid var(--border);border-radius:50%;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.1);opacity:0;transition:opacity .2s,transform .2s;
+  pointer-events:none}
+.ptr-indicator.show{opacity:1}
+.ptr-indicator.loading .material-icons-round{animation:spin 1s linear infinite}
+/* ── SHARE BUTTON ────────────────────────────────── */
+.share-btn{position:fixed;bottom:24px;left:24px;z-index:100;width:48px;height:48px;
+  border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;
+  box-shadow:0 4px 16px rgba(249,115,22,.3);transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.share-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(249,115,22,.4)}
+@media(max-width:768px){
+  .share-btn{bottom:calc(76px + env(safe-area-inset-bottom));left:16px;width:42px;height:42px}
+}
+/* ── SKELETON LOADING ────────────────────────────── */
+.skel{background:linear-gradient(90deg,var(--card2) 25%,var(--border) 50%,var(--card2) 75%);
+  background-size:200% 100%;animation:skelShimmer 1.5s infinite;border-radius:10px}
+@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{height:180px;border-radius:14px;margin-bottom:16px}
+.skel-kpi{height:90px;border-radius:12px}
+.skel-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:768px){.skel-row{grid-template-columns:1fr 1fr}}
+/* ── LANDSCAPE CHART ─────────────────────────────── */
+@media(orientation:landscape) and (max-height:500px){
+  .main{padding-top:12px!important}
+  .hamburger{top:8px;left:8px}
+  .hero{padding:12px 16px}
+  .hero-title{font-size:16px}
+  .kpi-row{grid-template-columns:repeat(4,1fr)}
+  .ch,.ch-lg,.ch-xl{height:55vh!important;min-height:200px}
+  .btab-bar{padding:2px 0 calc(2px + env(safe-area-inset-bottom))}
+  .btab{padding:4px;font-size:8px}
+  .btab .material-icons-round{font-size:18px}
+}
+/* ── TOAST NOTIFICATION ──────────────────────────── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);
+  z-index:600;background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:12px 20px;box-shadow:0 8px 32px rgba(0,0,0,.12);font-size:13px;font-weight:600;
+  color:var(--text);display:flex;align-items:center;gap:8px;transition:transform .3s ease;
+  max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .material-icons-round{color:var(--accent);font-size:20px}
 </style>
 </head>
 <body>
@@ -1016,6 +1081,33 @@ body.dark .pdg-note.partial{color:#fb923c}
     <span class="material-icons-round">add</span>
   </button>
 </div>
+
+<!-- BOTTOM TAB BAR (mobile) -->
+<div class="btab-bar" id="btab-bar">
+  <button class="btab active" data-page="overview" onclick="tabNav('overview',this)">
+    <span class="material-icons-round">dashboard</span>Overview</button>
+  <button class="btab" data-page="performance" onclick="tabNav('performance',this)">
+    <span class="material-icons-round">speed</span>Perf</button>
+  <button class="btab" data-page="security" onclick="tabNav('security',this)">
+    <span class="material-icons-round">shield</span>Security</button>
+  <button class="btab" data-page="topology" onclick="tabNav('topology',this)">
+    <span class="material-icons-round">hub</span>Topology</button>
+  <button class="btab" data-page="more" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
+    <span class="material-icons-round">menu</span>More</button>
+</div>
+
+<!-- PULL TO REFRESH INDICATOR -->
+<div class="ptr-indicator" id="ptr-indicator">
+  <span class="material-icons-round" style="color:var(--accent)">refresh</span>
+</div>
+
+<!-- SHARE BUTTON -->
+<button class="share-btn" id="share-btn" onclick="shareResults()">
+  <span class="material-icons-round">share</span>
+</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <!-- MOBILE HAMBURGER -->
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
@@ -1586,6 +1678,8 @@ function showPage(name,el){
   document.querySelector('.overlay').classList.remove('on');
   // close presets
   const pl=document.getElementById('preset-list');if(pl)pl.classList.remove('on');
+  // sync bottom tab bar
+  document.querySelectorAll('.btab').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
 }
 
 // ── param panel ───────────────────────────────────────────────────────────────
@@ -2520,6 +2614,127 @@ async function recalcPDGoals(){
   btn.innerHTML='<span class="material-icons-round" style="font-size:18px">refresh</span> Recalculate Live';
 }
 
+// ── BOTTOM TAB NAV ───────────────────────────────────────────────────────────
+function tabNav(page,el){
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const sideItem=document.querySelector(`.nav-item[onclick*="${page}"]`);
+  showPage(page,sideItem);
+}
+
+// ── SWIPE BETWEEN PAGES ──────────────────────────────────────────────────────
+const PAGE_ORDER=['overview','performance','security','scalability','ablation',
+  'longterm','recovery','comparison','topology','pdgoals','help'];
+let swipeX0=null,swipeY0=null,swiping=false;
+document.addEventListener('touchstart',e=>{
+  if(e.target.closest('.sidebar,.btab-bar,canvas,.pdg-terminal'))return;
+  swipeX0=e.touches[0].clientX;swipeY0=e.touches[0].clientY;swiping=true;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(!swiping||swipeX0===null)return;
+  const dx=e.changedTouches[0].clientX-swipeX0;
+  const dy=e.changedTouches[0].clientY-swipeY0;
+  swiping=false;swipeX0=null;
+  if(Math.abs(dx)<80||Math.abs(dy)>Math.abs(dx)*0.6)return;
+  const cur=PAGE_ORDER.findIndex(p=>document.getElementById('page-'+p)?.classList.contains('on'));
+  if(cur<0)return;
+  const next=dx<0?Math.min(cur+1,PAGE_ORDER.length-1):Math.max(cur-1,0);
+  if(next===cur)return;
+  const name=PAGE_ORDER[next];
+  const sideItem=document.querySelector(`.nav-item[onclick*="${name}"]`);
+  showPage(name,sideItem);
+  showToast(PAGE_NAMES[name]||name,'swipe_right');
+},{passive:true});
+
+// ── PULL TO REFRESH ──────────────────────────────────────────────────────────
+let ptrY0=null,ptrActive=false;
+document.addEventListener('touchstart',e=>{
+  if(window.scrollY===0&&!e.target.closest('.sidebar,canvas,.pdg-terminal')){
+    ptrY0=e.touches[0].clientY;
+  }else{ptrY0=null;}
+},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(ptrY0===null)return;
+  const dy=e.touches[0].clientY-ptrY0;
+  const ind=document.getElementById('ptr-indicator');
+  if(dy>60&&!ptrActive){ind.classList.add('show');ptrActive=true;}
+},{passive:true});
+document.addEventListener('touchend',async()=>{
+  const ind=document.getElementById('ptr-indicator');
+  if(ptrActive){
+    ind.classList.add('loading');
+    try{
+      let r=await fetch('/api/data');DATA=await r.json();
+      renderAll();updateStatsTicker();updateHealthGauge();
+      showToast('Data refreshed','refresh');
+    }catch(e){}
+    ind.classList.remove('loading','show');
+  }
+  ptrY0=null;ptrActive=false;
+},{passive:true});
+
+// ── SHAKE TO RECALCULATE ─────────────────────────────────────────────────────
+let lastShake=0;
+if(window.DeviceMotionEvent){
+  window.addEventListener('devicemotion',e=>{
+    const a=e.accelerationIncludingGravity;
+    if(!a)return;
+    const force=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);
+    if(force>35&&Date.now()-lastShake>3000){
+      lastShake=Date.now();
+      showToast('Shake detected — recalculating...','vibration');
+      // If on PD Goals page, use recalc; otherwise re-fetch data
+      const pdPage=document.getElementById('page-pdgoals');
+      if(pdPage&&pdPage.classList.contains('on')){
+        recalcPDGoals();
+      }else{
+        fetch('/api/data').then(r=>r.json()).then(d=>{
+          DATA=d;renderAll();updateStatsTicker();updateHealthGauge();
+          showToast('Data refreshed','check_circle');
+        }).catch(()=>{});
+      }
+    }
+  });
+}
+
+// ── SHARE RESULTS ────────────────────────────────────────────────────────────
+async function shareResults(){
+  const curPage=PAGE_ORDER.find(p=>document.getElementById('page-'+p)?.classList.contains('on'))||'overview';
+  const title='WSN-LAF Dashboard — '+(PAGE_NAMES[curPage]||curPage);
+  const summ=DATA?.summary?.vs_LEACH||{};
+  const text=`WSN-LAF Simulation Results\nLifetime: +${(summ.lifetime_improvement||0).toFixed(1)}% vs LEACH\nThroughput: +${(summ.throughput_improvement||0).toFixed(1)}%\nPDR: +${(summ.pdr_improvement||0).toFixed(1)}%\nEnergy: +${(summ.energy_improvement||0).toFixed(1)}%`;
+  if(navigator.share){
+    try{
+      await navigator.share({title,text,url:window.location.href});
+    }catch(e){}
+  }else{
+    await navigator.clipboard.writeText(text+'\n'+window.location.href);
+    showToast('Results copied to clipboard','content_copy');
+  }
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg,icon){
+  const t=document.getElementById('toast');
+  t.innerHTML=`<span class="material-icons-round">${icon||'info'}</span>${msg}`;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── SKELETON LOADING ─────────────────────────────────────────────────────────
+function showSkeleton(){
+  const main=document.querySelector('.main');
+  if(!main)return;
+  const skel=document.createElement('div');skel.id='skeleton-ui';
+  skel.innerHTML=`<div class="skel-row">${'<div class="skel skel-kpi"></div>'.repeat(4)}</div>`+
+    `<div class="skel skel-card"></div><div class="skel skel-card"></div>`;
+  const first=main.querySelector('.page.on');
+  if(first)first.prepend(skel);
+}
+function hideSkeleton(){
+  const s=document.getElementById('skeleton-ui');if(s)s.remove();
+}
+
 // ── PWA: service worker + install prompt ─────────────────────────────────────
 let deferredInstall=null;
 if('serviceWorker' in navigator){
@@ -2546,6 +2761,7 @@ function installPWA(){
 window.addEventListener('load',async()=>{
   // restore dark mode
   if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
+  showSkeleton();
   try{
     let r=await fetch('/api/data'); DATA=await r.json();
     // If empty or no normal data, fallback to Paper 2
@@ -2555,6 +2771,7 @@ window.addEventListener('load',async()=>{
       document.getElementById('p2-badge').style.display='inline';
       document.getElementById('p2-badge').textContent='📄 Paper 2 Data (fallback)';
     }
+    hideSkeleton();
     renderAll();
     updateStatsTicker();
     updateHealthGauge();
@@ -2563,9 +2780,10 @@ window.addEventListener('load',async()=>{
     // Last resort: try paper2
     try{
       const r2=await fetch('/api/paper2'); DATA=await r2.json();
+      hideSkeleton();
       renderAll();updateStatsTicker();updateHealthGauge();
       setStatus('Paper 2 results loaded (fallback)');
-    }catch(e2){setStatus('Ready — click ▶ Run to start first simulation','');}
+    }catch(e2){hideSkeleton();setStatus('Ready — click ▶ Run to start first simulation','');}
   }
   // hide splash
   setTimeout(()=>{const sp=document.getElementById('splash');if(sp)sp.classList.add('hide');
