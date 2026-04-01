@@ -145,7 +145,7 @@ class LEACH:
 class SPIN:
     name='SPIN'
     def run(self,network,rounds,attacker=None):
-        net=deepcopy(network); CR=30.0; MAX_REQ=3
+        net=deepcopy(network); CR=30.0
         if attacker: attacker.inject(net)
         mc=MC(net.n)
         for r in range(1,rounds+1):
@@ -155,23 +155,16 @@ class SPIN:
             for nd in al:
                 nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<=CR]
                 if not nbs: continue
-                # ADV to all neighbours (small MSG_BITS overhead)
                 for nb in nbs:
                     nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
                     nb.consume(rx_energy(MSG_BITS))
-                # Up to MAX_REQ interested neighbours request DATA
-                closer=sorted([n for n in nbs if n.dbs()<nd.dbs() and n.energy>E_INIT*0.1],
-                              key=lambda n:n.energy,reverse=True)[:MAX_REQ]
-                for relay in closer:
-                    relay.consume(tx_energy(MSG_BITS,relay.d(nd)))
-                    nd.consume(rx_energy(MSG_BITS))
-                    nd.consume(tx_energy(K,nd.d(relay)))
-                    relay.consume(rx_energy(K))
-                    sent+=1
-                    ok=True
-                    if attacker: ok=attacker.apply(relay,True)
-                    if ok: rcvd+=1
-            # Best node relays aggregated data to BS
+                for nb in nbs:
+                    if nb.energy>E_INIT*0.1:
+                        nb.consume(tx_energy(K,nb.d(nd)))
+                        nd.consume(rx_energy(K)); sent+=1
+                        ok=True
+                        if attacker: ok=attacker.apply(nb,True)
+                        if ok: rcvd+=1
             relay=max(al,key=lambda n:n.energy) if al else None
             if relay: relay.consume(tx_energy(K,relay.dbs()))
             lat_ms = 2.5 * HOP_MS
@@ -187,42 +180,28 @@ class DD:
         for r in range(1,rounds+1):
             al=net.alive()
             if len(al)<2: break
-            # Interest/gradient propagation every 10 rounds
-            if r%10==1:
+            if r%5==1:
                 for nd in al:
-                    nbs=sorted([n for n in al if n.nid!=nd.nid and nd.d(n)<40],
-                               key=lambda n:n.dbs())[:2]
-                    for nb in nbs:
-                        nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
-                        nb.consume(rx_energy(MSG_BITS))
-            # DD gradient routing: each node forwards K bits toward BS
-            # Per-round gradient table maintenance
-            for nd in al:
-                nd.consume(rx_energy(MSG_BITS)*3)
+                    for nb in al:
+                        if nb.nid!=nd.nid and nd.d(nb)<40:
+                            nd.consume(tx_energy(MSG_BITS,nd.d(nb)))
+                            nb.consume(rx_energy(MSG_BITS))
             sent=rcvd=0
-            relay_load={}
             for nd in al:
-                if nd.dbs()<60:
+                if nd.dbs()<50:
                     nd.consume(tx_energy(K,nd.dbs())); sent+=1
                     ok=True
                     if attacker: ok=attacker.apply(nd,True)
                     if ok: rcvd+=1
                 else:
-                    nbs=[n for n in al if n.nid!=nd.nid and nd.d(n)<40 and n.dbs()<nd.dbs()]
-                    if nbs:
-                        rl=min(nbs,key=lambda n:n.dbs())
+                    cands=[n for n in al if n.nid!=nd.nid and n.dbs()<nd.dbs()]
+                    if cands:
+                        rl=min(cands,key=lambda n:n.dbs())
                         nd.consume(tx_energy(K,nd.d(rl)))
-                        rl.consume(rx_energy(K))
-                        relay_load[rl.nid]=relay_load.get(rl.nid,0)+1
-                        sent+=1
+                        rl.consume(rx_energy(K)); sent+=1
                         ok=True
-                        if attacker: ok=attacker.apply(nd,True)
+                        if attacker: ok=attacker.apply(rl,True)
                         if ok: rcvd+=1
-            # Relay nodes aggregate and forward once to BS
-            for nd in al:
-                if nd.nid in relay_load and nd.alive:
-                    nd.consume(agg_energy(K))
-                    nd.consume(tx_energy(K,nd.dbs()))
             lat_ms = 3.0 * HOP_MS
             mc.record(r,net,max(1,sent),rcvd,lat_ms=lat_ms)
         return mc
@@ -436,60 +415,13 @@ class Simulator:
     def run_all(self,out='/mnt/user-data/outputs/wsn_results.json'):
         protos={'LEACH':LEACH,'SPIN':SPIN,'DD':DD,'TEARP':TEARP,'LAF':lambda:LAF()}
 
-        # ── Scenario I: Normal — hardcoded Paper 2 published values ─────────
-        print("Scenario I: Normal (Paper 2 values)...")
-        R=self.rounds
-        def make_alive(fnd,hnd):
-            a=[100]*fnd
-            for i in range(fnd,R):
-                frac=(i-fnd)/(R-fnd) if R>fnd else 1
-                a.append(max(0,int(100*(1-frac*1.1))))
-            return a[:R]
-        def make_energy(drain_rate):
-            return [round(max(0.0,0.5-i*drain_rate),6) for i in range(R)]
-        # Energy drain rates: LAF most efficient, DD least
-        # LAF residual at R=500: ~0.143 (14.3% more than LEACH)
-        # LEACH residual at R=500: ~0.0
-        laf_drain=0.5*0.857/R      # retains ~14.3% at end → 0.0714 residual
-        leach_drain=0.5/R           # drains to ~0 at end
-        spin_drain=0.5*1.08/R      # drains faster than LEACH
-        dd_drain=0.5*1.12/R        # drains fastest
-        tearp_drain=0.5*1.03/R     # slightly faster than LEACH
-        self.results['normal']={
-            'LAF':   {'fnd':379,'hnd':453,'final_pdr':0.918,'mean_latency_ms':29.0,'max_ledger_kb':39.1,
-                      'rounds':list(range(1,R+1)),'alive':make_alive(379,453),
-                      'residual_energy':make_energy(laf_drain),
-                      'pdr':[0.918]*R,'throughput':[round(0.918*4,3)]*R,
-                      'energy_per_pkt':[5.2]*R,'trust_accuracy':[0.94]*R,
-                      'latency_ms':[29.0]*R,'ledger_kb':[39.1]*R},
-            'LEACH': {'fnd':348,'hnd':420,'final_pdr':0.886,'mean_latency_ms':28.7,'max_ledger_kb':0.0,
-                      'rounds':list(range(1,R+1)),'alive':make_alive(348,420),
-                      'residual_energy':make_energy(leach_drain),
-                      'pdr':[0.886]*R,'throughput':[round(0.886*4,3)]*R,
-                      'energy_per_pkt':[6.1]*R,'trust_accuracy':[0.0]*R,
-                      'latency_ms':[28.7]*R,'ledger_kb':[0.0]*R},
-            'SPIN':  {'fnd':312,'hnd':378,'final_pdr':0.843,'mean_latency_ms':35.8,'max_ledger_kb':0.0,
-                      'rounds':list(range(1,R+1)),'alive':make_alive(312,378),
-                      'residual_energy':make_energy(spin_drain),
-                      'pdr':[0.843]*R,'throughput':[round(0.843*4,3)]*R,
-                      'energy_per_pkt':[7.3]*R,'trust_accuracy':[0.0]*R,
-                      'latency_ms':[35.8]*R,'ledger_kb':[0.0]*R},
-            'DD':    {'fnd':298,'hnd':361,'final_pdr':0.819,'mean_latency_ms':43.0,'max_ledger_kb':0.0,
-                      'rounds':list(range(1,R+1)),'alive':make_alive(298,361),
-                      'residual_energy':make_energy(dd_drain),
-                      'pdr':[0.819]*R,'throughput':[round(0.819*4,3)]*R,
-                      'energy_per_pkt':[7.9]*R,'trust_accuracy':[0.0]*R,
-                      'latency_ms':[43.0]*R,'ledger_kb':[0.0]*R},
-            'TEARP': {'fnd':334,'hnd':401,'final_pdr':0.857,'mean_latency_ms':28.7,'max_ledger_kb':0.0,
-                      'rounds':list(range(1,R+1)),'alive':make_alive(334,401),
-                      'residual_energy':make_energy(tearp_drain),
-                      'pdr':[0.857]*R,'throughput':[round(0.857*4,3)]*R,
-                      'energy_per_pkt':[6.8]*R,'trust_accuracy':[0.0]*R,
-                      'latency_ms':[28.7]*R,'ledger_kb':[0.0]*R},
-        }
-        for nm in ['LAF','LEACH','SPIN','DD','TEARP']:
+        # ── Scenario I: Normal ────────────────────────────────────────────────
+        print("Scenario I: Normal..."); self.results['normal']={}
+        for nm,fn in protos.items():
+            print(f"  {nm}",end='',flush=True)
+            self.results['normal'][nm]=self.avg(fn)
             r=self.results['normal'][nm]
-            print(f"  {nm}  FND={r['fnd']} PDR={r['final_pdr']:.3f} Lat={r['mean_latency_ms']:.1f}ms")
+            print(f"  FND={r['fnd']} PDR={r['final_pdr']:.3f} Lat={r['mean_latency_ms']:.1f}ms")
 
         # ── Scenario II: Adversarial ──────────────────────────────────────────
         print("Scenario II: Adversarial..."); self.results['adversarial']={}
@@ -591,10 +523,7 @@ class Simulator:
             'alpha':ALPHA,'beta':BETA,'gamma':GAMMA,
             'data_rate_bps':DATA_RATE,'block_size_bytes':BLOCK_SZ_B,
             'prune_window_blocks':PRUNE_WIN,'hop_delay_ms':round(HOP_MS,2)}
-        try:
-            with open(out,'w') as f: json.dump(self.results,f,indent=2)
-        except (FileNotFoundError, OSError):
-            pass  # skip if output path doesn't exist
+        with open(out,'w') as f: json.dump(self.results,f,indent=2)
         s=self.results['summary']['vs_LEACH']
         print(f"\n── Results vs LEACH ──────────────────────────")
         print(f"  Energy:     {s['energy_improvement']:+.2f}%")
