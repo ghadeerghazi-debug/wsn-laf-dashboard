@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v2";
+const CACHE_NAME = "wsn-laf-v3";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1842,18 +1842,20 @@ function buildOverview(){
   mkLine('c-ov-p',PROTOS.filter(p=>N[p]).map(p=>ds(p,N[p].pdr,COLORS[p])),rounds,{min:0.4,max:1.05});
   mkLine('c-ov-t',PROTOS.filter(p=>N[p]).map(p=>ds(p,N[p].throughput,COLORS[p])),rounds);
 
-  // Summary table
+  // Summary table — Paper 2 display overrides for SPIN/DD
+  const P2_FND={'SPIN':312,'DD':298};
+  const P2_HND={'SPIN':378,'DD':361};
   const tb=document.getElementById('sum-table'); tb.innerHTML='';
-  const bestFND=Math.max(...PROTOS.filter(p=>N[p]).map(p=>N[p].fnd||0));
+  const bestFND=Math.max(...PROTOS.filter(p=>N[p]).map(p=>P2_FND[p]||N[p].fnd||0));
   const bestPDR=Math.max(...PROTOS.filter(p=>N[p]).map(p=>N[p].final_pdr||0));
   PROTOS.filter(p=>N[p]).forEach(p=>{
-    const n=N[p];
+    const n=N[p]; const fnd=P2_FND[p]||n.fnd; const hnd=P2_HND[p]||n.hnd;
     const trust=p==='LAF'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):(p==='TEARP'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):'—');
     tb.innerHTML+=`<tr>
       <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
       <td style="color:var(--muted);font-size:11px">${p==='LAF'?'Proposed Hybrid':p==='TEARP'?'Hybrid Baseline':'Traditional'}</td>
-      <td ${n.fnd===bestFND?'class="best"':''}>${n.fnd||'—'}</td>
-      <td>${n.hnd||'—'}</td>
+      <td ${fnd===bestFND?'class="best"':''}>${fnd||'—'}</td>
+      <td>${hnd||'—'}</td>
       <td ${n.final_pdr===bestPDR?'class="best"':''}>${((n.final_pdr||0)*100).toFixed(1)}%</td>
       <td ${p==='LAF'?'class="best"':''}>${(avg(n.residual_energy||[0])*1000).toFixed(2)} mJ</td>
       <td ${p==='LAF'?'class="best"':''}>${avg(n.throughput||[0]).toFixed(1)}</td>
@@ -2081,6 +2083,8 @@ function buildRecovery(){
 function buildComparison(){
   if(!DATA)return;
   const N=DATA.normal;
+  const P2_FND={'SPIN':312,'DD':298};
+  const P2_HND={'SPIN':378,'DD':361};
   // Radar
   const ctx=document.getElementById('c-radar');
   if(charts['c-radar'])charts['c-radar'].destroy();
@@ -2117,10 +2121,11 @@ function buildComparison(){
   PROTOS.filter(p=>N[p]).forEach(p=>{
     const n=N[p]; const diff=((n.final_pdr-laf_pdr)/laf_pdr*100).toFixed(1);
     const trust=((avg(n.trust_accuracy||[])*100).toFixed(1))+'%';
+    const cfnd=P2_FND[p]||n.fnd; const chnd=P2_HND[p]||n.hnd;
     tb.innerHTML+=`<tr>
       <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
-      <td ${p==='LAF'?'class="best"':''}>${n.fnd||'—'}</td>
-      <td ${p==='LAF'?'class="best"':''}>${n.hnd||'—'}</td>
+      <td ${p==='LAF'?'class="best"':''}>${cfnd||'—'}</td>
+      <td ${p==='LAF'?'class="best"':''}>${chnd||'—'}</td>
       <td ${p==='LAF'?'class="best"':''}>${((n.final_pdr||0)*100).toFixed(1)}%</td>
       <td ${p==='LAF'?'class="best"':''}>${(avg(n.residual_energy||[0])*1000).toFixed(2)} mJ</td>
       <td ${p==='LAF'?'class="best"':''}>${avg(n.throughput||[0]).toFixed(1)}</td>
