@@ -2353,7 +2353,7 @@ async function recalcPDGoals(){
   }
   await addLine('<span class="t-cmd">$</span> <span class="t-info">Initializing WSN-LAF simulation engine...</span>',0);
   await addLine('<span class="t-cmd">$</span> <span class="t-info">Sending request to /api/simulate ...</span>',400);
-  await addLine('<span class="t-info">  → Monte Carlo runs: 10 | Rounds: 500 | Nodes: 100</span>',300);
+  await addLine('<span class="t-info">  → Monte Carlo runs: 3 | Rounds: 500 | Nodes: 100</span>',300);
   await addLine('<span class="t-info">  → Protocols: LAF, LEACH, SPIN, DD, TEARP</span>',200);
   await addLine('<span class="t-cmd">$</span> <span class="t-info">Running simulation...<span class="t-cursor"></span></span>',300);
   // Actually call the simulation API
@@ -2362,8 +2362,11 @@ async function recalcPDGoals(){
     document.querySelectorAll('#sb-params input[type=range]').forEach(inp=>{
       params.set(inp.name,inp.value);
     });
-    const res=await fetch('/api/simulate?'+params.toString());
-    DATA=await res.json();
+    params.set('n_runs','3');
+    const res=await fetch('/api/simulate?'+params.toString(),{signal:AbortSignal.timeout(120000)});
+    const txt=await res.text();
+    if(txt.trim().startsWith('<')){throw new Error('Server returned HTML — simulation may have timed out. Try again.');}
+    DATA=JSON.parse(txt);
     // Remove cursor from "Running" line
     const lastLine=body.lastElementChild;
     if(lastLine)lastLine.innerHTML='<span class="t-cmd">$</span> <span class="t-ok">Simulation complete.</span>';
