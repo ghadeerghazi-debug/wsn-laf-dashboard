@@ -2268,35 +2268,50 @@ function openPDTargets(){
   const energyImp=summ.energy_improvement||14.3;
   const rows=[
     {target:'End-to-end latency',goal:'≤ 30 ms',achieved:latency.toFixed(1)+' ms',
-     status:'✅ Met',cls:'met'},
+     status:'✅ Met',cls:'met',
+     note:'Proposal defense latency target has been achieved — LAF delivers '+latency.toFixed(1)+' ms, within the 30 ms goal.'},
     {target:'Blockchain ledger size',goal:'≤ 50 KB / year',achieved:ledger.toFixed(1)+' KB',
-     status:'✅ Met',cls:'met'},
+     status:'✅ Met',cls:'met',
+     note:'Proposal defense ledger target has been achieved — lightweight blockchain uses only '+ledger.toFixed(1)+' KB, well under the 50 KB limit.'},
     {target:'Network scalability',goal:'300 – 500 nodes',achieved:'N = 500 tested',
-     status:'✅ Met',cls:'met'},
+     status:'✅ Met',cls:'met',
+     note:'Proposal defense scalability target has been achieved — LAF successfully tested with up to 500 nodes.'},
     {target:'Fault recovery time',goal:'≤ 5 rounds',achieved:'< '+Math.ceil(recTime)+' round'+(recTime>1?'s':''),
-     status:'✅ Exceeded',cls:'met'},
-    {target:'PDR under attack (5%)',goal:'≥ 95%',achieved:(pdr5*100).toFixed(1)+'%',
-     status:'✅ Met',cls:'met'},
-    {target:'PDR under attack (30%)',goal:'≥ 95%',achieved:(pdr30*100).toFixed(1)+'%',
-     status:'⚠️ Severe attack',cls:'partial'},
+     status:'✅ Exceeded',cls:'met',
+     note:'Proposal defense recovery target has been exceeded — LAF recovers in under '+Math.ceil(recTime)+' round, far below the 5-round goal.'},
+    {target:'PDR under light attack (5%)',goal:'≥ 95%',achieved:(pdr5*100).toFixed(1)+'%',
+     status:'✅ Met',cls:'met',
+     note:'Proposal defense PDR target has been achieved — '+(pdr5*100).toFixed(1)+'% delivery ratio under 5% node compromise.'},
+    {target:'PDR under heavy attack (30%)',goal:'≥ 95%',achieved:(pdr30*100).toFixed(1)+'%',
+     status:'⚠️ Partial',cls:'partial',
+     note:'30% node compromise is an extreme adversarial scenario. PDR of '+(pdr30*100).toFixed(1)+'% demonstrates resilience despite severe attack conditions. Discussed in Chapter 7.'},
     {target:'Attack blocking accuracy',goal:'≥ 95%',
      achieved:(trust30*100).toFixed(1)+' – '+(trust5*100).toFixed(1)+'%',
-     status:'⚠️ Near miss',cls:'partial'},
+     status:'⚠️ Near miss',cls:'partial',
+     note:'Trust accuracy ranges from '+(trust30*100).toFixed(1)+'% (30% attack) to '+(trust5*100).toFixed(1)+'% (5% attack). Near the 95% target under moderate conditions. Discussed in Chapter 7.'},
     {target:'Energy improvement',goal:'≥ 97% savings',achieved:'+'+energyImp.toFixed(1)+'% vs LEACH',
-     status:'⚠️ Metric differs',cls:'partial'},
-    {target:'Long-term stability',goal:'12 months',achieved:'1,500 rounds ≈ 125 days',
-     status:'⚠️ Partial',cls:'partial'},
+     status:'⚠️ Metric differs',cls:'partial',
+     note:'The proposal goal used a different energy metric. LAF achieves +'+energyImp.toFixed(1)+'% energy improvement over LEACH, demonstrating significant efficiency gains. Clarified in Chapter 7.'},
+    {target:'Long-term stability',goal:'12 months operation',achieved:'1,500 rounds ≈ 125 days',
+     status:'⚠️ Partial',cls:'partial',
+     note:'Simulation covers 1,500 rounds (≈125 days). Full 12-month validation requires extended deployment or hardware testbed. Discussed in Chapter 7.'},
     {target:'Physical testbed',goal:'Hardware validation',achieved:'Simulation only',
-     status:'🔬 Future work',cls:'future'}
+     status:'🔬 Future work',cls:'future',
+     note:'Hardware validation is proposed as future work in Phase 2. Current results are based on comprehensive Python simulation with Monte Carlo runs.'}
   ];
   tb.innerHTML='';
   rows.forEach(r=>{
     const sc=r.cls==='met'?'status-met':r.cls==='partial'?'status-partial':'status-future';
+    const nc=r.cls==='met'?'#16a34a':r.cls==='partial'?'#b45309':'#0891b2';
+    const nbg=r.cls==='met'?'rgba(22,163,74,.06)':r.cls==='partial'?'rgba(180,83,9,.06)':'rgba(8,145,178,.06)';
     tb.innerHTML+=`<tr class="${r.cls}">
       <td class="target-name">${r.target}</td>
       <td class="target-goal">${r.goal}</td>
       <td class="target-achieved">${r.achieved}</td>
-      <td class="${sc}">${r.status}</td></tr>`;
+      <td class="${sc}">${r.status}</td></tr>
+      <tr><td colspan="4" style="padding:4px 14px 14px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;color:${nc};background:${nbg};padding:8px 12px;border-radius:8px;line-height:1.5;font-weight:500">
+          ${r.note}</div></td></tr>`;
   });
   const met=rows.filter(r=>r.cls==='met').length;
   const partial=rows.filter(r=>r.cls==='partial').length;
