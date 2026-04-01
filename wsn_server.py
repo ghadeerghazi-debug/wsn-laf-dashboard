@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v1";
+const CACHE_NAME = "wsn-laf-v2";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
