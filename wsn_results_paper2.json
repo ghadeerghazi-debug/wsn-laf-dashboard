@@ -37253,9 +37253,9 @@
   "summary": {
     "vs_LEACH": {
       "energy_improvement": 14.3,
-      "lifetime_improvement": 8.9,
-      "throughput_improvement": 15.4,
-      "pdr_improvement": 3.6,
+      "lifetime_improvement": 8.8,
+      "throughput_improvement": 11.4,
+      "pdr_improvement": 3.7,
       "latency_improvement": 3.7
     }
   },

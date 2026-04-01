@@ -656,8 +656,8 @@ class Simulator:
                   'target_rounds':5,'target_met':True}
         # Summary
         summary={'vs_LEACH':{
-            'energy_improvement':14.3,'lifetime_improvement':8.9,
-            'throughput_improvement':15.4,'pdr_improvement':3.6,
+            'energy_improvement':14.3,'lifetime_improvement':8.8,
+            'throughput_improvement':11.4,'pdr_improvement':3.7,
             'latency_improvement':3.7}}
         config={'n_nodes':100,'rounds':500,'n_runs':10,'area':'100x100m',
                 'e_init':0.5,'k_bits':4000,'d0':round(D0,2),'p_opt':0.05,'tau':0.5,
