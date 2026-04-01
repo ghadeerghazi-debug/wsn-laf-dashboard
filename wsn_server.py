@@ -558,15 +558,215 @@ tr:hover td{background:rgba(249,115,22,.03)}
   .kpi-val{font-size:24px}
   .main{padding:70px 12px 20px}
 }
+/* ── DARK MODE ────────────────────────────────────── */
+body.dark{--bg:#121218;--card:#1c1c24;--card2:#22222c;--border:#2e2e3a;
+  --text:#e8e4df;--muted:#8a8578;--accent:#f97316;--a2:#fb923c;
+  --green:#22c55e;--red:#ef4444;--yellow:#eab308;--cyan:#06b6d4}
+body.dark .sidebar{background:#1c1c24;border-color:#2e2e3a}
+body.dark .sb-header{border-color:#2e2e3a}
+body.dark .sb-params{border-color:#2e2e3a}
+body.dark .sb-actions{border-color:#2e2e3a}
+body.dark .nav-item:hover{background:#2a2a34}
+body.dark .nav-item.active{background:linear-gradient(135deg,#2a2218,#332818);border-color:#4a3520}
+body.dark .card{background:#1c1c24;border-color:#2e2e3a}
+body.dark .card:hover{border-color:#4a3520;box-shadow:0 6px 24px rgba(249,115,22,.08)}
+body.dark .hero{background:linear-gradient(135deg,#1c1c24,#2a2218,#1c1c24);border-color:#2e2e3a}
+body.dark .kpi{background:#22222c;border-color:#2e2e3a}
+body.dark .kpi:hover{border-color:#4a3520}
+body.dark th{background:#22222c}
+body.dark td{border-color:#2e2e3a}
+body.dark select,body.dark .param-row input[type=number]{background:#22222c;border-color:#2e2e3a;color:#e8e4df}
+body.dark .slider-t{background:#2e2e3a}
+body.dark .status-bar{background:#1c1c24;border-color:#2e2e3a}
+body.dark .stats-ticker{background:#1c1c24;border-color:#2e2e3a}
+body.dark .hamburger{background:#1c1c24;border-color:#2e2e3a}
+body.dark .loader{background:rgba(18,18,24,.92)}
+body.dark .breadcrumb{color:#8a8578}
+body.dark .help-card{background:#22222c;border-color:#2e2e3a}
+body.dark .tour-overlay{background:rgba(18,18,24,.8)}
+body.dark #topo-canvas{background:#1c1c24;border-color:#2e2e3a}
+body.dark .fab{background:#1c1c24;border-color:#2e2e3a}
+body.dark .fab-menu{background:#1c1c24;border-color:#2e2e3a}
+body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
+/* ── STATS TICKER ─────────────────────────────────── */
+.stats-ticker{display:flex;align-items:center;gap:20px;padding:10px 20px;
+  background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:20px;
+  flex-wrap:wrap;font-size:12px;font-weight:600;animation:fadeIn .4s ease-out}
+.st-item{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.st-item .st-icon{font-size:14px}
+.st-item .st-val{color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:800;font-size:13px}
+.st-divider{width:1px;height:18px;background:var(--border)}
+/* ── BREADCRUMB ───────────────────────────────────── */
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:16px;font-weight:600;
+  display:flex;align-items:center;gap:6px}
+.breadcrumb .material-icons-round{font-size:16px;color:var(--accent)}
+.breadcrumb .bc-page{color:var(--text);font-weight:700}
+/* ── HEALTH GAUGE ─────────────────────────────────── */
+.health-gauge{position:fixed;top:20px;right:20px;z-index:100;text-align:center}
+.hg-circle{width:72px;height:72px;position:relative}
+.hg-svg{transform:rotate(-90deg)}
+.hg-bg{fill:none;stroke:var(--border);stroke-width:5}
+.hg-fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .8s ease,stroke .3s}
+.hg-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--accent)}
+.hg-label{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:700;
+  letter-spacing:.5px;margin-top:2px}
+/* ── DARK MODE TOGGLE ─────────────────────────────── */
+.dm-toggle{display:flex;align-items:center;gap:8px;padding:8px 14px;margin:0 14px 8px;
+  border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;color:var(--muted);
+  transition:all .2s;border:1px solid var(--border)}
+.dm-toggle:hover{background:var(--card2);color:var(--text)}
+.dm-toggle .material-icons-round{font-size:16px}
+/* ── FAB ──────────────────────────────────────────── */
+.fab{position:fixed;bottom:24px;right:24px;z-index:100}
+.fab-btn{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(249,115,22,.3);transition:all .2s;color:#fff}
+.fab-btn:hover{transform:scale(1.05);box-shadow:0 6px 28px rgba(249,115,22,.4)}
+.fab-btn .material-icons-round{font-size:24px;transition:transform .3s}
+.fab-btn.open .material-icons-round{transform:rotate(45deg)}
+.fab-menu{display:none;position:absolute;bottom:60px;right:0;
+  background:#fff;border:1px solid var(--border);border-radius:12px;padding:6px;
+  box-shadow:0 8px 30px rgba(0,0,0,.1);min-width:160px}
+.fab-menu.on{display:block;animation:fadeInUp .2s ease-out}
+.fab-action{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:8px;
+  cursor:pointer;font-size:12px;font-weight:600;color:var(--text);transition:all .15s;border:none;
+  background:none;width:100%;text-align:left}
+.fab-action:hover{background:var(--card2);color:var(--accent)}
+.fab-action .material-icons-round{font-size:16px;color:var(--accent)}
+/* ── FOOTER ───────────────────────────────────────── */
+.footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--border);text-align:center;
+  font-size:11px;color:var(--muted);line-height:1.8}
+.footer a{color:var(--accent);text-decoration:none;font-weight:600}
+.footer a:hover{text-decoration:underline}
+/* ── PRESETS ──────────────────────────────────────── */
+.preset-dd{position:relative;display:inline-block}
+.preset-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;
+  cursor:pointer;font-size:11px;font-weight:600;color:var(--muted);border:1px solid var(--border);
+  background:#fff;transition:all .2s;margin:0 14px 8px}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent)}
+.preset-list{display:none;position:absolute;left:14px;top:100%;background:#fff;border:1px solid var(--border);
+  border-radius:10px;padding:4px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:50;min-width:200px}
+.preset-list.on{display:block;animation:fadeInUp .2s ease-out}
+.preset-opt{padding:8px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;
+  color:var(--text);transition:all .15s}
+.preset-opt:hover{background:var(--card2);color:var(--accent)}
+.preset-opt small{display:block;font-size:9px;color:var(--muted);font-weight:500;margin-top:2px}
+/* ── HELP PAGE ────────────────────────────────────── */
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.help-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px;
+  transition:all .3s}
+.help-card:hover{border-color:rgba(249,115,22,.3);box-shadow:0 4px 16px rgba(249,115,22,.06)}
+.help-card h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.help-card h3 .material-icons-round{color:var(--accent);font-size:20px}
+.help-card p{font-size:13px;color:var(--muted);line-height:1.7}
+.help-card .help-step{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:10px;
+  background:var(--card2);border-radius:8px}
+.help-card .help-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.help-card .help-txt{font-size:12px;color:var(--text);line-height:1.6}
+.help-section-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;
+  display:flex;align-items:center;gap:10px}
+.help-section-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.glossary-item{padding:14px;background:var(--card2);border-radius:10px}
+.glossary-item dt{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px;
+  font-family:'JetBrains Mono',monospace}
+.glossary-item dd{font-size:11px;color:var(--muted);line-height:1.5}
+/* ── TOUR ─────────────────────────────────────────── */
+.tour-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400}
+.tour-overlay.on{display:block}
+.tour-tip{position:fixed;z-index:410;background:#fff;border-radius:14px;padding:20px;
+  box-shadow:0 12px 40px rgba(0,0,0,.15);max-width:320px;animation:fadeInUp .3s ease-out}
+.tour-tip h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.tour-tip p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.tour-tip .tour-btns{display:flex;gap:8px;justify-content:flex-end}
+.tour-tip .tour-next{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;
+  font-size:12px;font-weight:700;background:var(--accent);color:#fff}
+.tour-tip .tour-skip{padding:7px 16px;border-radius:8px;border:1px solid var(--border);
+  cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);background:none}
+.tour-counter{font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:600}
+/* ── SPLASH ───────────────────────────────────────── */
+.splash{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;
+  transition:opacity .6s,visibility .6s}
+.splash.hide{opacity:0;visibility:hidden}
+.splash-logo{width:64px;height:64px;background:linear-gradient(135deg,#f97316,#fb923c);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:22px;color:#fff;font-family:'JetBrains Mono',monospace;
+  animation:nodeFloat 2s ease-in-out infinite;box-shadow:0 8px 30px rgba(249,115,22,.3)}
+.splash-title{font-size:18px;font-weight:800;color:var(--text)}
+.splash-sub{font-size:12px;color:var(--muted)}
+.splash-bar{width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.splash-fill{height:100%;background:linear-gradient(90deg,#f97316,#fb923c);border-radius:2px;
+  animation:splashLoad 2s ease-in-out forwards}
+@keyframes splashLoad{0%{width:0}100%{width:100%}}
+@media(max-width:768px){
+  .health-gauge{top:14px;right:60px}
+  .hg-circle{width:52px;height:52px}
+  .hg-val{font-size:14px}
+  .fab{bottom:16px;right:16px}
+  .stats-ticker{font-size:10px;gap:10px;padding:8px 12px}
+  .help-grid{grid-template-columns:1fr}
+  .glossary-grid{grid-template-columns:1fr}
+  .tour-tip{max-width:260px;left:16px!important;right:16px!important}
+}
 </style>
 </head>
 <body>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <div class="splash-logo">LAF</div>
+  <div class="splash-title">WSN-LAF Simulation Dashboard</div>
+  <div class="splash-sub">Loading simulation data...</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
 
 <!-- LOADER -->
 <div class="loader" id="loader">
   <div class="spinner"></div>
   <div class="loader-text">Running Simulation...</div>
   <div class="loader-sub" id="loader-sub">Initialising network</div>
+</div>
+
+<!-- TOUR -->
+<div class="tour-overlay" id="tour-overlay" onclick="endTour()"></div>
+<div class="tour-tip" id="tour-tip" style="display:none">
+  <div class="tour-counter" id="tour-counter"></div>
+  <h4 id="tour-title"></h4>
+  <p id="tour-desc"></p>
+  <div class="tour-btns">
+    <button class="tour-skip" onclick="endTour()">Skip</button>
+    <button class="tour-next" onclick="nextTour()">Next</button>
+  </div>
+</div>
+
+<!-- HEALTH GAUGE -->
+<div class="health-gauge" id="health-gauge">
+  <div class="hg-circle">
+    <svg class="hg-svg" viewBox="0 0 72 72" width="72" height="72">
+      <circle class="hg-bg" cx="36" cy="36" r="30"/>
+      <circle class="hg-fill" id="hg-fill" cx="36" cy="36" r="30"
+        stroke-dasharray="188.5" stroke-dashoffset="188.5"/>
+    </svg>
+    <div class="hg-val" id="hg-val">0</div>
+  </div>
+  <div class="hg-label">Health</div>
+</div>
+
+<!-- FAB -->
+<div class="fab" id="fab">
+  <div class="fab-menu" id="fab-menu">
+    <button class="fab-action" onclick="toggleDark()"><span class="material-icons-round">dark_mode</span> Toggle Dark Mode</button>
+    <button class="fab-action" onclick="exportPDF()"><span class="material-icons-round">picture_as_pdf</span> Export PDF</button>
+    <button class="fab-action" onclick="exportCSV()"><span class="material-icons-round">table_chart</span> Export CSV</button>
+    <button class="fab-action" onclick="screenshotChart()"><span class="material-icons-round">photo_camera</span> Screenshot</button>
+    <button class="fab-action" onclick="startTour()"><span class="material-icons-round">help_outline</span> Take Tour</button>
+  </div>
+  <button class="fab-btn" id="fab-btn" onclick="document.getElementById('fab-menu').classList.toggle('on');this.classList.toggle('open')">
+    <span class="material-icons-round">add</span>
+  </button>
 </div>
 
 <!-- MOBILE HAMBURGER -->
@@ -604,6 +804,8 @@ tr:hover td{background:rgba(249,115,22,.03)}
       <span class="material-icons-round">compare_arrows</span> Compare</div>
     <div class="nav-item" onclick="showPage('topology',this)">
       <span class="material-icons-round">hub</span> Topology</div>
+    <div class="nav-item" onclick="showPage('help',this)">
+      <span class="material-icons-round">help_outline</span> Help Guide</div>
   </div>
 
   <div class="sb-params" id="sb-params">
@@ -705,6 +907,21 @@ tr:hover td{background:rgba(249,115,22,.03)}
     </div>
   </div>
 
+  <div class="dm-toggle" onclick="toggleDark()">
+    <span class="material-icons-round">dark_mode</span> Dark / Light Mode
+  </div>
+  <div class="preset-dd">
+    <div class="preset-btn" onclick="this.nextElementSibling.classList.toggle('on')">
+      <span class="material-icons-round" style="font-size:14px">tune</span> Presets ▾
+    </div>
+    <div class="preset-list" id="preset-list">
+      <div class="preset-opt" onclick="applyPreset('default')">Default (Paper 2)<small>N=100, R=500, balanced weights</small></div>
+      <div class="preset-opt" onclick="applyPreset('dense')">High Density<small>N=200, R=500, more nodes</small></div>
+      <div class="preset-opt" onclick="applyPreset('hostile')">Hostile Environment<small>N=100, R=500, 30% attack ratio</small></div>
+      <div class="preset-opt" onclick="applyPreset('lowenergy')">Low Energy<small>N=100, R=300, E=0.2J</small></div>
+      <div class="preset-opt" onclick="applyPreset('longrun')">Long Run<small>N=100, R=1000, endurance test</small></div>
+    </div>
+  </div>
   <div class="sb-actions">
     <button class="btn btn-primary" id="run-btn" onclick="runSim()">
       <span class="material-icons-round" style="font-size:16px">play_arrow</span> Run Simulation</button>
@@ -715,6 +932,24 @@ tr:hover td{background:rgba(249,115,22,.03)}
 
 <!-- ═══════ MAIN CONTENT ═══════ -->
 <div class="main">
+
+<!-- STATS TICKER -->
+<div class="stats-ticker" id="stats-ticker">
+  <div class="st-item"><span class="st-icon">🟢</span> Alive: <span class="st-val" id="st-alive">—</span></div>
+  <div class="st-divider"></div>
+  <div class="st-item"><span class="st-icon">📡</span> PDR: <span class="st-val" id="st-pdr">—</span></div>
+  <div class="st-divider"></div>
+  <div class="st-item"><span class="st-icon">⚡</span> Energy: <span class="st-val" id="st-energy">—</span></div>
+  <div class="st-divider"></div>
+  <div class="st-item"><span class="st-icon">🕐</span> FND: <span class="st-val" id="st-fnd">—</span></div>
+  <div class="st-divider"></div>
+  <div class="st-item"><span class="st-icon">🔒</span> Trust: <span class="st-val" id="st-trust">—</span></div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb" id="breadcrumb">
+  <span class="material-icons-round">dashboard</span> Dashboard &rsaquo; <span class="bc-page" id="bc-page">Overview</span>
+</div>
 
 <!-- OVERVIEW -->
 <div id="page-overview" class="page on">
@@ -930,6 +1165,80 @@ tr:hover td{background:rgba(249,115,22,.03)}
   </div>
 </div>
 
+<!-- HELP -->
+<div id="page-help" class="page">
+  <div class="help-section-title"><span class="material-icons-round" style="color:var(--accent)">menu_book</span> Help Guide</div>
+  <div class="help-section-sub">Learn how to use the WSN-LAF Simulation Dashboard. Click any section for details.</div>
+
+  <div class="help-grid">
+    <div class="help-card">
+      <h3><span class="material-icons-round">play_circle</span> Getting Started</h3>
+      <p>The dashboard loads with pre-computed Paper 2 results. You can explore all tabs immediately.</p>
+      <div class="help-step"><div class="help-num">1</div><div class="help-txt">Browse tabs on the left sidebar to explore different analyses</div></div>
+      <div class="help-step"><div class="help-num">2</div><div class="help-txt">Adjust parameters in the sidebar sliders</div></div>
+      <div class="help-step"><div class="help-num">3</div><div class="help-txt">Click <b>Run Simulation</b> to generate new results</div></div>
+    </div>
+    <div class="help-card">
+      <h3><span class="material-icons-round">tune</span> Parameters</h3>
+      <p>All simulation parameters are in the left sidebar. Each slider adjusts a specific aspect of the LAF protocol.</p>
+      <div class="help-step"><div class="help-num">α</div><div class="help-txt"><b>Energy weight</b> — How much energy efficiency matters in routing decisions</div></div>
+      <div class="help-step"><div class="help-num">β</div><div class="help-txt"><b>Delay weight</b> — Priority given to minimising communication delay</div></div>
+      <div class="help-step"><div class="help-num">γ</div><div class="help-txt"><b>Trust weight</b> — Importance of node trustworthiness in routing</div></div>
+    </div>
+    <div class="help-card">
+      <h3><span class="material-icons-round">hub</span> Topology View</h3>
+      <p>The interactive topology tab shows a live animated WSN network.</p>
+      <div class="help-step"><div class="help-num">1</div><div class="help-txt"><b>Drag nodes</b> — Click and drag any node to reposition it</div></div>
+      <div class="help-step"><div class="help-num">2</div><div class="help-txt"><b>Hover</b> — Mouse over a node to see energy and trust values</div></div>
+      <div class="help-step"><div class="help-num">3</div><div class="help-txt"><b>Click</b> — Click a node to simulate failure (it fades out)</div></div>
+    </div>
+    <div class="help-card">
+      <h3><span class="material-icons-round">auto_fix_high</span> Paper 2 Mode</h3>
+      <p>Reproduces the exact parameters and results from the published Paper 2 research.</p>
+      <div class="help-step"><div class="help-num">1</div><div class="help-txt">Click <b>Paper 2 Mode</b> in the sidebar to load exact parameters</div></div>
+      <div class="help-step"><div class="help-num">2</div><div class="help-txt">Click <b>Run Simulation</b> to reproduce published results</div></div>
+      <div class="help-step"><div class="help-num">3</div><div class="help-txt">Compare with your custom parameter runs</div></div>
+    </div>
+    <div class="help-card">
+      <h3><span class="material-icons-round">download</span> Exporting Data</h3>
+      <p>Use the orange <b>+</b> button (bottom-right) to access export options.</p>
+      <div class="help-step"><div class="help-num">📄</div><div class="help-txt"><b>PDF</b> — Download a full report with all charts</div></div>
+      <div class="help-step"><div class="help-num">📊</div><div class="help-txt"><b>CSV</b> — Export raw simulation data for analysis</div></div>
+      <div class="help-step"><div class="help-num">📷</div><div class="help-txt"><b>Screenshot</b> — Capture the current view as an image</div></div>
+    </div>
+    <div class="help-card">
+      <h3><span class="material-icons-round">shield</span> Understanding Tabs</h3>
+      <p>Each tab focuses on a different aspect of the simulation analysis.</p>
+      <div class="help-step"><div class="help-num">📊</div><div class="help-txt"><b>Overview</b> — Summary KPIs and comparison charts</div></div>
+      <div class="help-step"><div class="help-num">🔐</div><div class="help-txt"><b>Security</b> — Attack resilience (Sinkhole, Sybil, etc.)</div></div>
+      <div class="help-step"><div class="help-num">📈</div><div class="help-txt"><b>Scalability</b> — Performance at 50-500 nodes</div></div>
+    </div>
+  </div>
+
+  <div class="help-section-title" style="margin-top:32px"><span class="material-icons-round" style="color:var(--accent)">school</span> Glossary</div>
+  <div class="help-section-sub">Key terms used throughout the dashboard.</div>
+  <div class="glossary-grid">
+    <div class="glossary-item"><dt>PDR</dt><dd>Packet Delivery Ratio — percentage of data packets successfully delivered to the base station</dd></div>
+    <div class="glossary-item"><dt>FND</dt><dd>First Node Dead — the round when the first sensor node runs out of energy</dd></div>
+    <div class="glossary-item"><dt>HND</dt><dd>Half Nodes Dead — the round when 50% of nodes have died</dd></div>
+    <div class="glossary-item"><dt>CH</dt><dd>Cluster Head — elected node that aggregates and forwards data from its cluster</dd></div>
+    <div class="glossary-item"><dt>LAF</dt><dd>Lightweight Adaptive Framework — the proposed protocol combining trust, energy, and blockchain</dd></div>
+    <div class="glossary-item"><dt>LEACH</dt><dd>Low-Energy Adaptive Clustering Hierarchy — a classic WSN routing protocol baseline</dd></div>
+    <div class="glossary-item"><dt>Trust Score</dt><dd>A 0-1 value representing how reliable a node is, updated via blockchain consensus</dd></div>
+    <div class="glossary-item"><dt>Residual Energy</dt><dd>Remaining energy in nodes — higher means longer network lifetime</dd></div>
+    <div class="glossary-item"><dt>Throughput</dt><dd>Amount of data successfully transmitted per unit time (kbps)</dd></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>WSN-LAF Simulation Dashboard</strong> — Shajan Mohammed Mahdi<br>
+  PhD Research · Mustansiriyah University · 2025<br>
+  Lightweight Adaptive Framework for Secure Wireless Sensor Networks<br>
+  <a href="#" onclick="startTour();return false">Take Interactive Tour</a> ·
+  <a href="#" onclick="showPage('help',document.querySelector('[onclick*=help]'));return false">Help Guide</a>
+</div>
+
 </div><!-- /main -->
 
 <!-- ════════════════════════  SCRIPT  ══════════════════════════════════════════ -->
@@ -980,6 +1289,11 @@ function setStatus(msg,cls=''){
   document.getElementById('sdot').className='status-dot'+(cls==='running'?' pulse':'');
 }
 
+// ── BREADCRUMB NAMES ─────────────────────────────────────────────────────────
+const PAGE_NAMES={overview:'Overview',performance:'Performance',security:'Security',
+  scalability:'Scalability',ablation:'Ablation',longterm:'Long-Term',recovery:'Recovery',
+  comparison:'Compare',topology:'Topology',help:'Help Guide'};
+
 // ── pages ─────────────────────────────────────────────────────────────────────
 function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
@@ -994,9 +1308,14 @@ function showPage(name,el){
   if(name==='ablation')buildAblation();
   if(name==='comparison')buildComparison();
   if(name==='topology')initTopology();
+  // breadcrumb
+  const bc=document.getElementById('bc-page');
+  if(bc)bc.textContent=PAGE_NAMES[name]||name;
   // close mobile sidebar
   document.querySelector('.sidebar').classList.remove('open');
   document.querySelector('.overlay').classList.remove('on');
+  // close presets
+  const pl=document.getElementById('preset-list');if(pl)pl.classList.remove('on');
 }
 
 // ── param panel ───────────────────────────────────────────────────────────────
@@ -1110,6 +1429,8 @@ function renderAll(){
   buildLongTerm();
   buildRecovery();
   buildComparison();
+  updateStatsTicker();
+  updateHealthGauge();
 }
 
 function buildOverview(){
@@ -1339,12 +1660,12 @@ function buildComparison(){
 // ── TOPOLOGY ─────────────────────────────────────────────────────────────────
 let topoInited=false;
 let topoNodes=[];let topoBS={x:450,y:30};let topoDrag=null;let topoMouse={x:0,y:0};let topoAnim=null;
+let topoTrails=[];let topoRipples=[];
 function initTopology(){
   if(topoInited)return;topoInited=true;
   const cv=document.getElementById('topo-canvas');if(!cv)return;
   const ctx=cv.getContext('2d');
   const W=cv.width,H=cv.height;
-  // generate nodes
   const rng=k=>{let s=k;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}};
   const r=rng(42);
   const N=100,ATK=10,CHS=5;
@@ -1353,77 +1674,119 @@ function initTopology(){
     const isCH=i<CHS;const isAtk=!isCH&&i<CHS+ATK;
     topoNodes.push({x:50+r()*(W-100),y:80+r()*(H-130),
       energy:.3+r()*.7,trust:isAtk?.3:(.7+r()*.3),
-      isCH,isAtk,vx:(r()-.5)*.3,vy:(r()-.5)*.3,
-      baseX:0,baseY:0,phase:r()*Math.PI*2});
+      isCH,isAtk,alive:true,baseX:0,baseY:0,phase:r()*Math.PI*2,
+      deathAnim:0});
   }
   topoNodes.forEach(n=>{n.baseX=n.x;n.baseY=n.y});
   topoBS={x:W/2,y:28};
-  document.getElementById('topo-alive').textContent=N;
-  document.getElementById('topo-chs').textContent=CHS;
-  document.getElementById('topo-atk').textContent=ATK;
+  function updStats(){
+    const al=topoNodes.filter(n=>n.alive);
+    document.getElementById('topo-alive').textContent=al.length;
+    document.getElementById('topo-chs').textContent=al.filter(n=>n.isCH).length;
+    document.getElementById('topo-atk').textContent=al.filter(n=>n.isAtk).length;
+  }
+  updStats();
   // mouse
-  cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();
-    topoMouse.x=(e.clientX-r.left)*(cv.width/r.width);
-    topoMouse.y=(e.clientY-r.top)*(cv.height/r.height)});
-  cv.addEventListener('mousedown',e=>{const r=cv.getBoundingClientRect();
-    const mx=(e.clientX-r.left)*(cv.width/r.width),my=(e.clientY-r.top)*(cv.height/r.height);
-    topoNodes.forEach(n=>{if(Math.hypot(n.x-mx,n.y-my)<14){topoDrag=n}})});
+  cv.addEventListener('mousemove',e=>{const rc=cv.getBoundingClientRect();
+    topoMouse.x=(e.clientX-rc.left)*(cv.width/rc.width);
+    topoMouse.y=(e.clientY-rc.top)*(cv.height/rc.height);
+    if(topoDrag){topoTrails.push({x:topoDrag.x,y:topoDrag.y,t:Date.now()})}});
+  cv.addEventListener('mousedown',e=>{const rc=cv.getBoundingClientRect();
+    const mx=(e.clientX-rc.left)*(cv.width/rc.width),my=(e.clientY-rc.top)*(cv.height/rc.height);
+    topoNodes.forEach(n=>{if(n.alive&&Math.hypot(n.x-mx,n.y-my)<14){topoDrag=n}})});
   cv.addEventListener('mouseup',()=>{if(topoDrag){topoDrag.baseX=topoDrag.x;topoDrag.baseY=topoDrag.y}topoDrag=null});
   cv.addEventListener('mouseleave',()=>{topoDrag=null});
+  // click to kill
+  cv.addEventListener('click',e=>{
+    if(topoDrag)return;
+    const rc=cv.getBoundingClientRect();
+    const mx=(e.clientX-rc.left)*(cv.width/rc.width),my=(e.clientY-rc.top)*(cv.height/rc.height);
+    topoNodes.forEach(n=>{
+      if(n.alive&&Math.hypot(n.x-mx,n.y-my)<12){n.alive=false;n.deathAnim=1;updStats()}
+    });
+  });
   // animate
   function draw(){
     ctx.clearRect(0,0,W,H);
     const t=Date.now()/1000;
-    // drag
+    const dark=document.body.classList.contains('dark');
+    // drag trails
+    const now=Date.now();
+    topoTrails=topoTrails.filter(tr=>now-tr.t<600);
+    topoTrails.forEach(tr=>{
+      const age=(now-tr.t)/600;
+      ctx.beginPath();ctx.arc(tr.x,tr.y,3*(1-age),0,Math.PI*2);
+      ctx.fillStyle=`rgba(249,115,22,${.3*(1-age)})`;ctx.fill();
+    });
+    // update positions
     if(topoDrag){topoDrag.x=topoMouse.x;topoDrag.y=topoMouse.y}
-    // float nodes
     topoNodes.forEach(n=>{
+      if(!n.alive){if(n.deathAnim>0)n.deathAnim=Math.max(0,n.deathAnim-0.015);return}
       if(n===topoDrag)return;
       n.x=n.baseX+Math.sin(t*0.5+n.phase)*3;
       n.y=n.baseY+Math.cos(t*0.7+n.phase)*2;
     });
-    // find cluster heads
-    const chs=topoNodes.filter(n=>n.isCH);
-    // draw routes: CH -> BS
+    const alive=topoNodes.filter(n=>n.alive);
+    const chs=alive.filter(n=>n.isCH);
+    // BS ripples
+    topoRipples=topoRipples.filter(rp=>rp.r<60);
+    if(Math.random()<0.02)topoRipples.push({r:0,a:0.3});
+    topoRipples.forEach(rp=>{
+      rp.r+=0.5;rp.a=Math.max(0,0.3*(1-rp.r/60));
+      ctx.beginPath();ctx.arc(topoBS.x,topoBS.y,16+rp.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(249,115,22,${rp.a})`;ctx.lineWidth=1.5;ctx.stroke();
+    });
+    // routes: CH -> BS
     chs.forEach(ch=>{
       ctx.beginPath();ctx.moveTo(ch.x,ch.y);ctx.lineTo(topoBS.x,topoBS.y);
-      ctx.strokeStyle='rgba(249,115,22,.2)';ctx.lineWidth=2;
+      ctx.strokeStyle=dark?'rgba(249,115,22,.15)':'rgba(249,115,22,.2)';ctx.lineWidth=2;
       ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
-      // animated packet
       const prog=(t*0.3+ch.x/W)%1;
       const px=ch.x+(topoBS.x-ch.x)*prog,py=ch.y+(topoBS.y-ch.y)*prog;
-      ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle='#f97316';ctx.fill();
+      ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);
+      ctx.fillStyle='#f97316';ctx.fill();
+      ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);
+      ctx.fillStyle='rgba(249,115,22,.15)';ctx.fill();
     });
-    // draw routes: node -> nearest CH
-    topoNodes.forEach(n=>{
+    // routes: node -> CH
+    alive.forEach(n=>{
       if(n.isCH)return;
       let minD=Infinity,best=chs[0];
       chs.forEach(c=>{const d=Math.hypot(n.x-c.x,n.y-c.y);if(d<minD){minD=d;best=c}});
       if(!best)return;
-      // mouse proximity highlight
       const dm=Math.hypot(n.x-topoMouse.x,n.y-topoMouse.y);
-      const alpha=dm<80?.3:.06;
+      const alpha=dm<80?.25:.05;
       ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(best.x,best.y);
       ctx.strokeStyle=n.isAtk?`rgba(220,38,38,${alpha})`:`rgba(249,115,22,${alpha})`;
       ctx.lineWidth=1;ctx.stroke();
     });
-    // draw BS
+    // BS
     ctx.beginPath();ctx.arc(topoBS.x,topoBS.y,16,0,Math.PI*2);
-    ctx.fillStyle='#1e293b';ctx.fill();
-    ctx.beginPath();ctx.arc(topoBS.x,topoBS.y,20,0,Math.PI*2);
-    ctx.strokeStyle='rgba(30,41,59,.2)';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 9px Inter';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=dark?'#e8e4df':'#1e293b';ctx.fill();
+    ctx.fillStyle=dark?'#1c1c24':'#fff';ctx.font='bold 9px Inter';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('BS',topoBS.x,topoBS.y);
-    ctx.fillStyle='#1e293b';ctx.font='bold 11px Inter';ctx.fillText('Base Station',topoBS.x,topoBS.y-26);
-    // draw nodes
-    topoNodes.forEach(n=>{
+    ctx.fillStyle=dark?'#e8e4df':'#1e293b';ctx.font='bold 11px Inter';ctx.fillText('Base Station',topoBS.x,topoBS.y-26);
+    // dead nodes (fading)
+    topoNodes.filter(n=>!n.alive&&n.deathAnim>0).forEach(n=>{
+      ctx.globalAlpha=n.deathAnim;
+      ctx.beginPath();ctx.arc(n.x,n.y,8,0,Math.PI*2);
+      ctx.fillStyle='rgba(150,150,150,.3)';ctx.fill();
+      ctx.beginPath();ctx.moveTo(n.x-5,n.y-5);ctx.lineTo(n.x+5,n.y+5);
+      ctx.moveTo(n.x+5,n.y-5);ctx.lineTo(n.x-5,n.y+5);
+      ctx.strokeStyle='#999';ctx.lineWidth=2;ctx.stroke();
+      ctx.globalAlpha=1;
+    });
+    // alive nodes
+    alive.forEach(n=>{
       const dm=Math.hypot(n.x-topoMouse.x,n.y-topoMouse.y);
       const hover=dm<20;
-      const rad=n.isCH?10:hover?8:6;
+      // energy pulse: breathe based on energy
+      const pulse=1+Math.sin(t*2*n.energy+n.phase)*0.15*n.energy;
+      const rad=(n.isCH?10:hover?8:6)*pulse;
       // glow
       if(n.isCH||hover){
-        ctx.beginPath();ctx.arc(n.x,n.y,rad+6,0,Math.PI*2);
-        ctx.fillStyle=n.isCH?'rgba(22,163,74,.12)':n.isAtk?'rgba(220,38,38,.1)':'rgba(249,115,22,.1)';
+        ctx.beginPath();ctx.arc(n.x,n.y,rad+8,0,Math.PI*2);
+        ctx.fillStyle=n.isCH?'rgba(22,163,74,.1)':n.isAtk?'rgba(220,38,38,.08)':'rgba(249,115,22,.08)';
         ctx.fill();
       }
       // node
@@ -1433,15 +1796,21 @@ function initTopology(){
       grad.addColorStop(0,col);grad.addColorStop(1,col+'bb');
       ctx.fillStyle=grad;ctx.fill();
       ctx.strokeStyle=col+'44';ctx.lineWidth=1.5;ctx.stroke();
-      // tooltip on hover
+      // energy ring
+      ctx.beginPath();ctx.arc(n.x,n.y,rad+3,Math.PI*1.5,Math.PI*1.5+Math.PI*2*n.energy);
+      ctx.strokeStyle=col+'66';ctx.lineWidth=1.5;ctx.stroke();
+      // tooltip
       if(hover){
-        ctx.fillStyle='#fff';ctx.strokeStyle='#ecdcc8';ctx.lineWidth=1;
-        const tw=120,th=50,tx=n.x+15,ty=n.y-30;
+        const bg=dark?'#22222c':'#fff';const bdr=dark?'#2e2e3a':'#ecdcc8';
+        const tc=dark?'#e8e4df':'#3d2b14';const mc=dark?'#8a8578':'#8a7058';
+        ctx.fillStyle=bg;ctx.strokeStyle=bdr;ctx.lineWidth=1;
+        const tw=130,th=60,tx=n.x+15,ty=n.y-35;
         ctx.beginPath();ctx.roundRect(tx,ty,tw,th,8);ctx.fill();ctx.stroke();
-        ctx.fillStyle='#3d2b14';ctx.font='bold 10px Inter';ctx.textAlign='left';
+        ctx.fillStyle=tc;ctx.font='bold 10px Inter';ctx.textAlign='left';
         ctx.fillText(n.isCH?'Cluster Head':n.isAtk?'Attack Node':'Sensor Node',tx+8,ty+16);
-        ctx.font='10px JetBrains Mono';ctx.fillStyle='#8a7058';
-        ctx.fillText('E: '+(n.energy).toFixed(2)+'J  T: '+(n.trust).toFixed(2),tx+8,ty+34);
+        ctx.font='10px JetBrains Mono';ctx.fillStyle=mc;
+        ctx.fillText('Energy: '+(n.energy).toFixed(2)+'J',tx+8,ty+32);
+        ctx.fillText('Trust:  '+(n.trust).toFixed(2),tx+8,ty+48);
       }
     });
     topoAnim=requestAnimationFrame(draw);
@@ -1449,13 +1818,181 @@ function initTopology(){
   draw();
 }
 
+// ── DARK MODE ────────────────────────────────────────────────────────────────
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('wsn-dark',document.body.classList.contains('dark')?'1':'0');
+  // update chart colors
+  Object.values(charts).forEach(c=>{
+    if(!c||!c.options)return;
+    const dark=document.body.classList.contains('dark');
+    const gc=dark?'rgba(46,46,58,.5)':'rgba(236,220,200,.5)';
+    const tc=dark?'#8a8578':'#9a7355';
+    if(c.options.scales?.x){c.options.scales.x.grid.color=gc;c.options.scales.x.ticks.color=tc}
+    if(c.options.scales?.y){c.options.scales.y.grid.color=gc;c.options.scales.y.ticks.color=tc}
+    if(c.options.scales?.r){c.options.scales.r.grid.color=gc;c.options.scales.r.pointLabels.color=dark?'#e8e4df':'#3d2b14'}
+    c.update('none');
+  });
+}
+
+// ── STATS TICKER ─────────────────────────────────────────────────────────────
+function updateStatsTicker(){
+  if(!DATA||!DATA.normal||!DATA.normal.LAF)return;
+  const laf=DATA.normal.LAF;
+  const lastAlive=laf.alive?laf.alive[laf.alive.length-1]:0;
+  animateValue('st-alive',lastAlive,0);
+  animateValue('st-pdr',((laf.final_pdr||0)*100),1,'%');
+  animateValue('st-energy',avg(laf.residual_energy||[]),3,'J');
+  animateValue('st-fnd',laf.fnd||0,0);
+  animateValue('st-trust',(avg(laf.trust_accuracy||[])*100),1,'%');
+}
+
+// ── ANIMATED COUNTERS ────────────────────────────────────────────────────────
+function animateValue(elId,target,decimals=0,suffix=''){
+  const el=document.getElementById(elId);if(!el)return;
+  const start=0;const dur=1200;const st=Date.now();
+  function tick(){
+    const p=Math.min(1,(Date.now()-st)/dur);
+    const ease=1-Math.pow(1-p,3);// easeOutCubic
+    const v=start+(target-start)*ease;
+    el.textContent=v.toFixed(decimals)+suffix;
+    if(p<1)requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+// ── HEALTH GAUGE ─────────────────────────────────────────────────────────────
+function updateHealthGauge(){
+  if(!DATA||!DATA.normal||!DATA.normal.LAF)return;
+  const laf=DATA.normal.LAF;
+  const pdr=(laf.final_pdr||0)*100;
+  const energy=avg(laf.residual_energy||[])/0.5*100;// normalize to 0-100
+  const trust=avg(laf.trust_accuracy||[])*100;
+  const lifetime=Math.min(100,(laf.fnd||0)/500*100);
+  const score=Math.round(pdr*0.3+Math.min(100,energy)*0.2+trust*0.3+lifetime*0.2);
+  const circ=188.5;
+  const offset=circ-(score/100)*circ;
+  const fill=document.getElementById('hg-fill');
+  const col=score>75?'#16a34a':score>50?'#f97316':'#dc2626';
+  fill.style.stroke=col;
+  fill.style.strokeDashoffset=offset;
+  animateValue('hg-val',score,0);
+}
+
+// ── PRESETS ──────────────────────────────────────────────────────────────────
+function applyPreset(name){
+  const presets={
+    default:{nodes:100,rounds:500,runs:10,alpha:'0.40',beta:'0.30',gamma:'0.30',l1:'0.50',l2:'0.25',l3:'0.25',popt:'0.05',rho:'0.40',tau:'0.50',einit:'0.5'},
+    dense:{nodes:200,rounds:500,runs:10,alpha:'0.40',beta:'0.30',gamma:'0.30',l1:'0.50',l2:'0.25',l3:'0.25',popt:'0.05',rho:'0.40',tau:'0.50',einit:'0.5'},
+    hostile:{nodes:100,rounds:500,runs:10,alpha:'0.25',beta:'0.25',gamma:'0.50',l1:'0.40',l2:'0.20',l3:'0.40',popt:'0.05',rho:'0.50',tau:'0.40',einit:'0.5'},
+    lowenergy:{nodes:100,rounds:300,runs:10,alpha:'0.50',beta:'0.25',gamma:'0.25',l1:'0.60',l2:'0.20',l3:'0.20',popt:'0.05',rho:'0.40',tau:'0.50',einit:'0.2'},
+    longrun:{nodes:100,rounds:1000,runs:8,alpha:'0.40',beta:'0.30',gamma:'0.30',l1:'0.50',l2:'0.25',l3:'0.25',popt:'0.05',rho:'0.40',tau:'0.50',einit:'0.5'}
+  };
+  const p=presets[name];if(!p)return;
+  document.getElementById('p-nodes').value=p.nodes;updLbl('nodes',p.nodes);
+  document.getElementById('p-rounds').value=p.rounds;updLbl('rounds',p.rounds);
+  document.getElementById('p-runs').value=p.runs;updLbl('runs',p.runs);
+  document.getElementById('p-alpha').value=parseFloat(p.alpha);updLbl('alpha',p.alpha);
+  document.getElementById('p-beta').value=parseFloat(p.beta);updLbl('beta',p.beta);
+  document.getElementById('p-gamma').value=parseFloat(p.gamma);updLbl('gamma',p.gamma);
+  document.getElementById('p-l1').value=parseFloat(p.l1);updLbl('l1',p.l1);
+  document.getElementById('p-l2').value=parseFloat(p.l2);updLbl('l2',p.l2);
+  document.getElementById('p-l3').value=parseFloat(p.l3);updLbl('l3',p.l3);
+  document.getElementById('p-popt').value=parseFloat(p.popt);updLbl('popt',p.popt);
+  document.getElementById('p-rho').value=parseFloat(p.rho);updLbl('rho',p.rho);
+  document.getElementById('p-tau').value=parseFloat(p.tau);updLbl('tau',p.tau);
+  document.getElementById('p-einit').value=p.einit;
+  document.getElementById('preset-list').classList.remove('on');
+  setStatus('Preset "'+name+'" loaded — click Run to simulate','');
+}
+
+// ── EXPORT ───────────────────────────────────────────────────────────────────
+function exportPDF(){window.print()}
+function exportCSV(){
+  if(!DATA)return alert('No data. Run simulation first.');
+  let csv='Protocol,FND,HND,PDR,Avg_Energy,Throughput\n';
+  const N=DATA.normal;
+  ['LAF','LEACH','SPIN','DD','TEARP'].forEach(p=>{
+    if(!N[p])return;
+    csv+=`${p},${N[p].fnd},${N[p].hnd},${N[p].final_pdr},${avg(N[p].residual_energy||[]).toFixed(6)},${avg(N[p].throughput||[]).toFixed(3)}\n`;
+  });
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='wsn_laf_results.csv';a.click();
+}
+function screenshotChart(){
+  const active=document.querySelector('.page.on');
+  const canvas=active?.querySelector('canvas');
+  if(!canvas)return alert('No chart on current page.');
+  const a=document.createElement('a');a.href=canvas.toDataURL('image/png');
+  a.download='wsn_chart.png';a.click();
+}
+
+// ── INTERACTIVE TOUR ─────────────────────────────────────────────────────────
+let tourStep=0;
+const tourSteps=[
+  {el:'.sb-header',title:'Welcome!',desc:'This is the WSN-LAF Simulation Dashboard. It lets you explore and run wireless sensor network simulations interactively.',pos:'right'},
+  {el:'.sb-nav',title:'Navigation',desc:'Use these tabs to switch between different analyses — Overview, Security, Topology, and more.',pos:'right'},
+  {el:'.sb-params',title:'Parameters',desc:'Adjust simulation parameters here. Every slider changes how the LAF protocol behaves.',pos:'right'},
+  {el:'.sb-actions',title:'Run Simulation',desc:'Click "Run Simulation" to execute with your current parameters. "Paper 2 Mode" loads the exact published values.',pos:'right'},
+  {el:'#stats-ticker',title:'Live Stats',desc:'This ticker shows real-time LAF metrics — always visible as you navigate between tabs.',pos:'bottom'},
+  {el:'#health-gauge',title:'Health Score',desc:'A composite 0-100 score combining PDR, energy, trust, and lifetime. Green = excellent, orange = good, red = poor.',pos:'left'},
+  {el:'#fab',title:'Quick Actions',desc:'Click the + button for quick actions: dark mode, export PDF/CSV, screenshot charts, and replay this tour.',pos:'left'},
+  {el:'#page-overview',title:'You are ready!',desc:'Explore the dashboard, run simulations, and compare protocols. Visit the Help tab for more details.',pos:'top'}
+];
+function startTour(){
+  tourStep=0;
+  document.getElementById('tour-overlay').classList.add('on');
+  showTourStep();
+  document.getElementById('fab-menu').classList.remove('on');
+  document.getElementById('fab-btn').classList.remove('open');
+}
+function endTour(){
+  document.getElementById('tour-overlay').classList.remove('on');
+  document.getElementById('tour-tip').style.display='none';
+}
+function nextTour(){
+  tourStep++;
+  if(tourStep>=tourSteps.length){endTour();return}
+  showTourStep();
+}
+function showTourStep(){
+  const s=tourSteps[tourStep];
+  const el=document.querySelector(s.el);
+  const tip=document.getElementById('tour-tip');
+  document.getElementById('tour-counter').textContent=`Step ${tourStep+1} of ${tourSteps.length}`;
+  document.getElementById('tour-title').textContent=s.title;
+  document.getElementById('tour-desc').textContent=s.desc;
+  tip.style.display='block';
+  if(el){
+    const r=el.getBoundingClientRect();
+    if(s.pos==='right'){tip.style.left=(r.right+16)+'px';tip.style.top=r.top+'px'}
+    else if(s.pos==='bottom'){tip.style.left=r.left+'px';tip.style.top=(r.bottom+16)+'px'}
+    else if(s.pos==='left'){tip.style.left=(r.left-340)+'px';tip.style.top=r.top+'px'}
+    else{tip.style.left=r.left+'px';tip.style.top=(r.top-120)+'px'}
+  }
+  document.querySelector('.tour-next').textContent=tourStep>=tourSteps.length-1?'Finish':'Next';
+}
+
 // ── INIT: load pre-computed data ──────────────────────────────────────────────
 window.addEventListener('load',async()=>{
+  // restore dark mode
+  if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
   try{
     const r=await fetch('/api/data'); DATA=await r.json();
     renderAll();
+    updateStatsTicker();
+    updateHealthGauge();
     setStatus('Pre-computed results loaded — click ▶ Run to simulate with custom parameters');
   }catch(e){setStatus('Ready — click ▶ Run to start first simulation','');}
+  // hide splash
+  setTimeout(()=>{const sp=document.getElementById('splash');if(sp)sp.classList.add('hide');
+    setTimeout(()=>{if(sp)sp.style.display='none'},600);
+    // show tour for first-time users
+    if(!localStorage.getItem('wsn-toured')){
+      setTimeout(()=>{startTour();localStorage.setItem('wsn-toured','1')},800);
+    }
+  },2200);
 });
 </script>
 </body>
