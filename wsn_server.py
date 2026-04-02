@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v7";
+const CACHE_NAME = "wsn-laf-v8";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -3032,7 +3032,7 @@ const USERS={
   '2':{name:'Dr Moamin A Mahmoud',icon:'🎓',msg:'Welcome, Dr Moamin! Thank you for supervising this project. All simulation results and analysis are available for your review.',tail:''},
   '3':{name:'Guest',icon:'👤',msg:'Welcome to the WSN-LAF Simulation Dashboard. Feel free to explore the results and visualisations.',tail:''}
 };
-const SESSION_TTL=20*60*1000; // 20 minutes
+const SESSION_TTL=5*60*1000; // 5 minutes
 function checkSession(){
   const s=localStorage.getItem('wsn-session');
   if(!s)return null;
