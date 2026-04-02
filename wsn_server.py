@@ -378,7 +378,7 @@ SHAJAN_PHOTO_B64 = "/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAAAAgAAYdpAAQA
 SHAJAN_PHOTO = _b64.b64decode(SHAJAN_PHOTO_B64)
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v21";
+const CACHE_NAME = "wsn-laf-v22";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1925,67 +1925,7 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div style="font-size:18px;line-height:1.8" data-en="Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously." data-ar="الورقة الثانية هي الدليل المنشور — LAF يتفوق على LEACH وSPIN وDD وTEARP في الطاقة وعمر الشبكة والأمان والإنتاجية في آن واحد.">Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously.</div>
   </div>
 
-  <!-- 7. RESEARCH VIDEOS -->
-  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
-    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:6px;display:flex;align-items:center;gap:10px" data-en="&#128250; Research Videos" data-ar="&#128250; فيديوهات البحث">&#128250; Research Videos</div>
-    <div style="font-size:14px;color:#9a7355;margin-bottom:22px" data-en="Videos from Project 2 — The Research series" data-ar="فيديوهات من المشروع 2 — سلسلة البحث">Videos from Project 2 — The Research series</div>
-
-    <!-- ROW 1 — Paper 1: The Systematic Review -->
-    <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP4</span>
-      <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
-      <span data-en="Paper 1 — The Systematic Review" data-ar="الورقة البحثية 1 — المراجعة المنهجية">Paper 1 — The Systematic Review</span>
-    </div>
-    <div class="rv-grid">
-      <div class="rv-card">
-        <div class="rv-badges">
-          <span class="rv-badge rv-ar">AR</span>
-          <span class="rv-badge rv-ep">EP4</span>
-        </div>
-        <div class="rv-title" dir="rtl" style="text-align:right">ورقة بحثية رقم 1 — المراجعة المنهجية</div>
-        <div class="rv-sub">EP4 · Arabic · Paper 1 Review</div>
-        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/a0wLLmySVZQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
-      </div>
-      <div class="rv-card">
-        <div class="rv-badges">
-          <span class="rv-badge rv-en">EN</span>
-          <span class="rv-badge rv-ep">EP4</span>
-        </div>
-        <div class="rv-title">Paper 1 — The Systematic Review</div>
-        <div class="rv-sub">EP4 · English · Paper 1 Review</div>
-        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/NJrcgsIRQhk" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
-      </div>
-    </div>
-
-    <!-- ROW 2 — Paper 2: The LAF Framework -->
-    <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:14px;margin-top:24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP5</span>
-      <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
-      <span data-en="Paper 2 — The LAF Framework" data-ar="الورقة البحثية 2 — إطار LAF">Paper 2 — The LAF Framework</span>
-    </div>
-    <div class="rv-grid">
-      <div class="rv-card">
-        <div class="rv-badges">
-          <span class="rv-badge rv-ar">AR</span>
-          <span class="rv-badge rv-ep">EP5</span>
-        </div>
-        <div class="rv-title" dir="rtl" style="text-align:right">ورقة بحثية رقم 2 — إطار LAF</div>
-        <div class="rv-sub">EP5 · Arabic · Paper 2 LAF</div>
-        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/FZPDmvCzqDM" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
-      </div>
-      <div class="rv-card">
-        <div class="rv-badges">
-          <span class="rv-badge rv-en">EN</span>
-          <span class="rv-badge rv-ep">EP5</span>
-        </div>
-        <div class="rv-title">Paper 2 — The LAF Framework</div>
-        <div class="rv-sub">EP5 · English · Paper 2 LAF</div>
-        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/ndL9gIXB2Es" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <!-- 8. YOUR NOTES -->
+  <!-- 7. YOUR NOTES -->
   <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
     <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:12px" data-en="Your Notes" data-ar="ملاحظاتك">Your Notes</div>
     <div style="font-size:15px;color:#9a7355;margin-bottom:12px" data-en="Write anything here — it saves automatically. Use it before the viva to write what you want to remember." data-ar="اكتبي أي شيء هنا — يُحفظ تلقائيًا. استخدميها قبل المناقشة لكتابة ما تريدين تذكره.">Write anything here — it saves automatically. Use it before the viva to write what you want to remember.</div>
@@ -2076,9 +2016,70 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       </div>
     </div>
 
+    <!-- SERIES 2 — RESEARCH VIDEOS -->
+    <div style="margin-bottom:36px">
+      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+        <span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Videos
+      </div>
+      <div style="font-size:14px;color:#9a7355;margin-bottom:20px">Videos from Project 2 — The Research series</div>
+
+      <!-- EP4: Paper 1 — The Systematic Review -->
+      <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP4</span>
+        <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
+        Paper 1 — The Systematic Review
+      </div>
+      <div class="pod-grid">
+        <div class="pod-card">
+          <div class="rv-badges" style="margin-bottom:10px">
+            <span class="rv-badge rv-ar">AR</span>
+            <span class="rv-badge rv-ep">EP4</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#4a2c0a;margin-bottom:4px" dir="rtl">ورقة بحثية رقم 1 — المراجعة المنهجية</div>
+          <div style="font-size:12px;color:#9a7355;margin-bottom:12px">EP4 · Arabic · Paper 1 Review</div>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/a0wLLmySVZQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+        <div class="pod-card">
+          <div class="rv-badges" style="margin-bottom:10px">
+            <span class="rv-badge rv-en">EN</span>
+            <span class="rv-badge rv-ep">EP4</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#4a2c0a;margin-bottom:4px">Paper 1 — The Systematic Review</div>
+          <div style="font-size:12px;color:#9a7355;margin-bottom:12px">EP4 · English · Paper 1 Review</div>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/NJrcgsIRQhk" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+      </div>
+
+      <!-- EP5: Paper 2 — The LAF Framework -->
+      <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:12px;margin-top:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP5</span>
+        <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
+        Paper 2 — The LAF Framework
+      </div>
+      <div class="pod-grid">
+        <div class="pod-card">
+          <div class="rv-badges" style="margin-bottom:10px">
+            <span class="rv-badge rv-ar">AR</span>
+            <span class="rv-badge rv-ep">EP5</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#4a2c0a;margin-bottom:4px" dir="rtl">ورقة بحثية رقم 2 — إطار LAF</div>
+          <div style="font-size:12px;color:#9a7355;margin-bottom:12px">EP5 · Arabic · Paper 2 LAF</div>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/FZPDmvCzqDM" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+        <div class="pod-card">
+          <div class="rv-badges" style="margin-bottom:10px">
+            <span class="rv-badge rv-en">EN</span>
+            <span class="rv-badge rv-ep">EP5</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#4a2c0a;margin-bottom:4px">Paper 2 — The LAF Framework</div>
+          <div style="font-size:12px;color:#9a7355;margin-bottom:12px">EP5 · English · Paper 2 LAF</div>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/ndL9gIXB2Es" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+      </div>
+    </div>
+
     <!-- REMAINING SERIES — PLACEHOLDERS -->
     <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
       <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
       <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
     </div>
