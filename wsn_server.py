@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v16";
+const CACHE_NAME = "wsn-laf-v17";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -522,6 +522,29 @@ body.dark .hamburger{background:var(--card);border-color:var(--border)}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150}
 .overlay.on{display:block}
 /* ── MAIN CONTENT ─────────────────────────────────── */
+/* ── MOBILE HEADER ────────────────────────────────── */
+.mobile-hdr{display:none;position:fixed;top:0;left:0;right:0;z-index:250;height:52px;
+  align-items:center;gap:10px;padding:0 16px;background:rgba(255,249,240,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);padding-top:env(safe-area-inset-top)}
+.mobile-hdr-btn{background:none;border:none;color:var(--accent);cursor:pointer;padding:6px}
+.mobile-hdr-title{font-size:15px;font-weight:700;color:var(--text)}
+body.dark .mobile-hdr{background:rgba(19,19,26,.92);border-color:#2e2e3a}
+/* ── SIDEBAR GROUP ────────────────────────────────── */
+.nav-group .nav-chevron{margin-left:auto;font-size:16px;transition:transform .3s}
+.nav-group.open .nav-chevron{transform:rotate(180deg)}
+.nav-sub{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.nav-group.open .nav-sub{max-height:200px}
+.nav-sub-item{padding:8px 14px 8px 42px;font-size:12px;color:var(--muted);cursor:pointer;
+  border-radius:8px;transition:all .15s;font-weight:500}
+.nav-sub-item:hover{background:#fff7ed;color:var(--text)}
+.nav-sub-item.active{color:var(--accent);font-weight:700;background:#fff7ed}
+body.dark .nav-sub-item:hover,body.dark .nav-sub-item.active{background:#2a2218}
+/* ── OFFLINE BANNER ───────────────────────────────── */
+.offline-bar{display:none;position:fixed;top:0;left:0;right:0;z-index:800;
+  padding:8px 16px;background:#ef4444;color:#fff;font-size:13px;font-weight:600;
+  text-align:center;align-items:center;justify-content:center;gap:6px}
+.offline-bar .material-icons-round{font-size:16px}
 .main{margin-left:var(--sidebar);flex:1;min-height:100vh;padding:32px 36px}
 .page{display:none;max-width:1200px;margin:0 auto}
 .page.on{display:block;animation:fadeIn .4s ease-out}
@@ -538,7 +561,8 @@ body.dark .hamburger{background:var(--card);border-color:var(--border)}
 .hero-sub{font-size:13px;color:var(--muted);line-height:1.7;font-weight:500}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .kpi{background:#fff;border:1px solid var(--border);border-radius:14px;
-  padding:20px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+  padding:24px 20px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.kpi-icon{font-size:28px;margin-bottom:6px;opacity:.7}
 .kpi:hover{transform:translateY(-3px);border-color:rgba(249,115,22,.35);
   box-shadow:0 8px 24px rgba(249,115,22,.08)}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
@@ -630,8 +654,9 @@ tr:hover td{background:rgba(249,115,22,.03)}
   .sidebar{transform:translateX(-100%);width:280px;box-shadow:8px 0 30px rgba(0,0,0,.15);
     padding-top:env(safe-area-inset-top)}
   .sidebar.open{transform:translateX(0)}
-  .hamburger{display:flex;top:calc(12px + env(safe-area-inset-top))}
-  .main{margin-left:0;padding:16px;padding-top:calc(68px + env(safe-area-inset-top));
+  .hamburger{display:none}
+  .mobile-hdr{display:flex}
+  .main{margin-left:0;padding:16px;padding-top:calc(64px + env(safe-area-inset-top));
     padding-bottom:calc(16px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
   /* Sidebar internals — tighter on mobile */
   .sb-header{padding:18px 16px 14px}
@@ -1207,6 +1232,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <span class="material-icons-round">shield</span>Security</button>
   <button class="btab" data-page="topology" onclick="tabNav('topology',this)">
     <span class="material-icons-round">hub</span>Topology</button>
+  <button class="btab" id="btab-shajan" data-page="shajanhelp" onclick="tabNav('shajanhelp',this)" style="display:none">
+    <span class="material-icons-round">support_agent</span>Guide</button>
   <button class="btab" data-page="more" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
     <span class="material-icons-round">menu</span>More</button>
 </div>
@@ -1224,7 +1251,20 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- MOBILE HAMBURGER -->
+<!-- OFFLINE BANNER -->
+<div class="offline-bar" id="offline-bar">
+  <span class="material-icons-round">cloud_off</span> You are offline — showing cached data
+</div>
+
+<!-- MOBILE HEADER -->
+<div class="mobile-hdr" id="mobile-hdr">
+  <button class="mobile-hdr-btn" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
+    <span class="material-icons-round">menu</span>
+  </button>
+  <span class="mobile-hdr-title" id="mobile-hdr-title">Overview</span>
+</div>
+
+<!-- MOBILE HAMBURGER (desktop fallback) -->
 <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
   <span class="material-icons-round">menu</span>
 </button>
@@ -1249,14 +1289,18 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <span class="material-icons-round">speed</span> Performance</div>
     <div class="nav-item" onclick="showPage('security',this)">
       <span class="material-icons-round">shield</span> Security</div>
-    <div class="nav-item" onclick="showPage('scalability',this)">
-      <span class="material-icons-round">expand</span> Scalability</div>
     <div class="nav-item" onclick="showPage('ablation',this)">
       <span class="material-icons-round">science</span> Ablation</div>
-    <div class="nav-item" onclick="showPage('longterm',this)">
-      <span class="material-icons-round">schedule</span> Long-Term</div>
-    <div class="nav-item" onclick="showPage('recovery',this)">
-      <span class="material-icons-round">healing</span> Recovery</div>
+    <div class="nav-group" id="nav-advanced">
+      <div class="nav-item" onclick="toggleAdvGroup()">
+        <span class="material-icons-round">tune</span> Advanced
+        <span class="material-icons-round nav-chevron">expand_more</span></div>
+      <div class="nav-sub" id="nav-sub-adv">
+        <div class="nav-sub-item" onclick="showPage('scalability',this)">Scalability</div>
+        <div class="nav-sub-item" onclick="showPage('longterm',this)">Long-Term</div>
+        <div class="nav-sub-item" onclick="showPage('recovery',this)">Recovery</div>
+      </div>
+    </div>
     <div class="nav-item" onclick="showPage('comparison',this)">
       <span class="material-icons-round">compare_arrows</span> Compare</div>
     <div class="nav-item" onclick="showPage('topology',this)">
@@ -1431,13 +1475,13 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       </div>
     </div>
     <div class="kpi-row" id="kpi-row">
-      <div class="kpi"><div class="kpi-val" id="kv-energy" style="color:var(--green)">+14.3%</div>
-        <div class="kpi-label">Residual Energy vs LEACH</div><div class="kpi-paper" id="kp-energy">Paper 2 confirmed ✓</div></div>
-      <div class="kpi"><div class="kpi-val" id="kv-life" style="color:var(--accent)">+8.8%</div>
+      <div class="kpi"><div class="kpi-icon" style="color:var(--green)"><span class="material-icons-round">battery_charging_full</span></div><div class="kpi-val" id="kv-energy" style="color:var(--green)">+14.3%</div>
+        <div class="kpi-label">Residual Energy vs LEACH</div><div class="kpi-paper" id="kp-energy">Paper 2 confirmed</div></div>
+      <div class="kpi"><div class="kpi-icon" style="color:var(--accent)"><span class="material-icons-round">timer</span></div><div class="kpi-val" id="kv-life" style="color:var(--accent)">+8.8%</div>
         <div class="kpi-label">Network Lifetime (FND)</div><div class="kpi-paper" id="kp-life">379 vs 348 rounds</div></div>
-      <div class="kpi"><div class="kpi-val" id="kv-tput" style="color:var(--cyan)">+11.4%</div>
+      <div class="kpi"><div class="kpi-icon" style="color:var(--cyan)"><span class="material-icons-round">speed</span></div><div class="kpi-val" id="kv-tput" style="color:var(--cyan)">+11.4%</div>
         <div class="kpi-label">Throughput</div><div class="kpi-paper" id="kp-tput">217 vs 195 kbps</div></div>
-      <div class="kpi"><div class="kpi-val" id="kv-pdr" style="color:var(--yellow)">+3.7%</div>
+      <div class="kpi"><div class="kpi-icon" style="color:var(--yellow)"><span class="material-icons-round">verified</span></div><div class="kpi-val" id="kv-pdr" style="color:var(--yellow)">+3.7%</div>
         <div class="kpi-label">Packet Delivery Ratio</div><div class="kpi-paper" id="kp-pdr">91.8% vs 88.6%</div></div>
     </div>
   </div>
@@ -1458,6 +1502,12 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <table><thead><tr><th>Protocol</th><th>Type</th><th>FND</th><th>HND</th><th>PDR</th><th>Avg Energy</th><th>Throughput</th><th>Trust</th></tr></thead>
     <tbody id="sum-table"></tbody></table>
     <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets.</div></div>
+  <div class="card" style="text-align:center;padding:24px">
+    <div class="ct"><div class="dot" style="background:var(--accent)"></div>Share This Dashboard</div>
+    <div style="margin:16px 0"><img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wsn-laf-dashboard.onrender.com" alt="QR Code" width="150" height="150" style="border-radius:8px;border:2px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div style="display:none;padding:20px;color:var(--muted);font-size:13px">QR code unavailable offline</div></div>
+    <div style="font-size:13px;color:var(--muted);font-weight:600">wsn-laf-dashboard.onrender.com</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:4px">Scan to open on another device</div>
+  </div>
 </div>
 
 <!-- PAPER 1 — Literature Review -->
@@ -2009,16 +2059,20 @@ function setStatus(msg,cls=''){
 }
 
 // ── BREADCRUMB NAMES ─────────────────────────────────────────────────────────
-const PAGE_NAMES={overview:'Overview',performance:'Performance',security:'Security',
+const PAGE_NAMES={overview:'Overview',paper1:'Paper 1',performance:'Performance',security:'Security',
   scalability:'Scalability',ablation:'Ablation',longterm:'Long-Term',recovery:'Recovery',
-  comparison:'Compare',topology:'Topology',pdgoals:'PD Goals',help:'Help Guide'};
+  comparison:'Compare',topology:'Topology',pdgoals:'PD Goals',help:'Help Guide',shajanhelp:"Shajan's Guide"};
+const ADV_PAGES=['scalability','longterm','recovery'];
 
 // ── pages ─────────────────────────────────────────────────────────────────────
 function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-sub-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('on');
-  if(el)el.classList.add('active');
+  if(el){if(el.classList.contains('nav-sub-item'))el.classList.add('active');else el.classList.add('active');}
+  // auto-expand Advanced group for sub-pages
+  if(ADV_PAGES.includes(name)){const g=document.getElementById('nav-advanced');if(g)g.classList.add('open');}
   if(name==='paper1')buildPaper1();
   if(name==='performance')buildPerf();
   if(name==='security')buildSec();
@@ -2032,6 +2086,9 @@ function showPage(name,el){
   // breadcrumb
   const bc=document.getElementById('bc-page');
   if(bc)bc.textContent=PAGE_NAMES[name]||name;
+  // mobile header title
+  const mht=document.getElementById('mobile-hdr-title');
+  if(mht)mht.textContent=PAGE_NAMES[name]||name;
   // close mobile sidebar
   document.querySelector('.sidebar').classList.remove('open');
   document.querySelector('.overlay').classList.remove('on');
@@ -2040,6 +2097,7 @@ function showPage(name,el){
   // sync bottom tab bar
   document.querySelectorAll('.btab').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
 }
+function toggleAdvGroup(){const g=document.getElementById('nav-advanced');if(g)g.classList.toggle('open');}
 
 // ── param panel ───────────────────────────────────────────────────────────────
 function toggleParams(){}
@@ -3141,6 +3199,11 @@ let deferredInstall=null;
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(()=>{});
 }
+// ── offline detection ────────────────────────────────────────────────────────
+function updateOnline(){const b=document.getElementById('offline-bar');if(b)b.style.display=navigator.onLine?'none':'flex';}
+window.addEventListener('online',updateOnline);
+window.addEventListener('offline',updateOnline);
+updateOnline();
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault(); deferredInstall=e;
   const b=document.getElementById('pwa-install');
@@ -3193,6 +3256,7 @@ function doLogin(){
 }
 function showShajanNav(){
   const el=document.getElementById('nav-shajan-help');if(el)el.style.display='';
+  const bt=document.getElementById('btab-shajan');if(bt)bt.style.display='';
   const notes=document.getElementById('shajan-notes');
   if(notes){const saved=localStorage.getItem('shajan-notes');if(saved)notes.value=saved;}
   const savedLang=localStorage.getItem('sg-lang');if(savedLang)setSgLang(savedLang);
