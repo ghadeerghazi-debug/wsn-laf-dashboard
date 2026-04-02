@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v13";
+const CACHE_NAME = "wsn-laf-v14";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1874,14 +1874,14 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
             <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هي شبكات الاستشعار اللاسلكية؟</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/17Fb1YrhluE" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/17Fb1YrhluE" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
         <div class="pod-card">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
             <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">What Are Wireless Sensor Networks?</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/wA3sexuZdGc" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/wA3sexuZdGc" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
       </div>
 
@@ -1897,14 +1897,14 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
             <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هو بروتوكول التوجيه؟</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/z9aeqQ11wx8" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/z9aeqQ11wx8" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
         <div class="pod-card">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
             <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">What is a Routing Protocol?</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/m_yqaWBiNQQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/m_yqaWBiNQQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
       </div>
 
@@ -1920,14 +1920,14 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
             <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هو البلوكتشين؟</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/c98b-2hs6Mo" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/c98b-2hs6Mo" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
         <div class="pod-card">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
             <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
             <span style="font-size:15px;font-weight:600;color:#4a2c0a">What is Blockchain in Simple Terms?</span>
           </div>
-          <iframe width="100%" height="220" src="https://www.youtube.com/embed/jWd0caC_n3U" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+          <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/jWd0caC_n3U" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
         </div>
       </div>
     </div>
@@ -3194,6 +3194,7 @@ function sgTab(tab){
   document.getElementById('sg-tab-pods').style.display=tab==='pods'?'':'none';
   document.getElementById('sg-tab-btn-guide').classList.toggle('sg-tab-active',tab==='guide');
   document.getElementById('sg-tab-btn-pods').classList.toggle('sg-tab-active',tab==='pods');
+  if(tab==='pods')document.querySelectorAll('.yt-lazy[data-src]').forEach(f=>{if(!f.src||!f.src.includes('youtube')){f.src=f.dataset.src;}});
 }
 function setSgLang(lang){
   const wrap=document.getElementById('sg-wrap');
