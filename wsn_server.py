@@ -373,8 +373,12 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     font-size="72" font-weight="900" letter-spacing="-2">LAF</text>
 </svg>'''
 
+import base64 as _b64
+SHAJAN_PHOTO_B64 = "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"
+SHAJAN_PHOTO = _b64.b64decode(SHAJAN_PHOTO_B64)
+
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v18";
+const CACHE_NAME = "wsn-laf-v20";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -442,6 +446,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;display:flex}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes nodeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes shajan-glow{0%{box-shadow:0 0 0 4px rgba(249,115,22,.15),0 6px 24px rgba(249,115,22,.3)}100%{box-shadow:0 0 0 6px rgba(249,115,22,.25),0 8px 32px rgba(249,115,22,.4)}}
 /* ── SIDEBAR ─────────────────────────────────────────── */
 .sidebar{width:var(--sidebar);height:100vh;position:fixed;left:0;top:0;
   background:#fff;border-right:1px solid var(--border);z-index:200;
@@ -956,6 +961,16 @@ body.dark .pdg-note.partial{color:#fb923c}
 .sg-tab-active{background:#f97316 !important;color:#fff !important;border-color:#f97316 !important}
 body.dark .sg-tab-btn{border-color:#2e2e3a;color:#bba88a}
 body.dark .sg-tab-btn:hover{background:#2a2218}
+/* ── SHAJAN PHOTO ICONS ──────────────────────────── */
+.shajan-nav-photo{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2.5px solid #f97316;flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(249,115,22,.2),0 2px 8px rgba(249,115,22,.25);transition:transform .2s,box-shadow .2s}
+.shajan-nav-photo:hover{transform:scale(1.1);box-shadow:0 0 0 3px rgba(249,115,22,.3),0 4px 14px rgba(249,115,22,.35)}
+.shajan-btab-photo{width:28px;height:28px;border-radius:50%;object-fit:cover;
+  border:2.5px solid #f97316;box-shadow:0 0 0 2px rgba(249,115,22,.18),0 2px 10px rgba(249,115,22,.3);transition:transform .2s}
+#btab-shajan.active .shajan-btab-photo{box-shadow:0 0 0 3px rgba(249,115,22,.35),0 0 12px rgba(249,115,22,.4);transform:scale(1.08)}
+.shajan-header-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;
+  border:3.5px solid #f97316;box-shadow:0 0 0 4px rgba(249,115,22,.15),0 6px 24px rgba(249,115,22,.3);
+  animation:shajan-glow 3s ease-in-out infinite alternate}
 /* ── PODCASTS ─────────────────────────────────────── */
 .pod-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
 @media(max-width:768px){.pod-grid{grid-template-columns:1fr}.yt-lazy{height:200px}}
@@ -1233,7 +1248,7 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   <button class="btab" data-page="topology" onclick="tabNav('topology',this)">
     <span class="material-icons-round">hub</span>Topology</button>
   <button class="btab" id="btab-shajan" data-page="shajanhelp" onclick="tabNav('shajanhelp',this)" style="display:none">
-    <span class="material-icons-round">support_agent</span>Guide</button>
+    <img src="/shajan-photo.jpg" class="shajan-btab-photo" alt="Shajan">Guide</button>
   <button class="btab" data-page="more" onclick="document.querySelector('.sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('on')">
     <span class="material-icons-round">menu</span>More</button>
 </div>
@@ -1306,7 +1321,7 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div class="nav-item" onclick="showPage('help',this)">
       <span class="material-icons-round">help_outline</span> Help Guide</div>
     <div class="nav-item" id="nav-shajan-help" onclick="showPage('shajanhelp',this)" style="display:none">
-      <span class="material-icons-round">support_agent</span> Shajan's Guide</div>
+      <img src="/shajan-photo.jpg" class="shajan-nav-photo" alt="Shajan"> Shajan's Guide</div>
     <div class="nav-item" id="pwa-install" onclick="installPWA()" style="display:none;color:var(--accent);font-weight:700">
       <span class="material-icons-round">install_mobile</span> Install App</div>
   </div>
@@ -1798,7 +1813,7 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
 
   <!-- HEADER + TABS -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
-    <div style="font-size:24px;font-weight:800;color:#f97316">Shajan's Guide</div>
+    <div style="display:flex;align-items:center;gap:12px"><img src="/shajan-photo.jpg" class="shajan-header-photo" alt="Shajan"><span style="font-size:24px;font-weight:800;color:#f97316">Shajan's Guide</span></div>
     <div style="display:flex;gap:6px">
       <button onclick="setSgLang('en')" id="sg-btn-en" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:#f97316;color:#fff;font-family:'Inter',sans-serif">English</button>
       <button onclick="setSgLang('ar')" id="sg-btn-ar" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:transparent;color:#f97316;font-family:'Inter',sans-serif">العربية</button>
@@ -3356,6 +3371,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, MANIFEST.encode(), 'application/json')
         elif path == '/sw.js':
             self._send(200, SERVICE_WORKER.encode(), 'application/javascript')
+        elif path == '/shajan-photo.jpg':
+            self._send(200, SHAJAN_PHOTO, 'image/jpeg')
         elif path.startswith('/icon-'):
             self._send(200, APP_ICON.encode(), 'image/svg+xml')
         else:
