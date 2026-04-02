@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v11";
+const CACHE_NAME = "wsn-laf-v12";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1852,112 +1852,15 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   </div><!-- /sg-tab-guide -->
 
   <div id="sg-tab-pods" style="display:none">
-  <!-- PODCASTS & VIDEOS -->
   <div style="margin-bottom:24px">
     <div style="font-size:22px;font-weight:800;color:#f97316;margin-bottom:8px">Podcasts & Videos</div>
-    <div style="font-size:15px;color:#9a7355;margin-bottom:28px">Audio and video resources to help you understand and present your research.</div>
-
-    <!-- SERIES 1: FOUNDATION -->
-    <div style="margin-bottom:32px">
-      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-        <span class="material-icons-round" style="color:#f97316">school</span> Series 1 — Foundation
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 1: What is WSN and Why Does It Matter?</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">8 min</span></div></div>
-        <div class="pod-desc">Introduction to wireless sensor networks, their applications, and why security matters.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 2: The Problem — Why Existing Protocols Fail</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">10 min</span></div></div>
-        <div class="pod-desc">LEACH, SPIN, and DD explained simply — what they do well and where they fall short.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 3: What is Blockchain in Simple Terms?</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">7 min</span></div></div>
-        <div class="pod-desc">Blockchain explained without jargon — how trust records work in LAF.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
+    <div style="font-size:16px;color:#9a7355;margin-bottom:28px">Audio and video resources — coming soon.</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">school</span> Series 1 — Foundation <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
     </div>
-
-    <!-- SERIES 2: RESEARCH -->
-    <div style="margin-bottom:32px">
-      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-        <span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 4: Paper 1 — The Literature Review Story</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">12 min</span></div></div>
-        <div class="pod-desc">How 44 studies were reviewed, the PRISMA method, and the 6 gaps discovered.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 5: Paper 2 — The Simulation Results</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">15 min</span></div></div>
-        <div class="pod-desc">Walking through the key results: energy, lifetime, throughput, PDR, and what they mean.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 6: The 6 Contributions Explained</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">10 min</span></div></div>
-        <div class="pod-desc">C1 through C6 — what each contribution means and how it was validated.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-    </div>
-
-    <!-- SERIES 3: DASHBOARD TUTORIAL -->
-    <div style="margin-bottom:32px">
-      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-        <span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 7: Dashboard Tour — All Tabs Explained</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">8 min</span></div></div>
-        <div class="pod-desc">A walkthrough of every tab: Overview, Performance, Security, Scalability, and more.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 8: How to Run a Simulation Live</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">6 min</span></div></div>
-        <div class="pod-desc">Step-by-step: adjust parameters, click Run, and interpret the results.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 9: Reading the Charts Like a Researcher</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">9 min</span></div></div>
-        <div class="pod-desc">How to read energy curves, alive node plots, PDR trends, and the comparison table.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-    </div>
-
-    <!-- SERIES 4: VIVA PREP -->
-    <div style="margin-bottom:32px">
-      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-        <span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 10: The 5-Minute Thesis Summary</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">5 min</span></div></div>
-        <div class="pod-desc">Your entire thesis in 5 minutes — practice this before the viva.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 11: Top 10 Examiner Questions & Answers</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">14 min</span></div></div>
-        <div class="pod-desc">The most likely questions and how to answer them confidently.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-      <div class="pod-card">
-        <div class="pod-head"><span class="pod-title">EP 12: Confidence & Presentation Tips</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">7 min</span></div></div>
-        <div class="pod-desc">Body language, pacing, and how to handle "I don't know" questions.</div>
-        <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
-        <div class="pod-empty">Audio coming soon</div>
-      </div>
-    </div>
-
-    <div style="font-size:13px;color:#9a7355;text-align:center;padding:0 0 8px">To add audio, replace the empty src="" with your audio file URL.</div>
   </div>
   </div><!-- /sg-tab-pods -->
 
@@ -3175,7 +3078,7 @@ const USERS={
   '2':{name:'Dr Moamin A Mahmoud',icon:'🎓',msg:'Welcome, Dr Moamin! Thank you for supervising this project. All simulation results and analysis are available for your review.',tail:''},
   '3':{name:'Guest',icon:'👤',msg:'Welcome to the WSN-LAF Simulation Dashboard. Feel free to explore the results and visualisations.',tail:''}
 };
-const SESSION_TTL=5*60*1000; // 5 minutes
+const SESSION_TTL=60*60*1000; // 1 hour (Shajan only)
 function checkSession(){
   const s=localStorage.getItem('wsn-session');
   if(!s)return null;
@@ -3186,7 +3089,9 @@ function checkSession(){
 function doLogin(){
   const pw=document.getElementById('login-pw').value.trim();
   const user=USERS[pw];
-  if(!user){document.getElementById('login-err').style.display='block';
+  if(!user){document.getElementById('login-err').textContent='Invalid access code';document.getElementById('login-err').style.display='block';
+    document.getElementById('login-pw').value='';return;}
+  if(pw==='2'||pw==='3'){document.getElementById('login-err').textContent='This account is temporarily disabled';document.getElementById('login-err').style.display='block';
     document.getElementById('login-pw').value='';return;}
   document.getElementById('login-err').style.display='none';
   document.getElementById('login-overlay').classList.add('hide');
