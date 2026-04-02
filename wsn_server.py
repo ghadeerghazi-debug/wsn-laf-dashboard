@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v12";
+const CACHE_NAME = "wsn-laf-v13";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1854,13 +1854,91 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   <div id="sg-tab-pods" style="display:none">
   <div style="margin-bottom:24px">
     <div style="font-size:22px;font-weight:800;color:#f97316;margin-bottom:8px">Podcasts & Videos</div>
-    <div style="font-size:16px;color:#9a7355;margin-bottom:28px">Audio and video resources — coming soon.</div>
-    <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">school</span> Series 1 — Foundation <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
-      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
-      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
-      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation <span style="font-size:12px;color:#9a7355;font-weight:400">(3 episodes)</span></div></div>
+    <div style="font-size:16px;color:#9a7355;margin-bottom:28px">Video lessons to help you understand and present your research.</div>
+
+    <!-- SERIES 1 — FOUNDATION -->
+    <div style="margin-bottom:36px">
+      <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+        <span class="material-icons-round" style="color:#f97316">school</span> Series 1 — Foundation
+      </div>
+
+      <!-- EP1: WSN Basics -->
+      <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP1</span>
+        <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Foundation</span>
+        What Are Wireless Sensor Networks?
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px">
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هي شبكات الاستشعار اللاسلكية؟</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/17Fb1YrhluE" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">What Are Wireless Sensor Networks?</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/wA3sexuZdGc" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+      </div>
+
+      <!-- EP2: Routing Protocols -->
+      <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP2</span>
+        <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Foundation</span>
+        What is a Routing Protocol?
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px">
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هو بروتوكول التوجيه؟</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/z9aeqQ11wx8" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">What is a Routing Protocol?</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/m_yqaWBiNQQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+      </div>
+
+      <!-- EP3: Blockchain -->
+      <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP3</span>
+        <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Foundation</span>
+        What is Blockchain in Simple Terms?
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px">
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">AR</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">ما هو البلوكتشين؟</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/c98b-2hs6Mo" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+        <div class="pod-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">EN</span>
+            <span style="font-size:15px;font-weight:600;color:#4a2c0a">What is Blockchain in Simple Terms?</span>
+          </div>
+          <iframe width="100%" height="220" src="https://www.youtube.com/embed/jWd0caC_n3U" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+        </div>
+      </div>
     </div>
+
+    <!-- REMAINING SERIES — PLACEHOLDERS -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
+      <div class="pod-card" style="opacity:.7"><div style="font-size:18px;font-weight:700;color:#4a2c0a;display:flex;align-items:center;gap:10px"><span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation <span style="font-size:12px;color:#9a7355;font-weight:400">(coming soon)</span></div></div>
+    </div>
+
   </div>
   </div><!-- /sg-tab-pods -->
 
