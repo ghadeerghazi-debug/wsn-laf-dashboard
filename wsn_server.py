@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v17";
+const CACHE_NAME = "wsn-laf-v18";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1289,18 +1289,14 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <span class="material-icons-round">speed</span> Performance</div>
     <div class="nav-item" onclick="showPage('security',this)">
       <span class="material-icons-round">shield</span> Security</div>
+    <div class="nav-item" onclick="showPage('scalability',this)">
+      <span class="material-icons-round">expand</span> Scalability</div>
     <div class="nav-item" onclick="showPage('ablation',this)">
       <span class="material-icons-round">science</span> Ablation</div>
-    <div class="nav-group" id="nav-advanced">
-      <div class="nav-item" onclick="toggleAdvGroup()">
-        <span class="material-icons-round">tune</span> Advanced
-        <span class="material-icons-round nav-chevron">expand_more</span></div>
-      <div class="nav-sub" id="nav-sub-adv">
-        <div class="nav-sub-item" onclick="showPage('scalability',this)">Scalability</div>
-        <div class="nav-sub-item" onclick="showPage('longterm',this)">Long-Term</div>
-        <div class="nav-sub-item" onclick="showPage('recovery',this)">Recovery</div>
-      </div>
-    </div>
+    <div class="nav-item" onclick="showPage('longterm',this)">
+      <span class="material-icons-round">schedule</span> Long-Term</div>
+    <div class="nav-item" onclick="showPage('recovery',this)">
+      <span class="material-icons-round">healing</span> Recovery</div>
     <div class="nav-item" onclick="showPage('comparison',this)">
       <span class="material-icons-round">compare_arrows</span> Compare</div>
     <div class="nav-item" onclick="showPage('topology',this)">
