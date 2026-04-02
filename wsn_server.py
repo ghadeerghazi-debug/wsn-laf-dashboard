@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v15";
+const CACHE_NAME = "wsn-laf-v16";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -688,15 +688,12 @@ tr:hover td{background:rgba(249,115,22,.03)}
   .help-grid{grid-template-columns:1fr;gap:14px}
   .help-card{padding:18px}
   .help-card h3{font-size:13px}
-  /* Podcasts mobile */
-  .pod-grid{grid-template-columns:1fr}
   .pod-card{padding:14px}
   #sg-wrap{font-size:16px}
   .sg-tab-btn{padding:8px 16px;font-size:13px}
   .sg-step{font-size:16px}
   .sg-q{font-size:17px}
   .sg-a{font-size:16px}
-  .yt-lazy{height:200px}
   .help-card p{font-size:12px}
   .help-section-title{font-size:16px}
   .glossary-grid{grid-template-columns:1fr;gap:8px}
@@ -936,6 +933,7 @@ body.dark .sg-tab-btn{border-color:#2e2e3a;color:#bba88a}
 body.dark .sg-tab-btn:hover{background:#2a2218}
 /* ── PODCASTS ─────────────────────────────────────── */
 .pod-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+@media(max-width:768px){.pod-grid{grid-template-columns:1fr}.yt-lazy{height:200px}}
 .pod-card{background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:14px;padding:20px 22px;margin-bottom:14px}
 .pod-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
 .pod-title{font-size:17px;font-weight:700;color:#4a2c0a}
