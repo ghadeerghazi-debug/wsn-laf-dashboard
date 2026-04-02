@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v4";
+const CACHE_NAME = "wsn-laf-v5";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -919,6 +919,45 @@ body.dark .pdg-note.partial{color:#fb923c}
 .tour-tip .tour-skip{padding:7px 16px;border-radius:8px;border:1px solid var(--border);
   cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);background:none}
 .tour-counter{font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:600}
+/* ── LOGIN ────────────────────────────────────────── */
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:700;display:flex;
+  align-items:center;justify-content:center;flex-direction:column;gap:20px;
+  transition:opacity .6s,visibility .6s}
+.login-overlay.hide{opacity:0;visibility:hidden;pointer-events:none}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:40px 36px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.08);max-width:360px;width:90%}
+.login-logo{width:64px;height:64px;background:linear-gradient(135deg,#f97316,#fb923c);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:22px;color:#fff;font-family:'JetBrains Mono',monospace;
+  margin:0 auto 16px;box-shadow:0 8px 30px rgba(249,115,22,.3)}
+.login-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.login-input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:15px;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+  text-align:center;outline:none;transition:border .2s}
+.login-input:focus{border-color:#f97316}
+.login-input::placeholder{color:var(--muted)}
+.login-btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;
+  background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;cursor:pointer;margin-top:14px;
+  font-family:'Inter',sans-serif;transition:transform .15s}
+.login-btn:hover{transform:scale(1.02)}
+.login-btn:active{transform:scale(.98)}
+.login-error{color:#ef4444;font-size:12px;margin-top:10px;display:none}
+.welcome-modal{position:fixed;inset:0;z-index:750;display:flex;align-items:center;
+  justify-content:center;background:rgba(0,0,0,.4);opacity:0;visibility:hidden;transition:all .4s}
+.welcome-modal.show{opacity:1;visibility:visible}
+.welcome-card{background:var(--card);border-radius:18px;padding:44px 36px;text-align:center;
+  max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.15);transform:scale(.9);transition:transform .4s}
+.welcome-modal.show .welcome-card{transform:scale(1)}
+.welcome-icon{font-size:48px;margin-bottom:12px}
+.welcome-name{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
+.welcome-msg{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.welcome-tail{font-size:12px;color:var(--accent);font-weight:600;font-style:italic;margin-bottom:20px}
+.welcome-enter{padding:10px 32px;border:none;border-radius:10px;font-size:14px;font-weight:700;
+  background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;cursor:pointer;font-family:'Inter',sans-serif}
+body.dark .login-overlay{background:#13131a}
+body.dark .login-box,body.dark .welcome-card{background:#1c1c24;border-color:#2e2e3a}
+body.dark .login-input{background:#13131a;border-color:#2e2e3a;color:#e8e0d8}
 /* ── SPLASH ───────────────────────────────────────── */
 .splash{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;
   align-items:center;justify-content:center;flex-direction:column;gap:16px;
@@ -1027,6 +1066,30 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">LAF</div>
+    <div class="login-title">WSN-LAF Dashboard</div>
+    <div class="login-sub">Enter your access code to continue</div>
+    <input class="login-input" id="login-pw" type="password" placeholder="Access Code" autofocus
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-err">Invalid access code</div>
+  </div>
+</div>
+
+<!-- WELCOME MODAL -->
+<div class="welcome-modal" id="welcome-modal">
+  <div class="welcome-card">
+    <div class="welcome-icon" id="welcome-icon"></div>
+    <div class="welcome-name" id="welcome-name"></div>
+    <div class="welcome-msg" id="welcome-msg"></div>
+    <div class="welcome-tail" id="welcome-tail"></div>
+    <button class="welcome-enter" onclick="closeWelcome()">Enter Dashboard</button>
+  </div>
+</div>
 
 <!-- SPLASH -->
 <div class="splash" id="splash">
@@ -2829,10 +2892,52 @@ function installPWA(){
   });
 }
 
+// ── LOGIN ────────────────────────────────────────────────────────────────────
+const USERS={
+  '1':{name:'Shajan',icon:'👋',msg:'Welcome back, Shajan, to your WSN-LAF Project Dashboard! Your simulation data and results are ready.',tail:'Koji'},
+  '2':{name:'Dr Moamin A Mahmoud',icon:'🎓',msg:'Welcome, Dr Moamin! Thank you for supervising this project. All simulation results and analysis are available for your review.',tail:''},
+  '3':{name:'Guest',icon:'👤',msg:'Welcome to the WSN-LAF Simulation Dashboard. Feel free to explore the results and visualisations.',tail:''}
+};
+const SESSION_TTL=20*60*1000; // 20 minutes
+function checkSession(){
+  const s=localStorage.getItem('wsn-session');
+  if(!s)return null;
+  const d=JSON.parse(s);
+  if(Date.now()-d.ts>SESSION_TTL){localStorage.removeItem('wsn-session');return null;}
+  return d;
+}
+function doLogin(){
+  const pw=document.getElementById('login-pw').value.trim();
+  const user=USERS[pw];
+  if(!user){document.getElementById('login-err').style.display='block';
+    document.getElementById('login-pw').value='';return;}
+  document.getElementById('login-err').style.display='none';
+  document.getElementById('login-overlay').classList.add('hide');
+  document.getElementById('welcome-icon').textContent=user.icon;
+  document.getElementById('welcome-name').textContent='Welcome, '+user.name+'!';
+  document.getElementById('welcome-msg').textContent=user.msg;
+  const tail=document.getElementById('welcome-tail');
+  if(user.tail){tail.textContent='"'+user.tail+'"';tail.style.display='block';}
+  else{tail.style.display='none';}
+  setTimeout(()=>document.getElementById('welcome-modal').classList.add('show'),400);
+  localStorage.setItem('wsn-session',JSON.stringify({name:user.name,ts:Date.now()}));
+}
+function skipLogin(){
+  const lo=document.getElementById('login-overlay');
+  lo.classList.add('hide');
+  setTimeout(()=>{lo.style.display='none'},600);
+}
+function closeWelcome(){
+  document.getElementById('welcome-modal').classList.remove('show');
+}
+
 // ── INIT: load pre-computed data ──────────────────────────────────────────────
 window.addEventListener('load',async()=>{
   // restore dark mode
   if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
+  // check session — skip login if still valid
+  const sess=checkSession();
+  if(sess){localStorage.setItem('wsn-session',JSON.stringify({name:sess.name,ts:Date.now()}));skipLogin();}
   showSkeleton();
   try{
     let r=await fetch('/api/data'); DATA=await r.json();
