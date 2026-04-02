@@ -378,7 +378,7 @@ SHAJAN_PHOTO_B64 = "/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAAAAgAAYdpAAQA
 SHAJAN_PHOTO = _b64.b64decode(SHAJAN_PHOTO_B64)
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v20";
+const CACHE_NAME = "wsn-laf-v21";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -971,6 +971,21 @@ body.dark .sg-tab-btn:hover{background:#2a2218}
 .shajan-header-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;
   border:3.5px solid #f97316;box-shadow:0 0 0 4px rgba(249,115,22,.15),0 6px 24px rgba(249,115,22,.3);
   animation:shajan-glow 3s ease-in-out infinite alternate}
+/* ── RESEARCH VIDEOS ─────────────────────────────── */
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px}
+.rv-card{background:#fff;border:1.5px solid #f5d5b8;border-radius:14px;padding:16px 18px;transition:box-shadow .2s}
+.rv-card:hover{box-shadow:0 4px 20px rgba(249,115,22,.15)}
+.rv-badges{display:flex;gap:6px;margin-bottom:10px}
+.rv-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.5px}
+.rv-ar{background:#dcfce7;color:#16a34a;border:1px solid #16a34a}
+.rv-en{background:#eff6ff;color:#2563eb;border:1px solid #2563eb}
+.rv-ep{background:#fff7ed;color:#f97316;border:1px solid #f97316}
+.rv-title{font-size:15px;font-weight:700;color:#4a2c0a;margin-bottom:4px;line-height:1.4}
+.rv-sub{font-size:12px;color:#9a7355;margin-bottom:12px}
+body.dark .rv-card{background:#1e1e2a;border-color:#2e2e3a}
+body.dark .rv-title{color:#e8e0d8}
+body.dark .rv-sub{color:#bba88a}
+@media(max-width:768px){.rv-grid{grid-template-columns:1fr}.rv-card{padding:14px}}
 /* ── PODCASTS ─────────────────────────────────────── */
 .pod-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
 @media(max-width:768px){.pod-grid{grid-template-columns:1fr}.yt-lazy{height:200px}}
@@ -1910,7 +1925,67 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div style="font-size:18px;line-height:1.8" data-en="Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously." data-ar="الورقة الثانية هي الدليل المنشور — LAF يتفوق على LEACH وSPIN وDD وTEARP في الطاقة وعمر الشبكة والأمان والإنتاجية في آن واحد.">Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously.</div>
   </div>
 
-  <!-- 7. YOUR NOTES -->
+  <!-- 7. RESEARCH VIDEOS -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:6px;display:flex;align-items:center;gap:10px" data-en="&#128250; Research Videos" data-ar="&#128250; فيديوهات البحث">&#128250; Research Videos</div>
+    <div style="font-size:14px;color:#9a7355;margin-bottom:22px" data-en="Videos from Project 2 — The Research series" data-ar="فيديوهات من المشروع 2 — سلسلة البحث">Videos from Project 2 — The Research series</div>
+
+    <!-- ROW 1 — Paper 1: The Systematic Review -->
+    <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP4</span>
+      <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
+      <span data-en="Paper 1 — The Systematic Review" data-ar="الورقة البحثية 1 — المراجعة المنهجية">Paper 1 — The Systematic Review</span>
+    </div>
+    <div class="rv-grid">
+      <div class="rv-card">
+        <div class="rv-badges">
+          <span class="rv-badge rv-ar">AR</span>
+          <span class="rv-badge rv-ep">EP4</span>
+        </div>
+        <div class="rv-title" dir="rtl" style="text-align:right">ورقة بحثية رقم 1 — المراجعة المنهجية</div>
+        <div class="rv-sub">EP4 · Arabic · Paper 1 Review</div>
+        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/a0wLLmySVZQ" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+      </div>
+      <div class="rv-card">
+        <div class="rv-badges">
+          <span class="rv-badge rv-en">EN</span>
+          <span class="rv-badge rv-ep">EP4</span>
+        </div>
+        <div class="rv-title">Paper 1 — The Systematic Review</div>
+        <div class="rv-sub">EP4 · English · Paper 1 Review</div>
+        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/NJrcgsIRQhk" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Paper 2: The LAF Framework -->
+    <div style="font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:14px;margin-top:24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="background:#f97316;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px">EP5</span>
+      <span style="background:#0d9488;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Research</span>
+      <span data-en="Paper 2 — The LAF Framework" data-ar="الورقة البحثية 2 — إطار LAF">Paper 2 — The LAF Framework</span>
+    </div>
+    <div class="rv-grid">
+      <div class="rv-card">
+        <div class="rv-badges">
+          <span class="rv-badge rv-ar">AR</span>
+          <span class="rv-badge rv-ep">EP5</span>
+        </div>
+        <div class="rv-title" dir="rtl" style="text-align:right">ورقة بحثية رقم 2 — إطار LAF</div>
+        <div class="rv-sub">EP5 · Arabic · Paper 2 LAF</div>
+        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/FZPDmvCzqDM" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+      </div>
+      <div class="rv-card">
+        <div class="rv-badges">
+          <span class="rv-badge rv-en">EN</span>
+          <span class="rv-badge rv-ep">EP5</span>
+        </div>
+        <div class="rv-title">Paper 2 — The LAF Framework</div>
+        <div class="rv-sub">EP5 · English · Paper 2 LAF</div>
+        <iframe class="yt-lazy" width="100%" height="220" data-src="https://www.youtube.com/embed/ndL9gIXB2Es" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. YOUR NOTES -->
   <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
     <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:12px" data-en="Your Notes" data-ar="ملاحظاتك">Your Notes</div>
     <div style="font-size:15px;color:#9a7355;margin-bottom:12px" data-en="Write anything here — it saves automatically. Use it before the viva to write what you want to remember." data-ar="اكتبي أي شيء هنا — يُحفظ تلقائيًا. استخدميها قبل المناقشة لكتابة ما تريدين تذكره.">Write anything here — it saves automatically. Use it before the viva to write what you want to remember.</div>
@@ -3277,7 +3352,8 @@ function sgTab(tab){
   document.getElementById('sg-tab-pods').style.display=tab==='pods'?'':'none';
   document.getElementById('sg-tab-btn-guide').classList.toggle('sg-tab-active',tab==='guide');
   document.getElementById('sg-tab-btn-pods').classList.toggle('sg-tab-active',tab==='pods');
-  if(tab==='pods')document.querySelectorAll('.yt-lazy[data-src]').forEach(f=>{if(!f.src||!f.src.includes('youtube')){f.src=f.dataset.src;}});
+  const container=tab==='pods'?document.getElementById('sg-tab-pods'):document.getElementById('sg-tab-guide');
+  container.querySelectorAll('.yt-lazy[data-src]').forEach(f=>{if(!f.src||!f.src.includes('youtube')){f.src=f.dataset.src;}});
 }
 function setSgLang(lang){
   const wrap=document.getElementById('sg-wrap');
