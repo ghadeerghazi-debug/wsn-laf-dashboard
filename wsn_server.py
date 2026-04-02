@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v8";
+const CACHE_NAME = "wsn-laf-v9";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -919,6 +919,26 @@ body.dark .pdg-note.partial{color:#fb923c}
 .tour-tip .tour-skip{padding:7px 16px;border-radius:8px;border:1px solid var(--border);
   cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);background:none}
 .tour-counter{font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:600}
+/* ── PODCASTS ─────────────────────────────────────── */
+.pod-card{background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:14px;padding:20px 22px;margin-bottom:14px}
+.pod-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.pod-title{font-size:17px;font-weight:700;color:#4a2c0a}
+.pod-meta{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.pod-lang{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px}
+.pod-ar{background:#fff7ed;color:#f97316;border:1px solid #f97316}
+.pod-en{background:#eff6ff;color:#2563eb;border:1px solid #2563eb}
+.pod-dur{font-size:12px;color:#9a7355;font-weight:600}
+.pod-desc{font-size:15px;color:#6b4c2a;line-height:1.6;margin-bottom:12px}
+.pod-audio{width:100%;height:40px;border-radius:8px}
+.pod-audio[data-src=""]{display:none}
+.pod-empty{display:none;font-size:13px;color:#9a7355;font-style:italic;padding:10px 0}
+.pod-audio[data-src=""]~.pod-empty{display:block}
+body.dark .pod-card{background:#1c1c24;border-color:#2e2e3a}
+body.dark .pod-title{color:#e8e0d8}
+body.dark .pod-desc{color:#bba88a}
+body.dark .pod-ar{background:#2a2218;border-color:#f97316}
+body.dark .pod-en{background:#1a2236;border-color:#2563eb}
+body.dark #pod-wrap{color:#e8e0d8}
 /* ── SHAJAN GUIDE ─────────────────────────────────── */
 .sg-steps{display:flex;flex-direction:column;gap:12px}
 .sg-step{display:flex;align-items:flex-start;gap:14px;font-size:18px;line-height:1.7}
@@ -1233,6 +1253,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <span class="material-icons-round">help_outline</span> Help Guide</div>
     <div class="nav-item" id="nav-shajan-help" onclick="showPage('shajanhelp',this)" style="display:none">
       <span class="material-icons-round">support_agent</span> Shajan's Guide</div>
+    <div class="nav-item" id="nav-shajan-pods" onclick="showPage('podcasts',this)" style="display:none">
+      <span class="material-icons-round">podcasts</span> Podcasts & Videos</div>
     <div class="nav-item" id="pwa-install" onclick="installPWA()" style="display:none;color:var(--accent);font-weight:700">
       <span class="material-icons-round">install_mobile</span> Install App</div>
   </div>
@@ -1822,6 +1844,118 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   <div style="background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;border-radius:16px;padding:36px 28px;text-align:center;box-shadow:0 8px 30px rgba(249,115,22,.25);margin-bottom:24px">
     <div style="font-size:22px;font-weight:800;line-height:1.7" data-en="You built this. Two published papers. A live website. A complete simulation.<br>You have done the work. The results speak for themselves." data-ar="أنتِ بنيتِ هذا. ورقتان بحثيتان منشورتان. موقع إلكتروني مباشر. محاكاة كاملة.<br>لقد أنجزتِ العمل. النتائج تتحدث عن نفسها.">You built this. Two published papers. A live website. A complete simulation.<br>You have done the work. The results speak for themselves.</div>
   </div>
+
+</div>
+</div>
+
+<!-- PODCASTS & VIDEOS (login "1" only) -->
+<div id="page-podcasts" class="page">
+<div id="pod-wrap" style="max-width:800px;margin:0 auto;padding:8px 0;font-size:18px;line-height:1.8;color:#4a2c0a">
+
+  <div style="font-size:24px;font-weight:800;color:#f97316;margin-bottom:8px">Podcasts & Videos</div>
+  <div style="font-size:15px;color:#9a7355;margin-bottom:28px">Audio and video resources to help you understand and present your research.</div>
+
+  <!-- SERIES 1: FOUNDATION -->
+  <div style="margin-bottom:32px">
+    <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <span class="material-icons-round" style="color:#f97316">school</span> Series 1 — Foundation
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 1: What is WSN and Why Does It Matter?</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">8 min</span></div></div>
+      <div class="pod-desc">Introduction to wireless sensor networks, their applications, and why security matters.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 2: The Problem — Why Existing Protocols Fail</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">10 min</span></div></div>
+      <div class="pod-desc">LEACH, SPIN, and DD explained simply — what they do well and where they fall short.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 3: What is Blockchain in Simple Terms?</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">7 min</span></div></div>
+      <div class="pod-desc">Blockchain explained without jargon — how trust records work in LAF.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+  </div>
+
+  <!-- SERIES 2: RESEARCH -->
+  <div style="margin-bottom:32px">
+    <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <span class="material-icons-round" style="color:#f97316">biotech</span> Series 2 — Research Deep Dive
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 4: Paper 1 — The Literature Review Story</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">12 min</span></div></div>
+      <div class="pod-desc">How 44 studies were reviewed, the PRISMA method, and the 6 gaps discovered.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 5: Paper 2 — The Simulation Results</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">15 min</span></div></div>
+      <div class="pod-desc">Walking through the key results: energy, lifetime, throughput, PDR, and what they mean.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 6: The 6 Contributions Explained</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">10 min</span></div></div>
+      <div class="pod-desc">C1 through C6 — what each contribution means and how it was validated.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+  </div>
+
+  <!-- SERIES 3: DASHBOARD TUTORIAL -->
+  <div style="margin-bottom:32px">
+    <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <span class="material-icons-round" style="color:#f97316">ondemand_video</span> Series 3 — Dashboard Tutorial
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 7: Dashboard Tour — All Tabs Explained</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">8 min</span></div></div>
+      <div class="pod-desc">A walkthrough of every tab: Overview, Performance, Security, Scalability, and more.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 8: How to Run a Simulation Live</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">6 min</span></div></div>
+      <div class="pod-desc">Step-by-step: adjust parameters, click Run, and interpret the results.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 9: Reading the Charts Like a Researcher</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">9 min</span></div></div>
+      <div class="pod-desc">How to read energy curves, alive node plots, PDR trends, and the comparison table.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+  </div>
+
+  <!-- SERIES 4: VIVA PREP -->
+  <div style="margin-bottom:32px">
+    <div style="font-size:20px;font-weight:800;color:#4a2c0a;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <span class="material-icons-round" style="color:#f97316">record_voice_over</span> Series 4 — Viva Preparation
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 10: The 5-Minute Thesis Summary</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">5 min</span></div></div>
+      <div class="pod-desc">Your entire thesis in 5 minutes — practice this before the viva.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 11: Top 10 Examiner Questions & Answers</span><div class="pod-meta"><span class="pod-lang pod-ar">Arabic</span><span class="pod-dur">14 min</span></div></div>
+      <div class="pod-desc">The most likely questions and how to answer them confidently.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+    <div class="pod-card">
+      <div class="pod-head"><span class="pod-title">EP 12: Confidence & Presentation Tips</span><div class="pod-meta"><span class="pod-lang pod-en">English</span><span class="pod-dur">7 min</span></div></div>
+      <div class="pod-desc">Body language, pacing, and how to handle "I don't know" questions.</div>
+      <audio controls class="pod-audio" data-src=""><source src="" type="audio/mpeg"></audio>
+      <div class="pod-empty">Audio coming soon</div>
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:#9a7355;text-align:center;padding:16px 0">To add audio, replace the empty <code>src=""</code> in the HTML with your audio file URL.</div>
 
 </div>
 </div>
@@ -3059,6 +3193,7 @@ function doLogin(){
 }
 function showShajanNav(){
   const el=document.getElementById('nav-shajan-help');if(el)el.style.display='';
+  const pod=document.getElementById('nav-shajan-pods');if(pod)pod.style.display='';
   const notes=document.getElementById('shajan-notes');
   if(notes){const saved=localStorage.getItem('shajan-notes');if(saved)notes.value=saved;}
   const savedLang=localStorage.getItem('sg-lang');if(savedLang)setSgLang(savedLang);
