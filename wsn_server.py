@@ -374,7 +374,7 @@ APP_ICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 </svg>'''
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v5";
+const CACHE_NAME = "wsn-laf-v7";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -919,6 +919,24 @@ body.dark .pdg-note.partial{color:#fb923c}
 .tour-tip .tour-skip{padding:7px 16px;border-radius:8px;border:1px solid var(--border);
   cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);background:none}
 .tour-counter{font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:600}
+/* ── SHAJAN GUIDE ─────────────────────────────────── */
+.sg-steps{display:flex;flex-direction:column;gap:12px}
+.sg-step{display:flex;align-items:flex-start;gap:14px;font-size:18px;line-height:1.7}
+.sg-num{min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border-radius:10px;font-weight:800;font-size:15px;background:#fff7ed;color:#f97316;flex-shrink:0}
+.sg-qa{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #f5d5b8}
+.sg-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.sg-q{font-size:19px;font-weight:700;color:#4a2c0a;margin-bottom:8px}
+.sg-a{font-size:18px;color:#6b4c2a;line-height:1.8}
+#sg-wrap[dir="rtl"] .sg-step{flex-direction:row-reverse;text-align:right}
+#sg-wrap[dir="rtl"] .sg-qa{text-align:right}
+#sg-wrap[dir="rtl"] .sg-q,#sg-wrap[dir="rtl"] .sg-a{text-align:right}
+body.dark .sg-card{background:#1c1c24 !important;border-color:#2e2e3a !important}
+body.dark .sg-q{color:#e8e0d8}
+body.dark .sg-a{color:#bba88a}
+body.dark .sg-num{background:#2a2218;color:#f97316}
+body.dark #sg-wrap{color:#e8e0d8}
+body.dark #shajan-notes{background:#13131a;color:#e8e0d8;border-color:#2e2e3a}
 /* ── LOGIN ────────────────────────────────────────── */
 .login-overlay{position:fixed;inset:0;background:var(--bg);z-index:700;display:flex;
   align-items:center;justify-content:center;flex-direction:column;gap:20px;
@@ -1213,6 +1231,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <span class="material-icons-round">verified</span> PD Goals</div>
     <div class="nav-item" onclick="showPage('help',this)">
       <span class="material-icons-round">help_outline</span> Help Guide</div>
+    <div class="nav-item" id="nav-shajan-help" onclick="showPage('shajanhelp',this)" style="display:none">
+      <span class="material-icons-round">support_agent</span> Shajan's Guide</div>
     <div class="nav-item" id="pwa-install" onclick="installPWA()" style="display:none;color:var(--accent);font-weight:700">
       <span class="material-icons-round">install_mobile</span> Install App</div>
   </div>
@@ -1690,6 +1710,120 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   Lightweight Adaptive Framework for Secure Wireless Sensor Networks<br>
   <a href="#" onclick="startTour();return false">Take Interactive Tour</a> ·
   <a href="#" onclick="showPage('help',document.querySelector('[onclick*=help]'));return false">Help Guide</a>
+</div>
+
+<!-- SHAJAN HELP (login "1" only) -->
+<div id="page-shajanhelp" class="page">
+<div id="sg-wrap" style="max-width:800px;margin:0 auto;padding:8px 0;font-size:18px;line-height:1.8;color:#4a2c0a">
+
+  <!-- LANG TOGGLE -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+    <div style="font-size:24px;font-weight:800;color:#f97316">Shajan's Guide</div>
+    <div style="display:flex;gap:6px">
+      <button onclick="setSgLang('en')" id="sg-btn-en" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:#f97316;color:#fff;font-family:'Inter',sans-serif">English</button>
+      <button onclick="setSgLang('ar')" id="sg-btn-ar" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:transparent;color:#f97316;font-family:'Inter',sans-serif">العربية</button>
+    </div>
+  </div>
+
+  <!-- 1. TODAY'S QUICK REMINDER -->
+  <div class="sg-card" style="background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;border-radius:16px;padding:28px 28px 24px;margin-bottom:24px;box-shadow:0 8px 30px rgba(249,115,22,.25)">
+    <div style="font-size:20px;font-weight:800;margin-bottom:16px" data-en="Today's Quick Reminder" data-ar="تذكير اليوم السريع">Today's Quick Reminder</div>
+    <div style="font-size:18px;line-height:2">
+      <div data-en="My framework is called: <b>LAF</b>" data-ar="إطار العمل الخاص بي يسمى: <b>LAF</b>">My framework is called: <b>LAF</b></div>
+      <div data-en="My result vs LEACH: <b>+14.3%</b> energy · <b>+8.8%</b> lifetime · <b>+11.4%</b> throughput · <b>+3.7%</b> PDR" data-ar="نتيجتي مقارنة بـ LEACH: <b>+14.3%</b> طاقة · <b>+8.8%</b> عمر الشبكة · <b>+11.4%</b> إنتاجية · <b>+3.7%</b> PDR">My result vs LEACH: <b>+14.3%</b> energy · <b>+8.8%</b> lifetime · <b>+11.4%</b> throughput · <b>+3.7%</b> PDR</div>
+      <div data-en="My latency result: <b>29.0 ms</b> (target was ≤30ms ✅)" data-ar="نتيجة زمن الاستجابة: <b>29.0 ms</b> (الهدف كان ≤30ms ✅)">My latency result: <b>29.0 ms</b> (target was ≤30ms ✅)</div>
+      <div data-en="My ledger result: <b>39.1 KB</b> (target was ≤50KB ✅)" data-ar="نتيجة حجم السجل: <b>39.1 KB</b> (الهدف كان ≤50KB ✅)">My ledger result: <b>39.1 KB</b> (target was ≤50KB ✅)</div>
+    </div>
+  </div>
+
+  <!-- 2. BEFORE THE VIVA -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:16px" data-en="Before the Viva — Do This" data-ar="قبل المناقشة — افعلي هذا">Before the Viva — Do This</div>
+    <div class="sg-steps">
+      <div class="sg-step"><span class="sg-num">1</span><span data-en="Open the website on the projector" data-ar="افتحي الموقع على جهاز العرض (projector)">Open the website on the projector</span></div>
+      <div class="sg-step"><span class="sg-num">2</span><span data-en='Click <b>"Paper 2 Mode"</b> button — shows exact published results' data-ar='اضغطي على زر <b>"Paper 2 Mode"</b> — يعرض النتائج المنشورة بالضبط'>Click <b>"Paper 2 Mode"</b> button — shows exact published results</span></div>
+      <div class="sg-step"><span class="sg-num">3</span><span data-en="Click <b>PD Goals</b> — shows all 10 proposal goals" data-ar="اضغطي على <b>PD Goals</b> — يعرض جميع أهداف المقترح العشرة">Click <b>PD Goals</b> — shows all 10 proposal goals</span></div>
+      <div class="sg-step"><span class="sg-num">4</span><span data-en="Go to <b>Overview</b> tab — show the 4 KPI badges" data-ar="اذهبي إلى تبويب <b>Overview</b> — أظهري شارات مؤشرات الأداء الأربعة">Go to <b>Overview</b> tab — show the 4 KPI badges</span></div>
+      <div class="sg-step"><span class="sg-num">5</span><span data-en="Go to <b>Security</b> tab — show the attack resilience heatmap" data-ar="اذهبي إلى تبويب <b>Security</b> — أظهري خريطة مقاومة الهجمات">Go to <b>Security</b> tab — show the attack resilience heatmap</span></div>
+      <div class="sg-step"><span class="sg-num">6</span><span data-en="Go to <b>Long-Term</b> tab — show 1,500 rounds stability" data-ar="اذهبي إلى تبويب <b>Long-Term</b> — أظهري استقرار 1,500 جولة">Go to <b>Long-Term</b> tab — show 1,500 rounds stability</span></div>
+      <div class="sg-step"><span class="sg-num">7</span><span data-en="Go to <b>Recovery</b> tab — show &lt;1 round recovery" data-ar="اذهبي إلى تبويب <b>Recovery</b> — أظهري التعافي بأقل من جولة واحدة">Go to <b>Recovery</b> tab — show &lt;1 round recovery</span></div>
+    </div>
+  </div>
+
+  <!-- 3. IF THEY ASK YOU -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:20px" data-en="If They Ask You..." data-ar="إذا سألوكِ...">If They Ask You...</div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: What is LAF?" data-ar="س: ما هو LAF؟">Q: What is LAF?</div>
+      <div class="sg-a" data-en="A lightweight framework that makes wireless sensor networks more secure AND more energy-efficient at the same time — something no previous framework achieved together." data-ar="إطار عمل خفيف يجعل شبكات الاستشعار اللاسلكية (WSN) أكثر أمانًا وكفاءة في الطاقة في نفس الوقت — وهو شيء لم يحققه أي إطار عمل سابق معًا.">A lightweight framework that makes wireless sensor networks more secure AND more energy-efficient at the same time — something no previous framework achieved together.</div>
+    </div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: What is your main result?" data-ar="س: ما هي نتيجتك الرئيسية؟">Q: What is your main result?</div>
+      <div class="sg-a" data-en="LAF lives 8.8% longer than LEACH, delivers 14.3% more energy efficiency, and stays above 85% PDR even when 30% of the network is under attack." data-ar="LAF يعيش أطول بنسبة 8.8% من LEACH، ويوفر كفاءة طاقة أعلى بنسبة 14.3%، ويبقى فوق 85% PDR حتى عندما يكون 30% من الشبكة تحت الهجوم.">LAF lives 8.8% longer than LEACH, delivers 14.3% more energy efficiency, and stays above 85% PDR even when 30% of the network is under attack.</div>
+    </div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: Why not use Q-learning?" data-ar="س: لماذا لم تستخدمي Q-learning؟">Q: Why not use Q-learning?</div>
+      <div class="sg-a" data-en="Q-learning needs more memory than Class 1 hardware has. My composite cost formula achieves the same adaptability with a simple math formula that fits in 10KB of RAM." data-ar="Q-learning يحتاج ذاكرة أكثر مما يملكه عتاد Class 1. صيغة التكلفة المركبة الخاصة بي تحقق نفس القدرة على التكيف بمعادلة رياضية بسيطة تناسب 10KB من الذاكرة RAM.">Q-learning needs more memory than Class 1 hardware has. My composite cost formula achieves the same adaptability with a simple math formula that fits in 10KB of RAM.</div>
+    </div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: Why simulation not hardware?" data-ar="س: لماذا المحاكاة وليس العتاد الحقيقي؟">Q: Why simulation not hardware?</div>
+      <div class="sg-a" data-en="Hardware cannot reproduce exact attack scenarios at specific percentages. Simulation gives full control and exact reproducibility — any researcher can repeat my results with seed 42." data-ar="العتاد لا يمكنه إعادة إنتاج سيناريوهات الهجوم بنسب محددة. المحاكاة (simulation) توفر تحكمًا كاملاً وقابلية إعادة إنتاج دقيقة — أي باحث يمكنه تكرار نتائجي باستخدام seed 42.">Hardware cannot reproduce exact attack scenarios at specific percentages. Simulation gives full control and exact reproducibility — any researcher can repeat my results with seed 42.</div>
+    </div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: What is the blockchain for?" data-ar="س: ما هو دور الـ blockchain؟">Q: What is the blockchain for?</div>
+      <div class="sg-a" data-en="It keeps a tamper-proof record of which nodes are trustworthy. Malicious nodes cannot fake their history. The trust scores feed directly into routing decisions." data-ar="يحتفظ بسجل مقاوم للتلاعب يوضح أي العقد موثوقة. العقد الخبيثة لا تستطيع تزوير سجلها. درجات الثقة (trust scores) تُغذّي قرارات التوجيه (routing) مباشرة.">It keeps a tamper-proof record of which nodes are trustworthy. Malicious nodes cannot fake their history. The trust scores feed directly into routing decisions.</div>
+    </div>
+
+    <div class="sg-qa">
+      <div class="sg-q" data-en="Q: What is your contribution to knowledge?" data-ar="س: ما هي مساهمتك في المعرفة؟">Q: What is your contribution to knowledge?</div>
+      <div class="sg-a" data-en="I am the first to combine energy-aware routing AND lightweight blockchain trust management AND adaptive weight adjustment into one unified framework validated on Class 1 hardware constraints." data-ar="أنا أول من جمع بين التوجيه الموفر للطاقة (energy-aware routing) وإدارة الثقة بتقنية blockchain الخفيفة والتعديل التكيفي للأوزان (adaptive weight adjustment) في إطار عمل موحد تم التحقق منه على قيود عتاد Class 1.">I am the first to combine energy-aware routing AND lightweight blockchain trust management AND adaptive weight adjustment into one unified framework validated on Class 1 hardware constraints.</div>
+    </div>
+  </div>
+
+  <!-- 4. MY 6 CONTRIBUTIONS -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:16px" data-en="My 6 Contributions" data-ar="مساهماتي الستة">My 6 Contributions</div>
+    <div class="sg-steps">
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C1</span><span data-en="Smart cluster head selection (energy + trust + distance)" data-ar="اختيار ذكي لرأس العنقود - cluster head (الطاقة + الثقة + المسافة)">Smart cluster head selection (energy + trust + distance)</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C2</span><span data-en="Composite cost routing formula: αE + βD + γ(1−T)" data-ar="صيغة تكلفة التوجيه المركبة: αE + βD + γ(1−T)">Composite cost routing formula: αE + βD + γ(1−T)</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C3</span><span data-en="Lightweight blockchain with PoA / PBFT-Lite consensus" data-ar="Blockchain خفيف مع إجماع PoA / PBFT-Lite">Lightweight blockchain with PoA / PBFT-Lite consensus</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C4</span><span data-en="Python simulation with 30 Monte Carlo runs" data-ar="محاكاة Python مع 30 تشغيل Monte Carlo">Python simulation with 30 Monte Carlo runs</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C5</span><span data-en="Adaptive γ weight increases when network is under attack" data-ar="وزن γ التكيفي يزداد عندما تكون الشبكة تحت الهجوم">Adaptive γ weight increases when network is under attack</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C6</span><span data-en="Trust scores from blockchain directly update routing decisions" data-ar="درجات الثقة (trust scores) من blockchain تُحدّث قرارات التوجيه (routing) مباشرة">Trust scores from blockchain directly update routing decisions</span></div>
+    </div>
+  </div>
+
+  <!-- 5. PAPER 1 IN ONE SENTENCE -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:12px" data-en="Paper 1 in One Sentence" data-ar="الورقة البحثية الأولى في جملة واحدة">Paper 1 in One Sentence</div>
+    <div style="font-size:18px;line-height:1.8" data-en="Paper 1 reviewed 44 studies from 2018–2025 using PRISMA and found 6 gaps that no existing framework solved — my LAF framework solves all 6." data-ar="الورقة الأولى راجعت 44 دراسة من 2018–2025 باستخدام منهجية PRISMA ووجدت 6 فجوات لم يحلها أي إطار عمل موجود — إطار عمل LAF الخاص بي يحل جميع الفجوات الستة.">Paper 1 reviewed 44 studies from 2018–2025 using PRISMA and found 6 gaps that no existing framework solved — my LAF framework solves all 6.</div>
+  </div>
+
+  <!-- 6. PAPER 2 IN ONE SENTENCE -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:12px" data-en="Paper 2 in One Sentence" data-ar="الورقة البحثية الثانية في جملة واحدة">Paper 2 in One Sentence</div>
+    <div style="font-size:18px;line-height:1.8" data-en="Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously." data-ar="الورقة الثانية هي الدليل المنشور — LAF يتفوق على LEACH وSPIN وDD وTEARP في الطاقة وعمر الشبكة والأمان والإنتاجية في آن واحد.">Paper 2 is the published proof — LAF outperforms LEACH, SPIN, DD, and TEARP on energy, lifetime, security, and throughput simultaneously.</div>
+  </div>
+
+  <!-- 7. YOUR NOTES -->
+  <div class="sg-card" style="background:#FFF8F3;border:1.5px solid #f5d5b8;border-radius:16px;padding:28px;margin-bottom:24px">
+    <div style="font-size:20px;font-weight:800;color:#f97316;margin-bottom:12px" data-en="Your Notes" data-ar="ملاحظاتك">Your Notes</div>
+    <div style="font-size:15px;color:#9a7355;margin-bottom:12px" data-en="Write anything here — it saves automatically. Use it before the viva to write what you want to remember." data-ar="اكتبي أي شيء هنا — يُحفظ تلقائيًا. استخدميها قبل المناقشة لكتابة ما تريدين تذكره.">Write anything here — it saves automatically. Use it before the viva to write what you want to remember.</div>
+    <textarea id="shajan-notes" style="width:100%;min-height:200px;border:1.5px solid #f5d5b8;border-radius:12px;padding:16px;font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;background:#fff;color:#4a2c0a;resize:vertical;outline:none" oninput="localStorage.setItem('shajan-notes',this.value)"></textarea>
+    <div style="font-size:12px;color:#9a7355;margin-top:6px;text-align:right" data-en="Auto-saved to your browser" data-ar="يُحفظ تلقائيًا في متصفحك">Auto-saved to your browser</div>
+  </div>
+
+  <!-- 8. I AM READY -->
+  <div style="background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;border-radius:16px;padding:36px 28px;text-align:center;box-shadow:0 8px 30px rgba(249,115,22,.25);margin-bottom:24px">
+    <div style="font-size:22px;font-weight:800;line-height:1.7" data-en="You built this. Two published papers. A live website. A complete simulation.<br>You have done the work. The results speak for themselves." data-ar="أنتِ بنيتِ هذا. ورقتان بحثيتان منشورتان. موقع إلكتروني مباشر. محاكاة كاملة.<br>لقد أنجزتِ العمل. النتائج تتحدث عن نفسها.">You built this. Two published papers. A live website. A complete simulation.<br>You have done the work. The results speak for themselves.</div>
+  </div>
+
+</div>
 </div>
 
 </div><!-- /main -->
@@ -2920,7 +3054,25 @@ function doLogin(){
   if(user.tail){tail.textContent='"'+user.tail+'"';tail.style.display='block';}
   else{tail.style.display='none';}
   setTimeout(()=>document.getElementById('welcome-modal').classList.add('show'),400);
-  localStorage.setItem('wsn-session',JSON.stringify({name:user.name,ts:Date.now()}));
+  localStorage.setItem('wsn-session',JSON.stringify({name:user.name,pw:pw,ts:Date.now()}));
+  if(pw==='1')showShajanNav();
+}
+function showShajanNav(){
+  const el=document.getElementById('nav-shajan-help');if(el)el.style.display='';
+  const notes=document.getElementById('shajan-notes');
+  if(notes){const saved=localStorage.getItem('shajan-notes');if(saved)notes.value=saved;}
+  const savedLang=localStorage.getItem('sg-lang');if(savedLang)setSgLang(savedLang);
+}
+function setSgLang(lang){
+  const wrap=document.getElementById('sg-wrap');
+  wrap.dir=lang==='ar'?'rtl':'ltr';
+  wrap.style.fontFamily=lang==='ar'?"'Inter',sans-serif":"'Inter',sans-serif";
+  document.getElementById('sg-btn-en').style.background=lang==='en'?'#f97316':'transparent';
+  document.getElementById('sg-btn-en').style.color=lang==='en'?'#fff':'#f97316';
+  document.getElementById('sg-btn-ar').style.background=lang==='ar'?'#f97316':'transparent';
+  document.getElementById('sg-btn-ar').style.color=lang==='ar'?'#fff':'#f97316';
+  wrap.querySelectorAll('[data-'+lang+']').forEach(el=>{el.innerHTML=el.getAttribute('data-'+lang);});
+  localStorage.setItem('sg-lang',lang);
 }
 function skipLogin(){
   const lo=document.getElementById('login-overlay');
@@ -2937,7 +3089,7 @@ window.addEventListener('load',async()=>{
   if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
   // check session — skip login if still valid
   const sess=checkSession();
-  if(sess){localStorage.setItem('wsn-session',JSON.stringify({name:sess.name,ts:Date.now()}));skipLogin();}
+  if(sess){localStorage.setItem('wsn-session',JSON.stringify({name:sess.name,pw:sess.pw,ts:Date.now()}));skipLogin();if(sess.pw==='1')showShajanNav();}
   showSkeleton();
   try{
     let r=await fetch('/api/data'); DATA=await r.json();
