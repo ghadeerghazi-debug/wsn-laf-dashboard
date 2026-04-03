@@ -378,7 +378,7 @@ SHAJAN_PHOTO_B64 = "/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAAAAgAAYdpAAQA
 SHAJAN_PHOTO = _b64.b64decode(SHAJAN_PHOTO_B64)
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v22";
+const CACHE_NAME = "wsn-laf-v23";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -961,6 +961,55 @@ body.dark .pdg-note.partial{color:#fb923c}
 .sg-tab-active{background:#f97316 !important;color:#fff !important;border-color:#f97316 !important}
 body.dark .sg-tab-btn{border-color:#2e2e3a;color:#bba88a}
 body.dark .sg-tab-btn:hover{background:#2a2218}
+/* ── RESEARCH STORY ──────────────────────────────── */
+.story-section{display:flex;gap:20px;margin-bottom:40px;position:relative}
+.story-num{width:48px;height:48px;border-radius:50%;background:#f97316;color:#fff;font-size:22px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(249,115,22,.3)}
+.story-body{flex:1;min-width:0}
+.story-icon{margin-bottom:8px}
+.story-heading{font-size:22px;font-weight:800;color:#4a2c0a;margin-bottom:20px}
+.story-cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px}
+.story-card{background:#fff;border:1.5px solid #f5d5b8;border-radius:14px;padding:22px;transition:box-shadow .2s}
+.story-card:hover{box-shadow:0 4px 20px rgba(249,115,22,.12)}
+.story-card-problem{border-left:4px solid #dc2626}
+.story-card-solution{border-left:4px solid #16a34a}
+.story-card-title{font-size:17px;font-weight:700;color:#4a2c0a;margin-bottom:8px}
+.story-card-text{font-size:15px;line-height:1.7;color:#6b4c2a}
+.story-c-badge{width:36px;height:36px;border-radius:50%;background:#16a34a;color:#fff;font-size:14px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.story-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.story-metric{background:linear-gradient(135deg,#fff7ed,#fff);border:1.5px solid #f5d5b8;border-radius:14px;padding:22px;text-align:center}
+.story-metric-val{font-size:28px;font-weight:900;color:#f97316;margin-bottom:4px}
+.story-metric-label{font-size:14px;font-weight:700;color:#4a2c0a}
+.story-metric-sub{font-size:12px;color:#9a7355;margin-top:4px}
+.story-checks{display:flex;flex-direction:column;gap:12px}
+.story-check{display:flex;align-items:center;gap:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px 18px;font-size:16px;color:#4a2c0a}
+.story-check-note{color:#9a7355;font-weight:400}
+.story-impacts{display:flex;gap:12px;flex-wrap:wrap}
+.story-impact-badge{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;
+  border-radius:12px;padding:14px 20px;font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(249,115,22,.25)}
+.story-impact-badge .material-icons-round{font-size:20px}
+#story-wrap[dir="rtl"] .story-section{flex-direction:row-reverse}
+#story-wrap[dir="rtl"] .story-card-problem{border-left:none;border-right:4px solid #dc2626}
+#story-wrap[dir="rtl"] .story-card-solution{border-left:none;border-right:4px solid #16a34a}
+#story-wrap[dir="rtl"] .story-heading,#story-wrap[dir="rtl"] .story-card-title,#story-wrap[dir="rtl"] .story-card-text,
+#story-wrap[dir="rtl"] .story-metric-label,#story-wrap[dir="rtl"] .story-metric-sub,
+#story-wrap[dir="rtl"] .story-check,#story-wrap[dir="rtl"] .story-check-note{text-align:right}
+body.dark .story-card{background:#1e1e2a;border-color:#2e2e3a}
+body.dark .story-card-title,body.dark .story-heading{color:#e8e0d8}
+body.dark .story-card-text,body.dark .story-check-note{color:#bba88a}
+body.dark .story-metric{background:linear-gradient(135deg,#2a2218,#1e1e2a);border-color:#2e2e3a}
+body.dark .story-metric-label{color:#e8e0d8}
+body.dark .story-metric-sub{color:#bba88a}
+body.dark .story-check{background:#1a2e1a;border-color:#2e4a2e}
+@media(max-width:768px){
+  .story-cards-3{grid-template-columns:1fr}
+  .story-metrics{grid-template-columns:1fr 1fr}
+  .story-section{gap:14px}
+  .story-num{width:38px;height:38px;font-size:18px}
+  .story-heading{font-size:19px}
+  .story-impacts{flex-direction:column}
+}
 /* ── SHAJAN PHOTO ICONS ──────────────────────────── */
 .shajan-nav-photo{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2.5px solid #f97316;flex-shrink:0;
   box-shadow:0 0 0 2px rgba(249,115,22,.2),0 2px 8px rgba(249,115,22,.25);transition:transform .2s,box-shadow .2s}
@@ -1313,6 +1362,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div class="sb-nav-label">Dashboard</div>
     <div class="nav-item active" onclick="showPage('overview',this)">
       <span class="material-icons-round">dashboard</span> Overview</div>
+    <div class="nav-item" onclick="showPage('story',this)">
+      <span class="material-icons-round">auto_stories</span> Our Story</div>
     <div class="nav-item" onclick="showPage('paper1',this)">
       <span class="material-icons-round">menu_book</span> Paper 1</div>
     <div class="nav-item" onclick="showPage('performance',this)">
@@ -1534,6 +1585,151 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
     <div style="font-size:13px;color:var(--muted);font-weight:600">wsn-laf-dashboard.onrender.com</div>
     <div style="font-size:11px;color:var(--muted);margin-top:4px">Scan to open on another device</div>
   </div>
+</div>
+
+<!-- OUR STORY — Research Journey -->
+<div id="page-story" class="page">
+<div id="story-wrap" style="max-width:900px;margin:0 auto;padding:12px 0">
+
+  <!-- Language toggle -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+    <div style="font-size:26px;font-weight:800;color:#f97316">Our Research Story</div>
+    <div style="display:flex;gap:6px">
+      <button onclick="setStoryLang('en')" id="story-btn-en" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:#f97316;color:#fff;font-family:'Inter',sans-serif">English</button>
+      <button onclick="setStoryLang('ar')" id="story-btn-ar" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:transparent;color:#f97316;font-family:'Inter',sans-serif">العربية</button>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 1 — THE PROBLEM ═══ -->
+  <div class="story-section">
+    <div class="story-num">1</div>
+    <div class="story-body">
+      <div class="story-icon" style="color:#dc2626"><span class="material-icons-round" style="font-size:48px">warning</span></div>
+      <div class="story-heading" data-en="The Problem We Solved" data-ar="المشكلة التي حللناها">The Problem We Solved</div>
+      <div class="story-cards-3">
+        <div class="story-card story-card-problem">
+          <span class="material-icons-round" style="font-size:36px;color:#dc2626;margin-bottom:12px">battery_alert</span>
+          <div class="story-card-title" data-en="Energy Waste" data-ar="هدر الطاقة">Energy Waste</div>
+          <div class="story-card-text" data-en="Existing protocols like LEACH waste battery by ignoring node energy in routing decisions. Sensor nodes die early, leaving gaps in the network." data-ar="البروتوكولات الحالية مثل LEACH تهدر البطارية بتجاهل طاقة العقدة في قرارات التوجيه. تموت عقد الاستشعار مبكرًا، مما يترك فجوات في الشبكة.">Existing protocols like LEACH waste battery by ignoring node energy in routing decisions. Sensor nodes die early, leaving gaps in the network.</div>
+        </div>
+        <div class="story-card story-card-problem">
+          <span class="material-icons-round" style="font-size:36px;color:#dc2626;margin-bottom:12px">gpp_bad</span>
+          <div class="story-card-title" data-en="Security Attacks" data-ar="هجمات أمنية">Security Attacks</div>
+          <div class="story-card-text" data-en="Sinkhole, Sybil, Selective Forwarding, and Hello Flood attacks can drop PDR from 91% down to 34% with no defence." data-ar="هجمات Sinkhole وSybil وSelective Forwarding وHello Flood يمكن أن تُسقط نسبة PDR من 91% إلى 34% بدون أي دفاع.">Sinkhole, Sybil, Selective Forwarding, and Hello Flood attacks can drop PDR from 91% down to 34% with no defence.</div>
+        </div>
+        <div class="story-card story-card-problem">
+          <span class="material-icons-round" style="font-size:36px;color:#dc2626;margin-bottom:12px">search_off</span>
+          <div class="story-card-title" data-en="No Unified Solution" data-ar="لا يوجد حل موحد">No Unified Solution</div>
+          <div class="story-card-text" data-en="44 reviewed studies (Paper 1) confirmed no existing framework solved energy efficiency AND security AND adaptability simultaneously on Class 1 hardware." data-ar="44 دراسة تمت مراجعتها (الورقة 1) أكدت أنه لا يوجد إطار عمل حالي يحل كفاءة الطاقة والأمان والقدرة على التكيف معًا على أجهزة Class 1.">44 reviewed studies (Paper 1) confirmed no existing framework solved energy efficiency AND security AND adaptability simultaneously on Class 1 hardware.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2 — THE SOLUTION ═══ -->
+  <div class="story-section">
+    <div class="story-num">2</div>
+    <div class="story-body">
+      <div class="story-icon" style="color:#16a34a"><span class="material-icons-round" style="font-size:48px">check_circle</span></div>
+      <div class="story-heading" data-en="Our Solution — The LAF Framework" data-ar="حلنا — إطار عمل LAF">Our Solution — The LAF Framework</div>
+      <div class="story-cards-3">
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C1</div>
+          <div class="story-card-title" data-en="Smart CH Selection" data-ar="اختيار ذكي لرأس العنقود">Smart CH Selection</div>
+          <div class="story-card-text" data-en="Picks the strongest, most trustworthy cluster head based on energy, trust, and distance." data-ar="يختار رأس العنقود الأقوى والأكثر موثوقية بناءً على الطاقة والثقة والمسافة.">Picks the strongest, most trustworthy cluster head based on energy, trust, and distance.</div>
+        </div>
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C2</div>
+          <div class="story-card-title" data-en="Composite Cost Routing" data-ar="توجيه التكلفة المركبة">Composite Cost Routing</div>
+          <div class="story-card-text" data-en="Formula αE + βD + γ(1−T) balances energy, distance, and trust in every routing decision." data-ar="صيغة αE + βD + γ(1−T) توازن بين الطاقة والمسافة والثقة في كل قرار توجيه.">Formula αE + βD + γ(1−T) balances energy, distance, and trust in every routing decision.</div>
+        </div>
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C3</div>
+          <div class="story-card-title" data-en="Lightweight Blockchain" data-ar="بلوكتشين خفيف">Lightweight Blockchain</div>
+          <div class="story-card-text" data-en="PoA/PBFT-Lite consensus, blocks below 2KB, ledger below 50KB — fits Class 1 hardware." data-ar="إجماع PoA/PBFT-Lite، كتل أقل من 2KB، سجل أقل من 50KB — يناسب أجهزة Class 1.">PoA/PBFT-Lite consensus, blocks below 2KB, ledger below 50KB — fits Class 1 hardware.</div>
+        </div>
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C4</div>
+          <div class="story-card-title" data-en="Rigorous Validation" data-ar="تحقق صارم">Rigorous Validation</div>
+          <div class="story-card-text" data-en="30 Monte Carlo runs × 6 scenarios = 2,430 total independent simulation tests." data-ar="30 تشغيل Monte Carlo × 6 سيناريوهات = 2,430 اختبار محاكاة مستقل.">30 Monte Carlo runs × 6 scenarios = 2,430 total independent simulation tests.</div>
+        </div>
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C5</div>
+          <div class="story-card-title" data-en="Adaptive Weights" data-ar="أوزان تكيفية">Adaptive Weights</div>
+          <div class="story-card-text" data-en="γ increases automatically when network is under attack — security scales with threat level." data-ar="γ يزداد تلقائيًا عندما تكون الشبكة تحت الهجوم — الأمان يتناسب مع مستوى التهديد.">γ increases automatically when network is under attack — security scales with threat level.</div>
+        </div>
+        <div class="story-card story-card-solution">
+          <div class="story-c-badge">C6</div>
+          <div class="story-card-title" data-en="Cross-Layer Feedback" data-ar="تغذية راجعة عبر الطبقات">Cross-Layer Feedback</div>
+          <div class="story-card-text" data-en="Blockchain trust scores update routing every single round — real-time security integration." data-ar="درجات الثقة من البلوكتشين تُحدّث التوجيه في كل جولة — تكامل أمني في الوقت الفعلي.">Blockchain trust scores update routing every single round — real-time security integration.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3 — THE RESULTS ═══ -->
+  <div class="story-section">
+    <div class="story-num">3</div>
+    <div class="story-body">
+      <div class="story-icon" style="color:#f97316"><span class="material-icons-round" style="font-size:48px">emoji_events</span></div>
+      <div class="story-heading" data-en="What We Proved — 4 Validated Improvements" data-ar="ما أثبتناه — 4 تحسينات مؤكدة">What We Proved — 4 Validated Improvements</div>
+      <div class="story-metrics">
+        <div class="story-metric">
+          <div class="story-metric-val">+14.3%</div>
+          <div class="story-metric-label" data-en="Residual Energy" data-ar="الطاقة المتبقية">Residual Energy</div>
+          <div class="story-metric-sub" data-en="vs LEACH" data-ar="مقارنة بـ LEACH">vs LEACH</div>
+        </div>
+        <div class="story-metric">
+          <div class="story-metric-val">+8.8%</div>
+          <div class="story-metric-label" data-en="Network Lifetime" data-ar="عمر الشبكة">Network Lifetime</div>
+          <div class="story-metric-sub" data-en="FND: 379 vs 348 rounds" data-ar="FND: 379 مقابل 348 جولة">FND: 379 vs 348 rounds</div>
+        </div>
+        <div class="story-metric">
+          <div class="story-metric-val">+11.4%</div>
+          <div class="story-metric-label" data-en="Throughput" data-ar="الإنتاجية">Throughput</div>
+          <div class="story-metric-sub" data-en="180 vs 156 kbps" data-ar="180 مقابل 156 kbps">180 vs 156 kbps</div>
+        </div>
+        <div class="story-metric">
+          <div class="story-metric-val">+3.7%</div>
+          <div class="story-metric-label" data-en="Packet Delivery" data-ar="نسبة تسليم الحزم">Packet Delivery</div>
+          <div class="story-metric-sub" data-en="91.8% vs 88.6%" data-ar="91.8% مقابل 88.6%">91.8% vs 88.6%</div>
+        </div>
+      </div>
+      <div class="story-checks">
+        <div class="story-check">
+          <span class="material-icons-round" style="color:#16a34a;font-size:28px">check_circle</span>
+          <div><strong data-en="Latency: 29.0ms" data-ar="زمن الاستجابة: 29.0ms">Latency: 29.0ms</strong> <span class="story-check-note" data-en="— below 30ms target" data-ar="— أقل من هدف 30ms">— below 30ms target</span></div>
+        </div>
+        <div class="story-check">
+          <span class="material-icons-round" style="color:#16a34a;font-size:28px">check_circle</span>
+          <div><strong data-en="Ledger: 39.1KB" data-ar="حجم السجل: 39.1KB">Ledger: 39.1KB</strong> <span class="story-check-note" data-en="— below 50KB target" data-ar="— أقل من هدف 50KB">— below 50KB target</span></div>
+        </div>
+        <div class="story-check">
+          <span class="material-icons-round" style="color:#16a34a;font-size:28px">check_circle</span>
+          <div><strong data-en="Recovery: &lt;1 round" data-ar="التعافي: أقل من جولة واحدة">Recovery: &lt;1 round</strong> <span class="story-check-note" data-en="— below 5 round target" data-ar="— أقل من هدف 5 جولات">— below 5 round target</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 4 — THE IMPACT ═══ -->
+  <div class="story-section">
+    <div class="story-num">4</div>
+    <div class="story-body">
+      <div class="story-icon" style="color:#f97316"><span class="material-icons-round" style="font-size:48px">star</span></div>
+      <div class="story-heading" data-en="Why This Matters" data-ar="لماذا هذا مهم">Why This Matters</div>
+      <div class="story-card" style="background:linear-gradient(135deg,#fff7ed,#fff);border:1.5px solid #f5d5b8;padding:28px;border-radius:16px;margin-bottom:20px">
+        <div class="story-card-text" style="font-size:17px;line-height:1.9" data-en="This research proves for the first time that a single lightweight framework can simultaneously achieve energy efficiency, decentralised security, and adaptive routing on Class 1 constrained sensor nodes. Validated across 6 scenarios, 7 network scales, 4 attack types, and 2,430 independent simulation tests — all results independently reproducible using seed 42." data-ar="يثبت هذا البحث لأول مرة أن إطار عمل خفيف واحد يمكنه تحقيق كفاءة الطاقة والأمان اللامركزي والتوجيه التكيفي في آن واحد على عقد استشعار مقيدة من Class 1. تم التحقق عبر 6 سيناريوهات و7 أحجام شبكة و4 أنواع هجمات و2,430 اختبار محاكاة مستقل — جميع النتائج قابلة لإعادة الإنتاج باستخدام seed 42.">This research proves for the first time that a single lightweight framework can simultaneously achieve energy efficiency, decentralised security, and adaptive routing on Class 1 constrained sensor nodes. Validated across 6 scenarios, 7 network scales, 4 attack types, and 2,430 independent simulation tests — all results independently reproducible using seed 42.</div>
+      </div>
+      <div class="story-impacts">
+        <div class="story-impact-badge"><span class="material-icons-round">description</span> <span data-en="2 Published Papers" data-ar="ورقتان بحثيتان منشورتان">2 Published Papers</span></div>
+        <div class="story-impact-badge"><span class="material-icons-round">computer</span> <span data-en="Live Verification Dashboard" data-ar="لوحة تحقق مباشرة">Live Verification Dashboard</span></div>
+        <div class="story-impact-badge"><span class="material-icons-round">lock_open</span> <span data-en="Open Reproducible Results" data-ar="نتائج مفتوحة قابلة للتكرار">Open Reproducible Results</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <!-- PAPER 1 — Literature Review -->
@@ -2146,7 +2342,7 @@ function setStatus(msg,cls=''){
 }
 
 // ── BREADCRUMB NAMES ─────────────────────────────────────────────────────────
-const PAGE_NAMES={overview:'Overview',paper1:'Paper 1',performance:'Performance',security:'Security',
+const PAGE_NAMES={overview:'Overview',story:'Our Story',paper1:'Paper 1',performance:'Performance',security:'Security',
   scalability:'Scalability',ablation:'Ablation',longterm:'Long-Term',recovery:'Recovery',
   comparison:'Compare',topology:'Topology',pdgoals:'PD Goals',help:'Help Guide',shajanhelp:"Shajan's Guide"};
 const ADV_PAGES=['scalability','longterm','recovery'];
@@ -3366,6 +3562,16 @@ function setSgLang(lang){
   document.getElementById('sg-btn-ar').style.color=lang==='ar'?'#fff':'#f97316';
   wrap.querySelectorAll('[data-'+lang+']').forEach(el=>{el.innerHTML=el.getAttribute('data-'+lang);});
   localStorage.setItem('sg-lang',lang);
+}
+function setStoryLang(lang){
+  const wrap=document.getElementById('story-wrap');
+  wrap.dir=lang==='ar'?'rtl':'ltr';
+  document.getElementById('story-btn-en').style.background=lang==='en'?'#f97316':'transparent';
+  document.getElementById('story-btn-en').style.color=lang==='en'?'#fff':'#f97316';
+  document.getElementById('story-btn-ar').style.background=lang==='ar'?'#f97316':'transparent';
+  document.getElementById('story-btn-ar').style.color=lang==='ar'?'#fff':'#f97316';
+  wrap.querySelectorAll('[data-'+lang+']').forEach(el=>{el.innerHTML=el.getAttribute('data-'+lang);});
+  localStorage.setItem('story-lang',lang);
 }
 function skipLogin(){
   const lo=document.getElementById('login-overlay');
