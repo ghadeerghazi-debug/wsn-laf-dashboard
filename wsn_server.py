@@ -378,7 +378,7 @@ SHAJAN_PHOTO_B64 = "/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAAAAgAAYdpAAQA
 SHAJAN_PHOTO = _b64.b64decode(SHAJAN_PHOTO_B64)
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v23";
+const CACHE_NAME = "wsn-laf-v24";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -783,6 +783,98 @@ body.dark #topo-canvas{background:#1c1c24;border-color:#2e2e3a}
 body.dark .fab{background:#1c1c24;border-color:#2e2e3a}
 body.dark .fab-menu{background:#1c1c24;border-color:#2e2e3a}
 body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
+/* ── ANIMATION PAGE ──────────────────────────────── */
+.anim-stage{position:relative;min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#09090f;border-radius:16px;margin-bottom:18px}
+.anim-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .9s ease;padding:40px;text-align:center}
+.anim-scene.anim-active{opacity:1}
+.anim-scene-label{font-size:11px;color:#f97316;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;opacity:0;transform:translateY(10px);transition:all .6s .3s}
+.anim-scene.anim-active .anim-scene-label{opacity:1;transform:translateY(0)}
+.anim-scene-title{font-size:36px;font-weight:700;line-height:1.2;margin-bottom:16px;color:#fff;opacity:0;transform:translateY(20px);transition:all .7s .5s}
+.anim-scene.anim-active .anim-scene-title{opacity:1;transform:translateY(0)}
+.anim-scene-sub{font-size:16px;color:#888;max-width:620px;line-height:1.6;opacity:0;transform:translateY(20px);transition:all .7s .8s}
+.anim-scene.anim-active .anim-scene-sub{opacity:1;transform:translateY(0)}
+.anim-orange{color:#f97316}
+.anim-node-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:400px;margin:24px auto}
+.anim-snode{width:28px;height:28px;border-radius:50%;border:2px solid #333;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:9px;color:#555;transition:all .5s}
+.anim-snode.alive{border-color:#22c55e;background:#0f2e1a;color:#22c55e}
+.anim-snode.dying{border-color:#f97316;background:#2e1a0f;color:#f97316;animation:anim-pulse-die 1.5s infinite}
+.anim-snode.dead{border-color:#222;background:#111;color:#333}
+.anim-snode.hacked{border-color:#ef4444;background:#2e0f0f;color:#ef4444;animation:anim-pulse-hack .8s infinite}
+@keyframes anim-pulse-die{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.9);opacity:.6}}
+@keyframes anim-pulse-hack{0%,100%{border-color:#ef4444}50%{border-color:#ff8888;box-shadow:0 0 8px #ef444488}}
+.anim-protocol-row{display:flex;gap:20px;justify-content:center;margin:24px 0;flex-wrap:wrap}
+.anim-pcard{background:#111118;border:1px solid #222;border-radius:12px;padding:18px 24px;min-width:130px;opacity:0;transform:translateY(30px);transition:all .6s}
+.anim-scene.anim-active .anim-pcard{opacity:1;transform:translateY(0)}
+.anim-scene.anim-active .anim-pcard:nth-child(1){transition-delay:.9s}
+.anim-scene.anim-active .anim-pcard:nth-child(2){transition-delay:1.1s}
+.anim-scene.anim-active .anim-pcard:nth-child(3){transition-delay:1.3s}
+.anim-scene.anim-active .anim-pcard:nth-child(4){transition-delay:1.5s}
+.anim-pcard .pname{font-size:16px;font-weight:700;margin-bottom:8px}
+.anim-pcard .ptag{font-size:11px;color:#555;margin-bottom:10px}
+.anim-pcard .pbar{height:4px;background:#1e1e2e;border-radius:2px;overflow:hidden}
+.anim-pcard .pfill{height:100%;border-radius:2px;width:0;transition:width 1.5s 1.5s ease}
+.anim-scene.anim-active .pfill{width:var(--w)}
+.anim-pcard .pscore{font-size:11px;color:#666;margin-top:6px}
+.anim-pcard.fail{border-color:#ef444433}.anim-pcard.fail .pname{color:#ef4444}.anim-pcard.fail .pfill{background:#ef4444}
+.anim-pcard.ok{border-color:#f9731633}.anim-pcard.ok .pname{color:#f97316}.anim-pcard.ok .pfill{background:#f97316}
+.anim-laf-hero{position:relative;width:140px;height:140px;margin:16px auto}
+.anim-laf-ring{position:absolute;inset:0;border-radius:50%;border:2px solid #f9731633;animation:anim-expand-ring 2s infinite}
+.anim-laf-ring:nth-child(2){animation-delay:.7s}.anim-laf-ring:nth-child(3){animation-delay:1.4s}
+@keyframes anim-expand-ring{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.8);opacity:0}}
+.anim-laf-core{position:absolute;inset:30px;background:linear-gradient(135deg,#f97316,#ea580c);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;box-shadow:0 0 40px #f9731644;animation:anim-float-core 3s ease-in-out infinite}
+@keyframes anim-float-core{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.anim-ctag{background:#1a1a2e;border:1px solid #f9731633;color:#f97316;font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;opacity:0;transform:scale(.8);transition:all .4s}
+.anim-scene.anim-active .anim-ctag{opacity:1;transform:scale(1)}
+.anim-scene.anim-active .anim-ctag:nth-child(1){transition-delay:1s}
+.anim-scene.anim-active .anim-ctag:nth-child(2){transition-delay:1.2s}
+.anim-scene.anim-active .anim-ctag:nth-child(3){transition-delay:1.3s}
+.anim-scene.anim-active .anim-ctag:nth-child(4){transition-delay:1.4s}
+.anim-scene.anim-active .anim-ctag:nth-child(5){transition-delay:1.5s}
+.anim-scene.anim-active .anim-ctag:nth-child(6){transition-delay:1.6s}
+.anim-results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:520px;margin:24px auto}
+.anim-rcard{background:#111118;border:1px solid #1e1e2e;border-radius:14px;padding:20px;text-align:left;opacity:0;transform:translateY(20px) scale(.95);transition:all .6s}
+.anim-scene.anim-active .anim-rcard{opacity:1;transform:translateY(0) scale(1)}
+.anim-scene.anim-active .anim-rcard:nth-child(1){transition-delay:.8s;border-color:#f9731633}
+.anim-scene.anim-active .anim-rcard:nth-child(2){transition-delay:1s;border-color:#22c55e33}
+.anim-scene.anim-active .anim-rcard:nth-child(3){transition-delay:1.2s;border-color:#3b82f633}
+.anim-scene.anim-active .anim-rcard:nth-child(4){transition-delay:1.4s;border-color:#a855f733}
+.anim-rcard .rval{font-size:32px;font-weight:800;margin-bottom:4px}
+.anim-rcard:nth-child(1) .rval{color:#f97316}
+.anim-rcard:nth-child(2) .rval{color:#22c55e}
+.anim-rcard:nth-child(3) .rval{color:#3b82f6}
+.anim-rcard:nth-child(4) .rval{color:#a855f7}
+.anim-rcard .rlabel{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:1px}
+.anim-rcard .rsub{font-size:12px;color:#666;margin-top:4px}
+.anim-city-nodes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:24px auto;max-width:500px}
+.anim-city-node{display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;transform:translateY(20px);transition:all .6s}
+.anim-scene.anim-active .anim-city-node{opacity:1;transform:translateY(0)}
+.anim-scene.anim-active .anim-city-node:nth-child(1){transition-delay:.8s}
+.anim-scene.anim-active .anim-city-node:nth-child(2){transition-delay:1s}
+.anim-scene.anim-active .anim-city-node:nth-child(3){transition-delay:1.2s}
+.anim-scene.anim-active .anim-city-node:nth-child(4){transition-delay:1.4s}
+.anim-scene.anim-active .anim-city-node:nth-child(5){transition-delay:1.6s}
+.anim-city-icon{width:56px;height:56px;border-radius:14px;background:#1a1a2e;border:1px solid #f9731633;display:flex;align-items:center;justify-content:center;font-size:24px;animation:anim-glow-city 2s ease-in-out infinite}
+.anim-city-node:nth-child(1) .anim-city-icon{animation-delay:0s}
+.anim-city-node:nth-child(2) .anim-city-icon{animation-delay:.4s}
+.anim-city-node:nth-child(3) .anim-city-icon{animation-delay:.8s}
+.anim-city-node:nth-child(4) .anim-city-icon{animation-delay:1.2s}
+.anim-city-node:nth-child(5) .anim-city-icon{animation-delay:1.6s}
+@keyframes anim-glow-city{0%,100%{box-shadow:0 0 0 #f9731600;border-color:#f9731633}50%{box-shadow:0 0 16px #f9731622;border-color:#f97316}}
+.anim-city-label{font-size:11px;color:#666}
+.anim-credit-box{margin-top:24px;padding:18px 30px;border:1px solid #f9731633;border-radius:12px;background:#0f0f1a;opacity:0;transition:opacity .8s 2s}
+.anim-scene.anim-active .anim-credit-box{opacity:1}
+.anim-credit-box .cname{font-size:18px;font-weight:700;color:#f97316}
+.anim-credit-box .cuniv{font-size:13px;color:#555;margin-top:4px}
+.anim-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px;background:#111118;border-radius:0 0 16px 16px;border-top:1px solid #1e1e2e}
+.anim-dot{width:8px;height:8px;border-radius:50%;background:#333;cursor:pointer;transition:all .3s}
+.anim-dot.anim-dot-active{background:#f97316;transform:scale(1.4)}
+.anim-btn{background:transparent;border:1px solid #333;color:#aaa;padding:6px 18px;border-radius:20px;cursor:pointer;font-size:13px;transition:all .3s;font-family:'Inter',sans-serif}
+.anim-btn:hover{border-color:#f97316;color:#f97316}
+.anim-progress{height:2px;background:#1e1e2e;border-radius:16px 16px 0 0;overflow:hidden}
+.anim-progress-fill{height:100%;background:#f97316;transition:width .3s linear}
+.anim-timer-ring{width:32px;height:32px;position:relative}
+.anim-timer-ring svg{transform:rotate(-90deg)}
+@media(max-width:768px){.anim-scene-title{font-size:24px}.anim-scene-sub{font-size:14px}.anim-results-grid{grid-template-columns:1fr}.anim-protocol-row{flex-direction:column;align-items:center}.anim-stage{min-height:380px}}
 /* ── STATS TICKER ─────────────────────────────────── */
 .stats-ticker{display:flex;align-items:center;gap:20px;padding:10px 20px;
   background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:20px;
@@ -1364,6 +1456,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <span class="material-icons-round">dashboard</span> Overview</div>
     <div class="nav-item" onclick="showPage('story',this)">
       <span class="material-icons-round">auto_stories</span> Our Story</div>
+    <div class="nav-item" onclick="showPage('animation',this)">
+      <span class="material-icons-round">movie</span> Animation</div>
     <div class="nav-item" onclick="showPage('paper1',this)">
       <span class="material-icons-round">menu_book</span> Paper 1</div>
     <div class="nav-item" onclick="showPage('performance',this)">
@@ -1727,6 +1821,181 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
         <div class="story-impact-badge"><span class="material-icons-round">lock_open</span> <span data-en="Open Reproducible Results" data-ar="نتائج مفتوحة قابلة للتكرار">Open Reproducible Results</span></div>
       </div>
     </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ANIMATION — The Story of LAF -->
+<div id="page-animation" class="page">
+<div id="anim-wrap" style="max-width:900px;margin:0 auto;padding:12px 0">
+
+  <!-- Language toggle -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px">
+    <div style="font-size:24px;font-weight:800;color:#f97316" data-en="The Story of LAF" data-ar="قصة إطار LAF">The Story of LAF</div>
+    <div style="display:flex;gap:6px">
+      <button onclick="setAnimLang('en')" id="anim-btn-en" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:#f97316;color:#fff;font-family:'Inter',sans-serif">English</button>
+      <button onclick="setAnimLang('ar')" id="anim-btn-ar" style="padding:8px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #f97316;background:transparent;color:#f97316;font-family:'Inter',sans-serif">العربية</button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="anim-progress"><div class="anim-progress-fill" id="anim-prog"></div></div>
+
+  <!-- Stage -->
+  <div class="anim-stage">
+
+    <!-- SCENE 1: THE PROBLEM -->
+    <div class="anim-scene anim-active" id="anim-s1">
+      <div class="anim-scene-label" data-en="Scene 1 of 5" data-ar="المشهد 1 من 5">Scene 1 of 5</div>
+      <div class="anim-scene-title" data-en="The <span class='anim-orange'>Problem</span>" data-ar="<span class='anim-orange'>المشكلة</span>">The <span class="anim-orange">Problem</span></div>
+      <div class="anim-scene-sub" data-en="Hundreds of tiny sensors scattered in the field. They talk to each other, collect data, send reports. But two problems are destroying them." data-ar="مئات المستشعرات الصغيرة منتشرة في الميدان. تتواصل مع بعضها، تجمع البيانات، وترسل التقارير. لكن مشكلتين تدمرها.">Hundreds of tiny sensors scattered in the field. They talk to each other, collect data, send reports. But two problems are destroying them.</div>
+      <div class="anim-node-grid" id="anim-nodeGrid"></div>
+      <div style="display:flex;gap:24px;justify-content:center;margin-top:10px;flex-wrap:wrap">
+        <div style="font-size:13px;color:#22c55e" data-en="● Alive" data-ar="● حيّ">● Alive</div>
+        <div style="font-size:13px;color:#f97316" data-en="● Dying (low battery)" data-ar="● يحتضر (بطارية منخفضة)">● Dying (low battery)</div>
+        <div style="font-size:13px;color:#ef4444" data-en="● Hacked" data-ar="● مُخترَق">● Hacked</div>
+        <div style="font-size:13px;color:#333" data-en="● Dead" data-ar="● ميّت">● Dead</div>
+      </div>
+    </div>
+
+    <!-- SCENE 2: OLD PROTOCOLS -->
+    <div class="anim-scene" id="anim-s2">
+      <div class="anim-scene-label" data-en="Scene 2 of 5" data-ar="المشهد 2 من 5">Scene 2 of 5</div>
+      <div class="anim-scene-title" data-en="Old Protocols <span class='anim-orange'>Failed</span>" data-ar="البروتوكولات القديمة <span class='anim-orange'>فشلت</span>">Old Protocols <span class="anim-orange">Failed</span></div>
+      <div class="anim-scene-sub" data-en="Scientists tried LEACH, SPIN, and Directed Diffusion. They helped with energy — but ignored security completely." data-ar="جرّب العلماء LEACH وSPIN وDirected Diffusion. ساعدت في الطاقة — لكنها تجاهلت الأمان تماماً.">Scientists tried LEACH, SPIN, and Directed Diffusion. They helped with energy — but ignored security completely.</div>
+      <div class="anim-protocol-row">
+        <div class="anim-pcard fail">
+          <div class="pname">LEACH</div>
+          <div class="ptag" data-en="Energy only" data-ar="طاقة فقط">Energy only</div>
+          <div class="pbar"><div class="pfill" style="--w:72%"></div></div>
+          <div class="pscore" data-en="Security: ✗ None" data-ar="الأمان: ✗ لا يوجد">Security: ✗ None</div>
+        </div>
+        <div class="anim-pcard fail">
+          <div class="pname">SPIN</div>
+          <div class="ptag" data-en="Data-centric" data-ar="محوره البيانات">Data-centric</div>
+          <div class="pbar"><div class="pfill" style="--w:58%"></div></div>
+          <div class="pscore" data-en="Security: ✗ None" data-ar="الأمان: ✗ لا يوجد">Security: ✗ None</div>
+        </div>
+        <div class="anim-pcard fail">
+          <div class="pname">DD</div>
+          <div class="ptag" data-en="Gradient-based" data-ar="قائم على التدرج">Gradient-based</div>
+          <div class="pbar"><div class="pfill" style="--w:53%"></div></div>
+          <div class="pscore" data-en="Security: ✗ None" data-ar="الأمان: ✗ لا يوجد">Security: ✗ None</div>
+        </div>
+        <div class="anim-pcard ok">
+          <div class="pname">LAF</div>
+          <div class="ptag" data-en="Proposed solution" data-ar="الحل المقترح">Proposed solution</div>
+          <div class="pbar"><div class="pfill" style="--w:92%"></div></div>
+          <div class="pscore" data-en="Energy + Security ✓" data-ar="الطاقة + الأمان ✓">Energy + Security ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: LAF ARRIVES -->
+    <div class="anim-scene" id="anim-s3">
+      <div class="anim-scene-label" data-en="Scene 3 of 5" data-ar="المشهد 3 من 5">Scene 3 of 5</div>
+      <div class="anim-scene-title" data-en="LAF — The <span class='anim-orange'>Solution</span>" data-ar="LAF — <span class='anim-orange'>الحل</span>">LAF — The <span class="anim-orange">Solution</span></div>
+      <div class="anim-scene-sub" data-en="Shajan built a Lightweight Adaptive Framework that solves energy, security, and adaptability — all at once — on tiny Class 1 sensors." data-ar="بنت شاجان إطار عمل خفيف وتكيفي يحل مشاكل الطاقة والأمان والتكيّف — كلها معاً — على مستشعرات Class 1 الصغيرة.">Shajan built a Lightweight Adaptive Framework that solves energy, security, and adaptability — all at once — on tiny Class 1 sensors.</div>
+      <div class="anim-laf-hero">
+        <div class="anim-laf-ring"></div>
+        <div class="anim-laf-ring"></div>
+        <div class="anim-laf-ring"></div>
+        <div class="anim-laf-core">LAF</div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <div class="anim-ctag" data-en="C1 — CH Selection" data-ar="C1 — اختيار رأس العنقود">C1 — CH Selection</div>
+        <div class="anim-ctag" data-en="C2 — Cost Routing" data-ar="C2 — توجيه التكلفة">C2 — Cost Routing</div>
+        <div class="anim-ctag" data-en="C3 — Blockchain" data-ar="C3 — بلوكتشين">C3 — Blockchain</div>
+        <div class="anim-ctag" data-en="C4 — Simulation" data-ar="C4 — محاكاة">C4 — Simulation</div>
+        <div class="anim-ctag" data-en="C5 — Adaptive" data-ar="C5 — تكيفي">C5 — Adaptive</div>
+        <div class="anim-ctag" data-en="C6 — Cross-Layer" data-ar="C6 — عبر الطبقات">C6 — Cross-Layer</div>
+      </div>
+    </div>
+
+    <!-- SCENE 4: THE RESULTS -->
+    <div class="anim-scene" id="anim-s4">
+      <div class="anim-scene-label" data-en="Scene 4 of 5" data-ar="المشهد 4 من 5">Scene 4 of 5</div>
+      <div class="anim-scene-title" data-en="The <span class='anim-orange'>Results</span>" data-ar="<span class='anim-orange'>النتائج</span>">The <span class="anim-orange">Results</span></div>
+      <div class="anim-scene-sub" data-en="2,430 simulation tests. 30 Monte Carlo runs. Seed 42. LAF beats every baseline." data-ar="2,430 اختبار محاكاة. 30 تشغيل مونت كارلو. Seed 42. LAF يتفوق على كل المقارنات.">2,430 simulation tests. 30 Monte Carlo runs. Seed 42. LAF beats every baseline.</div>
+      <div class="anim-results-grid">
+        <div class="anim-rcard">
+          <div class="rval anim-counter" data-target="14.3" data-suffix="%" data-prefix="+">0%</div>
+          <div class="rlabel" data-en="Residual Energy" data-ar="الطاقة المتبقية">Residual Energy</div>
+          <div class="rsub" data-en="vs LEACH baseline" data-ar="مقابل LEACH">vs LEACH baseline</div>
+        </div>
+        <div class="anim-rcard">
+          <div class="rval anim-counter" data-target="8.8" data-suffix="%" data-prefix="+">0%</div>
+          <div class="rlabel" data-en="Network Lifetime" data-ar="عمر الشبكة">Network Lifetime</div>
+          <div class="rsub" data-en="FND: 379 vs 348 rounds" data-ar="FND: 379 مقابل 348 جولة">FND: 379 vs 348 rounds</div>
+        </div>
+        <div class="anim-rcard">
+          <div class="rval anim-counter" data-target="11.4" data-suffix="%" data-prefix="+">0%</div>
+          <div class="rlabel" data-en="Throughput" data-ar="الإنتاجية">Throughput</div>
+          <div class="rsub" data-en="180 vs 156 kbps" data-ar="180 مقابل 156 kbps">180 vs 156 kbps</div>
+        </div>
+        <div class="anim-rcard">
+          <div class="rval anim-counter" data-target="91.8" data-suffix="%" data-prefix="">0%</div>
+          <div class="rlabel" data-en="Packet Delivery" data-ar="تسليم الحزم">Packet Delivery</div>
+          <div class="rsub" data-en="PDR — target met ✓" data-ar="PDR — تحقق الهدف ✓">PDR — target met ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 5: THE FUTURE -->
+    <div class="anim-scene" id="anim-s5">
+      <div class="anim-scene-label" data-en="Scene 5 of 5" data-ar="المشهد 5 من 5">Scene 5 of 5</div>
+      <div class="anim-scene-title" data-en="The <span class='anim-orange'>Future</span>" data-ar="<span class='anim-orange'>المستقبل</span>">The <span class="anim-orange">Future</span></div>
+      <div class="anim-scene-sub" data-en="LAF is ready for the real world. Smart cities, hospitals, borders, factories — anywhere sensors need to be secure and efficient." data-ar="LAF جاهز للعالم الحقيقي. المدن الذكية، المستشفيات، الحدود، المصانع — أينما تحتاج المستشعرات أن تكون آمنة وفعالة.">LAF is ready for the real world. Smart cities, hospitals, borders, factories — anywhere sensors need to be secure and efficient.</div>
+      <div class="anim-city-nodes">
+        <div class="anim-city-node">
+          <div class="anim-city-icon">🏙️</div>
+          <div class="anim-city-label" data-en="Smart City" data-ar="مدينة ذكية">Smart City</div>
+        </div>
+        <div class="anim-city-node">
+          <div class="anim-city-icon">🏥</div>
+          <div class="anim-city-label" data-en="Healthcare" data-ar="رعاية صحية">Healthcare</div>
+        </div>
+        <div class="anim-city-node">
+          <div class="anim-city-icon">🛡️</div>
+          <div class="anim-city-label" data-en="Border Security" data-ar="أمن الحدود">Border Security</div>
+        </div>
+        <div class="anim-city-node">
+          <div class="anim-city-icon">🏭</div>
+          <div class="anim-city-label" data-en="Industry" data-ar="صناعة">Industry</div>
+        </div>
+        <div class="anim-city-node">
+          <div class="anim-city-icon">🌱</div>
+          <div class="anim-city-label" data-en="Environment" data-ar="بيئة">Environment</div>
+        </div>
+      </div>
+      <div class="anim-credit-box">
+        <div class="cname" data-en="Shajan Mohammed Mahdi" data-ar="شاجان محمد مهدي">Shajan Mohammed Mahdi</div>
+        <div class="cuniv" data-en="PhD Research · Mustansiriyah University Baghdad · 2025" data-ar="بحث دكتوراه · جامعة المستنصرية بغداد · 2025">PhD Research · Mustansiriyah University Baghdad · 2025</div>
+        <div class="cuniv" style="margin-top:6px;color:#f9731688" data-en="A Lightweight Adaptive Framework for Secure and Energy-Efficient Routing in WSNs" data-ar="إطار عمل خفيف وتكيفي للتوجيه الآمن والموفر للطاقة في شبكات الاستشعار اللاسلكية">A Lightweight Adaptive Framework for Secure and Energy-Efficient Routing in WSNs</div>
+      </div>
+    </div>
+
+  </div><!-- /anim-stage -->
+
+  <!-- Navigation -->
+  <div class="anim-nav">
+    <button class="anim-btn" id="anim-prevBtn" onclick="animChangeScene(-1)" data-en="← Prev" data-ar="السابق →">← Prev</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="anim-dot anim-dot-active" onclick="animGoTo(0)"></div>
+      <div class="anim-dot" onclick="animGoTo(1)"></div>
+      <div class="anim-dot" onclick="animGoTo(2)"></div>
+      <div class="anim-dot" onclick="animGoTo(3)"></div>
+      <div class="anim-dot" onclick="animGoTo(4)"></div>
+    </div>
+    <div class="anim-timer-ring" title="Auto-advance">
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="14" stroke="#1e1e2e" stroke-width="2" fill="none"/>
+        <circle id="anim-timerCircle" cx="16" cy="16" r="14" stroke="#f97316" stroke-width="2" fill="none"
+                stroke-dasharray="88" stroke-dashoffset="88"/>
+      </svg>
+    </div>
+    <button class="anim-btn" id="anim-nextBtn" onclick="animChangeScene(1)" data-en="Next →" data-ar="← التالي">Next →</button>
   </div>
 
 </div>
@@ -2342,7 +2611,7 @@ function setStatus(msg,cls=''){
 }
 
 // ── BREADCRUMB NAMES ─────────────────────────────────────────────────────────
-const PAGE_NAMES={overview:'Overview',story:'Our Story',paper1:'Paper 1',performance:'Performance',security:'Security',
+const PAGE_NAMES={overview:'Overview',story:'Our Story',animation:'Animation',paper1:'Paper 1',performance:'Performance',security:'Security',
   scalability:'Scalability',ablation:'Ablation',longterm:'Long-Term',recovery:'Recovery',
   comparison:'Compare',topology:'Topology',pdgoals:'PD Goals',help:'Help Guide',shajanhelp:"Shajan's Guide"};
 const ADV_PAGES=['scalability','longterm','recovery'];
@@ -2366,6 +2635,9 @@ function showPage(name,el){
   if(name==='comparison')buildComparison();
   if(name==='topology')initTopology();
   if(name==='pdgoals')buildPDGoals();
+  // animation page
+  if(name==='animation'){animBuildNodes();animGoTo(animCurrent);const sl=localStorage.getItem('anim-lang');if(sl)setAnimLang(sl);}
+  else{animStopTimer();}
   // breadcrumb
   const bc=document.getElementById('bc-page');
   if(bc)bc.textContent=PAGE_NAMES[name]||name;
@@ -3572,6 +3844,81 @@ function setStoryLang(lang){
   document.getElementById('story-btn-ar').style.color=lang==='ar'?'#fff':'#f97316';
   wrap.querySelectorAll('[data-'+lang+']').forEach(el=>{el.innerHTML=el.getAttribute('data-'+lang);});
   localStorage.setItem('story-lang',lang);
+}
+// ── ANIMATION PAGE ───────────────────────────────────────────────────────────
+let animCurrent=0,animAutoTimer=null,animTimerStart=null,animTimerRAF=null;
+const ANIM_SCENES=5,ANIM_AUTO_DELAY=8000;
+function animBuildNodes(){
+  const grid=document.getElementById('anim-nodeGrid');if(!grid||grid.children.length>0)return;
+  const states=['alive','alive','alive','alive','alive','alive','alive','alive',
+    'dying','dying','dying','alive','alive','dying','dead','dead',
+    'hacked','alive','dying','dead','alive','hacked','dead','dead',
+    'dying','dead','dead','dead','hacked','dead'];
+  states.forEach((s,i)=>{const n=document.createElement('div');n.className='anim-snode '+s;n.title='Node '+(i+1)+': '+s;grid.appendChild(n);});
+}
+function animGoTo(idx){
+  const scenes=document.querySelectorAll('.anim-scene');
+  const dots=document.querySelectorAll('.anim-dot');
+  scenes[animCurrent].classList.remove('anim-active');
+  dots[animCurrent].classList.remove('anim-dot-active');
+  animCurrent=idx;
+  scenes[animCurrent].classList.add('anim-active');
+  dots[animCurrent].classList.add('anim-dot-active');
+  document.getElementById('anim-prevBtn').disabled=animCurrent===0;
+  const nextBtn=document.getElementById('anim-nextBtn');
+  const isAr=localStorage.getItem('anim-lang')==='ar';
+  if(animCurrent===ANIM_SCENES-1){nextBtn.textContent=isAr?'↺ إعادة':'↺ Restart';}
+  else{nextBtn.innerHTML=nextBtn.getAttribute('data-'+( isAr?'ar':'en'))||'Next →';}
+  document.getElementById('anim-prog').style.width=((animCurrent+1)/ANIM_SCENES*100)+'%';
+  if(animCurrent===3)animStartCounters();
+  animResetTimer();
+}
+function animChangeScene(dir){
+  let next=animCurrent+dir;
+  if(next>=ANIM_SCENES)next=0;
+  if(next<0)next=ANIM_SCENES-1;
+  animGoTo(next);
+}
+function animStartCounters(){
+  document.querySelectorAll('.anim-counter').forEach(el=>{
+    const target=parseFloat(el.dataset.target);
+    const suffix=el.dataset.suffix||'';
+    const prefix=el.dataset.prefix||'+';
+    let start=null;const duration=1800;
+    const animate=(ts)=>{
+      if(!start)start=ts;
+      const progress=Math.min((ts-start)/duration,1);
+      const val=(progress*target).toFixed(1);
+      el.textContent=prefix+val+suffix;
+      if(progress<1)requestAnimationFrame(animate);
+      else el.textContent=prefix+target+suffix;
+    };
+    requestAnimationFrame(animate);
+  });
+}
+function animResetTimer(){
+  clearTimeout(animAutoTimer);cancelAnimationFrame(animTimerRAF);
+  animTimerStart=performance.now();
+  const circle=document.getElementById('anim-timerCircle');
+  function tick(ts){
+    const elapsed=ts-animTimerStart;
+    const fraction=Math.min(elapsed/ANIM_AUTO_DELAY,1);
+    circle.style.strokeDashoffset=88*(1-fraction);
+    if(fraction<1)animTimerRAF=requestAnimationFrame(tick);
+  }
+  animTimerRAF=requestAnimationFrame(tick);
+  animAutoTimer=setTimeout(()=>{animChangeScene(1);},ANIM_AUTO_DELAY);
+}
+function animStopTimer(){clearTimeout(animAutoTimer);cancelAnimationFrame(animTimerRAF);}
+function setAnimLang(lang){
+  const wrap=document.getElementById('anim-wrap');
+  wrap.dir=lang==='ar'?'rtl':'ltr';
+  document.getElementById('anim-btn-en').style.background=lang==='en'?'#f97316':'transparent';
+  document.getElementById('anim-btn-en').style.color=lang==='en'?'#fff':'#f97316';
+  document.getElementById('anim-btn-ar').style.background=lang==='ar'?'#f97316':'transparent';
+  document.getElementById('anim-btn-ar').style.color=lang==='ar'?'#fff':'#f97316';
+  wrap.querySelectorAll('[data-'+lang+']').forEach(el=>{el.innerHTML=el.getAttribute('data-'+lang);});
+  localStorage.setItem('anim-lang',lang);
 }
 function skipLogin(){
   const lo=document.getElementById('login-overlay');
