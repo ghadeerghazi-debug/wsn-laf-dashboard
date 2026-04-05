@@ -382,7 +382,7 @@ _MOVIE_B64 = "H4sIAJoF0GkC/9W9bXcbx5Eo/F2/YqxYAkAMwJnBC0FAkC9FUSY3tMSQVGg/OjrrAW
 MOVIE_HTML = _gz.decompress(_b64.b64decode(_MOVIE_B64))
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v25";
+const CACHE_NAME = "wsn-laf-v26";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -3795,7 +3795,7 @@ function installPWA(){
 // ── LOGIN ────────────────────────────────────────────────────────────────────
 const USERS={
   '1':{name:'Shajan',icon:'👋',msg:'Welcome back, Shajan, to your WSN-LAF Project Dashboard! Your simulation data and results are ready.',tail:'Koji'},
-  '2':{name:'Dr Moamin A Mahmoud',icon:'🎓',msg:'Welcome, Dr Moamin! Thank you for supervising this project. All simulation results and analysis are available for your review.',tail:''},
+  '2026':{name:'Dr Moamin A Mahmoud',icon:'🎓',msg:'Welcome, Dr Moamin! Thank you for supervising this project. All simulation results and analysis are available for your review.',tail:''},
   '3':{name:'Guest',icon:'👤',msg:'Welcome to the WSN-LAF Simulation Dashboard. Feel free to explore the results and visualisations.',tail:''}
 };
 const SESSION_TTL=60*60*1000; // 1 hour (Shajan only)
@@ -3810,8 +3810,6 @@ function doLogin(){
   const pw=document.getElementById('login-pw').value.trim();
   const user=USERS[pw];
   if(!user){document.getElementById('login-err').textContent='Invalid access code';document.getElementById('login-err').style.display='block';
-    document.getElementById('login-pw').value='';return;}
-  if(pw==='2'||pw==='3'){document.getElementById('login-err').textContent='This account is temporarily disabled';document.getElementById('login-err').style.display='block';
     document.getElementById('login-pw').value='';return;}
   document.getElementById('login-err').style.display='none';
   document.getElementById('login-overlay').classList.add('hide');
