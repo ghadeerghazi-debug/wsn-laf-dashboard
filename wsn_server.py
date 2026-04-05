@@ -1171,6 +1171,55 @@ body.dark .sg-a{color:#bba88a}
 body.dark .sg-num{background:#2a2218;color:#f97316}
 body.dark #sg-wrap{color:#e8e0d8}
 body.dark #shajan-notes{background:#13131a;color:#e8e0d8;border-color:#2e2e3a}
+/* ── DR MOAMIN FEEDBACK ──────────────────────────── */
+#dr-feedback-btn{position:fixed;bottom:90px;right:24px;z-index:600;width:56px;height:56px;
+  border-radius:50%;border:none;background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(124,58,237,.4);
+  display:none;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}
+#dr-feedback-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(124,58,237,.5)}
+#dr-feedback-btn .badge{position:absolute;top:-2px;right:-2px;background:#ef4444;color:#fff;
+  font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;padding:0 5px}
+#dr-feedback-panel{position:fixed;bottom:160px;right:24px;z-index:601;width:380px;max-height:520px;
+  background:var(--card);border:1.5px solid var(--border);border-radius:16px;
+  box-shadow:0 12px 48px rgba(0,0,0,.15);display:none;flex-direction:column;overflow:hidden}
+#dr-feedback-panel.open{display:flex}
+#dr-fb-header{padding:16px 18px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;
+  display:flex;align-items:center;justify-content:space-between}
+#dr-fb-header h3{margin:0;font-size:15px;font-weight:700}
+#dr-fb-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;opacity:.8}
+#dr-fb-close:hover{opacity:1}
+#dr-fb-input-area{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+#dr-fb-tab-label{font-size:11px;color:#7c3aed;font-weight:600;display:flex;align-items:center;gap:4px}
+#dr-fb-text{width:100%;min-height:70px;max-height:120px;border:1.5px solid var(--border);border-radius:10px;
+  padding:10px 12px;font-family:'Inter',sans-serif;font-size:13px;line-height:1.5;
+  background:var(--bg);color:var(--text);resize:vertical;outline:none}
+#dr-fb-text:focus{border-color:#7c3aed}
+#dr-fb-text::placeholder{color:var(--muted)}
+#dr-fb-send{align-self:flex-end;padding:8px 18px;border:none;border-radius:8px;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:13px;
+  font-weight:600;cursor:pointer;transition:transform .15s}
+#dr-fb-send:hover{transform:scale(1.03)}
+#dr-fb-list{flex:1;overflow-y:auto;padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+#dr-fb-list:empty::after{content:'No feedback yet — be the first to add a note!';
+  color:var(--muted);font-size:13px;text-align:center;padding:30px 10px;display:block}
+.dr-fb-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;position:relative}
+.dr-fb-card-meta{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.dr-fb-card-tab{font-size:10px;font-weight:700;color:#7c3aed;background:rgba(124,58,237,.1);
+  padding:2px 8px;border-radius:6px}
+.dr-fb-card-time{font-size:10px;color:var(--muted)}
+.dr-fb-card-text{font-size:13px;line-height:1.5;color:var(--text)}
+.dr-fb-card-del{position:absolute;top:8px;right:8px;background:none;border:none;
+  color:var(--muted);font-size:16px;cursor:pointer;opacity:0;transition:opacity .2s}
+.dr-fb-card:hover .dr-fb-card-del{opacity:1}
+.dr-fb-card-del:hover{color:#ef4444}
+body.dark #dr-feedback-panel{background:#1c1c24;border-color:#2e2e3a}
+body.dark #dr-fb-text{background:#13131a;border-color:#2e2e3a;color:#e8e0d8}
+body.dark .dr-fb-card{background:#13131a;border-color:#2e2e3a}
+@media(max-width:500px){
+  #dr-feedback-panel{right:8px;left:8px;width:auto;bottom:150px;max-height:60vh}
+  #dr-feedback-btn{bottom:80px;right:16px;width:50px;height:50px;font-size:20px}
+}
 /* ── LOGIN ────────────────────────────────────────── */
 .login-overlay{position:fixed;inset:0;background:var(--bg);z-index:700;display:flex;
   align-items:center;justify-content:center;flex-direction:column;gap:20px;
@@ -1425,6 +1474,24 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- DR MOAMIN FEEDBACK -->
+<button id="dr-feedback-btn" onclick="toggleDrFeedback()">
+  <span class="material-icons-round">rate_review</span>
+  <span class="badge" id="dr-fb-badge" style="display:none">0</span>
+</button>
+<div id="dr-feedback-panel">
+  <div id="dr-fb-header">
+    <h3>🎓 Dr Moamin's Feedback</h3>
+    <button id="dr-fb-close" onclick="toggleDrFeedback()">&times;</button>
+  </div>
+  <div id="dr-fb-input-area">
+    <div id="dr-fb-tab-label"><span class="material-icons-round" style="font-size:14px">tab</span> Feedback on: <strong id="dr-fb-current-tab">Overview</strong></div>
+    <textarea id="dr-fb-text" placeholder="Write your feedback or note here..."></textarea>
+    <button id="dr-fb-send" onclick="addDrFeedback()"><span class="material-icons-round" style="font-size:14px;vertical-align:middle;margin-right:4px">send</span>Save Note</button>
+  </div>
+  <div id="dr-fb-list"></div>
+</div>
 
 <!-- OFFLINE BANNER -->
 <div class="offline-bar" id="offline-bar">
@@ -3821,7 +3888,8 @@ function doLogin(){
   else{tail.style.display='none';}
   setTimeout(()=>document.getElementById('welcome-modal').classList.add('show'),400);
   localStorage.setItem('wsn-session',JSON.stringify({name:user.name,pw:pw,ts:Date.now()}));
-  if(pw==='1')showShajanNav();
+  if(pw==='1'){showShajanNav();showDrFeedbackBtn(true);}
+  if(pw==='2026')showDrFeedbackBtn(false);
 }
 function showShajanNav(){
   const el=document.getElementById('nav-shajan-help');if(el)el.style.display='';
@@ -3829,6 +3897,66 @@ function showShajanNav(){
   const notes=document.getElementById('shajan-notes');
   if(notes){const saved=localStorage.getItem('shajan-notes');if(saved)notes.value=saved;}
   const savedLang=localStorage.getItem('sg-lang');if(savedLang)setSgLang(savedLang);
+}
+// ── DR MOAMIN FEEDBACK ───────────────────────────────────────────────────────
+let drFbOpen=false;
+let drFbNotes=[];
+let drFbReadOnly=false;
+function showDrFeedbackBtn(readOnly){
+  drFbReadOnly=!!readOnly;
+  const btn=document.getElementById('dr-feedback-btn');
+  if(btn)btn.style.display='flex';
+  if(readOnly){
+    document.getElementById('dr-fb-input-area').style.display='none';
+    document.getElementById('dr-fb-header').querySelector('h3').textContent='📋 Supervisor Feedback';
+  }
+  loadDrFeedback();
+}
+function toggleDrFeedback(){
+  drFbOpen=!drFbOpen;
+  const panel=document.getElementById('dr-feedback-panel');
+  panel.classList.toggle('open',drFbOpen);
+  if(drFbOpen){
+    const curTab=document.querySelector('.page.on');
+    const tabId=curTab?curTab.id.replace('page-',''):'overview';
+    document.getElementById('dr-fb-current-tab').textContent=PAGE_NAMES[tabId]||tabId;
+    if(!drFbReadOnly)document.getElementById('dr-fb-text').focus();
+    loadDrFeedback();
+  }
+}
+async function loadDrFeedback(){
+  try{const r=await fetch('/api/feedback');drFbNotes=await r.json();}catch(e){drFbNotes=[];}
+  renderDrFeedback();
+}
+async function addDrFeedback(){
+  const txt=document.getElementById('dr-fb-text').value.trim();
+  if(!txt)return;
+  const curTab=document.querySelector('.page.on');
+  const tabId=curTab?curTab.id.replace('page-',''):'overview';
+  const note={id:Date.now(),text:txt,tab:PAGE_NAMES[tabId]||tabId,time:new Date().toLocaleString(),author:'Dr Moamin'};
+  try{await fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add',...note})});}catch(e){}
+  document.getElementById('dr-fb-text').value='';
+  await loadDrFeedback();
+}
+async function deleteDrFeedback(id){
+  try{await fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',id:id})});}catch(e){}
+  await loadDrFeedback();
+}
+function renderDrFeedback(){
+  const list=document.getElementById('dr-fb-list');
+  const badge=document.getElementById('dr-fb-badge');
+  if(badge){badge.textContent=drFbNotes.length;badge.style.display=drFbNotes.length>0?'flex':'none';}
+  const delBtn=drFbReadOnly?'':`<button class="dr-fb-card-del" onclick="deleteDrFeedback($ID$)" title="Delete">
+        <span class="material-icons-round" style="font-size:16px">delete_outline</span></button>`;
+  list.innerHTML=drFbNotes.map(n=>`
+    <div class="dr-fb-card">
+      <div class="dr-fb-card-meta">
+        <span class="dr-fb-card-tab">${n.tab}</span>
+        <span class="dr-fb-card-time">${n.time}</span>
+      </div>
+      <div class="dr-fb-card-text">${n.text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      ${delBtn.replace('$ID$',n.id)}
+    </div>`).join('');
 }
 function sgTab(tab){
   document.getElementById('sg-tab-guide').style.display=tab==='guide'?'':'none';
@@ -3949,7 +4077,7 @@ window.addEventListener('load',async()=>{
   if(localStorage.getItem('wsn-dark')==='1')document.body.classList.add('dark');
   // check session — skip login if still valid
   const sess=checkSession();
-  if(sess){localStorage.setItem('wsn-session',JSON.stringify({name:sess.name,pw:sess.pw,ts:Date.now()}));skipLogin();if(sess.pw==='1')showShajanNav();}
+  if(sess){localStorage.setItem('wsn-session',JSON.stringify({name:sess.name,pw:sess.pw,ts:Date.now()}));skipLogin();if(sess.pw==='1'){showShajanNav();showDrFeedbackBtn(true);}if(sess.pw==='2026')showDrFeedbackBtn(false);}
   showSkeleton();
   try{
     let r=await fetch('/api/data'); DATA=await r.json();
@@ -3994,6 +4122,22 @@ window.addEventListener('load',async()=>{
 _cached_data = None
 _lock = threading.Lock()
 
+# ── Feedback storage ──────────────────────────────────────────────────────────
+_FEEDBACK_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'feedback.json')
+_fb_lock = threading.Lock()
+
+def _load_feedback():
+    with _fb_lock:
+        if os.path.exists(_FEEDBACK_FILE):
+            with open(_FEEDBACK_FILE) as f:
+                return json.load(f)
+        return []
+
+def _save_feedback(notes):
+    with _fb_lock:
+        with open(_FEEDBACK_FILE, 'w') as f:
+            json.dump(notes, f, ensure_ascii=False, indent=2)
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         pass  # silence default logging
@@ -4019,6 +4163,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, MOVIE_HTML, 'text/html')
         elif path == '/shajan-photo.jpg':
             self._send(200, SHAJAN_PHOTO, 'image/jpeg')
+        elif path == '/api/feedback':
+            self._send_json(_load_feedback())
         elif path.startswith('/icon-'):
             self._send(200, APP_ICON.encode(), 'image/svg+xml')
         else:
@@ -4051,6 +4197,41 @@ class Handler(BaseHTTPRequestHandler):
             import traceback
             traceback.print_exc()
             self._send(500, json.dumps({'error':str(e)}).encode(), 'application/json')
+
+    def do_POST(self):
+        parsed = urlparse(self.path)
+        path = parsed.path
+        length = int(self.headers.get('Content-Length', 0))
+        body = self.rfile.read(length) if length else b''
+
+        if path == '/api/feedback':
+            try:
+                data = json.loads(body)
+                action = data.get('action', 'add')
+                if action == 'add':
+                    notes = _load_feedback()
+                    notes.insert(0, {
+                        'id': data['id'],
+                        'text': data['text'],
+                        'tab': data['tab'],
+                        'time': data['time'],
+                        'author': data.get('author', 'Dr Moamin')
+                    })
+                    _save_feedback(notes)
+                    self._send_json({'ok': True, 'count': len(notes)})
+                elif action == 'delete':
+                    notes = [n for n in _load_feedback() if n['id'] != data['id']]
+                    _save_feedback(notes)
+                    self._send_json({'ok': True, 'count': len(notes)})
+                else:
+                    self._send(400, b'{"error":"unknown action"}', 'application/json')
+            except Exception as e:
+                self._send(500, json.dumps({'error': str(e)}).encode(), 'application/json')
+        elif path == '/api/simulate':
+            qs = parse_qs(parsed.query)
+            self._run_sim(qs)
+        else:
+            self._send(404, b'Not found', 'text/plain')
 
     def _send(self, code, body, ctype):
         self.send_response(code)
