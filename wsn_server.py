@@ -382,7 +382,7 @@ _MOVIE_B64 = "H4sIAAAAAAAC/9W9bXcbx5Eo/F2/YqxYAkAMwJnBC0FAkJeiKIsbWmJIKrQfHZ31AD
 MOVIE_HTML = _gz.decompress(_b64.b64decode(_MOVIE_B64))
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v29";
+const CACHE_NAME = "wsn-laf-v30";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -4266,58 +4266,36 @@ class Handler(BaseHTTPRequestHandler):
         self._send(200, body, 'application/json')
 
 def _get_cached():
+    """Load only the verified 30-run results from wsn_results.json.
+    No on-the-fly generation, no get_paper2_results() fallback (per
+    UPDATE_BRIEF_FOR_CODE_CHAT.md §5.1)."""
     global _cached_data
     with _lock:
         if _cached_data is None:
-            # Load from pre-computed file if exists
-            candidates = [
-                os.path.join(os.path.dirname(__file__), 'wsn_results.json'),
-                '/home/claude/wsn_results.json',
-            ]
-            for f in candidates:
-                if os.path.exists(f):
-                    with open(f) as fp:
-                        _cached_data = json.load(fp)
-                    print(f'[DATA] Loaded pre-computed results from {f}')
-                    break
-            # Fallback: try Paper 2 results
-            if _cached_data is None:
-                p2 = os.path.join(os.path.dirname(__file__), 'wsn_results_paper2.json')
-                if os.path.exists(p2):
-                    with open(p2) as fp:
-                        _cached_data = json.load(fp)
-                    print(f'[DATA] Fallback: loaded Paper 2 results from {p2}')
-            # Last resort: generate Paper 2 on the fly
-            if _cached_data is None:
-                try:
-                    from wsn_simulation import Simulator
-                    sim = Simulator(100,500,1,42)
-                    _cached_data = sim.get_paper2_results()
-                    print('[DATA] Fallback: generated Paper 2 results on the fly')
-                except Exception as e:
-                    print(f'[DATA] Error generating fallback: {e}')
+            f = os.path.join(os.path.dirname(__file__), 'wsn_results.json')
+            if os.path.exists(f):
+                with open(f) as fp:
+                    _cached_data = json.load(fp)
+                print(f'[DATA] Loaded verified 30-run results from {f}')
+            else:
+                print(f'[DATA] WARNING: {f} not found — serving empty data')
+                _cached_data = {}
         return _cached_data or {}
 
 _paper2_data = None
 def _get_paper2():
+    """Load only wsn_results_paper2.json. No fallback to a generator."""
     global _paper2_data
     with _lock:
         if _paper2_data is None:
-            candidates = [
-                os.path.join(os.path.dirname(__file__), 'wsn_results_paper2.json'),
-            ]
-            for f in candidates:
-                if os.path.exists(f):
-                    with open(f) as fp:
-                        _paper2_data = json.load(fp)
-                    print(f'[DATA] Loaded Paper 2 results from {f}')
-                    break
-            if _paper2_data is None:
-                # Generate on the fly if file missing
-                from wsn_simulation import Simulator
-                sim = Simulator(100,500,1,42)
-                _paper2_data = sim.get_paper2_results()
-                print('[DATA] Generated Paper 2 results on the fly')
+            f = os.path.join(os.path.dirname(__file__), 'wsn_results_paper2.json')
+            if os.path.exists(f):
+                with open(f) as fp:
+                    _paper2_data = json.load(fp)
+                print(f'[DATA] Loaded Paper 2 results from {f}')
+            else:
+                print(f'[DATA] WARNING: {f} not found — serving empty data')
+                _paper2_data = {}
         return _paper2_data or {}
 
 PORT = int(os.environ.get('PORT', 5000))
