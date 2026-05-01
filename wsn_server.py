@@ -382,7 +382,7 @@ _MOVIE_B64 = "H4sIAJoF0GkC/9W9bXcbx5Eo/F2/YqxYAkAMwJnBC0FAkC9FUSY3tMSQVGg/OjrrAW
 MOVIE_HTML = _gz.decompress(_b64.b64decode(_MOVIE_B64))
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v26";
+const CACHE_NAME = "wsn-laf-v27";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1820,8 +1820,8 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
         </div>
         <div class="story-card story-card-solution">
           <div class="story-c-badge">C5</div>
-          <div class="story-card-title" data-en="Adaptive Weights" data-ar="أوزان تكيفية">Adaptive Weights</div>
-          <div class="story-card-text" data-en="γ increases automatically when network is under attack — security scales with threat level." data-ar="γ يزداد تلقائيًا عندما تكون الشبكة تحت الهجوم — الأمان يتناسب مع مستوى التهديد.">γ increases automatically when network is under attack — security scales with threat level.</div>
+          <div class="story-card-title" data-en="Adaptive α-Weight (exploratory)" data-ar="وزن α التكيفي (استكشافي)">Adaptive α-Weight (exploratory)</div>
+          <div class="story-card-text" data-en="The α weight adjusts gradually with network conditions while β and γ remain fixed — exploratory in Paper 2." data-ar="وزن α يتعدّل تدريجيًا حسب حالة الشبكة بينما يبقى β وγ ثابتَين — استكشافي في الورقة الثانية.">The α weight adjusts gradually with network conditions while β and γ remain fixed — exploratory in Paper 2.</div>
         </div>
         <div class="story-card story-card-solution">
           <div class="story-c-badge">C6</div>
@@ -2103,6 +2103,34 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <div class="ch"><canvas id="c-p1-donut"></canvas></div></div>
     <div class="card"><div class="ct"><div class="dot" style="background:var(--green)"></div>Studies per Year</div>
       <div class="ch"><canvas id="c-p1-bar"></canvas></div></div>
+  </div>
+  <div class="card"><div class="ct"><div class="dot" style="background:var(--cyan)"></div>PRISMA Flow — Study Selection</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 8px 6px">
+      <div style="flex:1;min-width:120px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#f97316">1,263</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">Records Identified</div>
+      </div>
+      <div style="font-size:22px;color:var(--muted)">→</div>
+      <div style="flex:1;min-width:120px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#f97316">1,123</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">After Deduplication</div>
+      </div>
+      <div style="font-size:22px;color:var(--muted)">→</div>
+      <div style="flex:1;min-width:120px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#f97316">281</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">Title/Abstract Screen</div>
+      </div>
+      <div style="font-size:22px;color:var(--muted)">→</div>
+      <div style="flex:1;min-width:120px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:#f97316">93</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">Eligibility (Full-text)</div>
+      </div>
+      <div style="font-size:22px;color:var(--muted)">→</div>
+      <div style="flex:1;min-width:120px;text-align:center">
+        <div style="font-size:28px;font-weight:800;color:var(--green)">44</div>
+        <div style="font-size:12px;color:var(--green);font-weight:700">Included Studies</div>
+      </div>
+    </div>
   </div>
   <div class="card"><div class="ct"><div class="dot" style="background:var(--yellow)"></div>Research Gaps Identified</div>
     <table><thead><tr><th>Gap ID</th><th>Gap Title</th><th>Addressed By</th></tr></thead>
@@ -2456,7 +2484,7 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C2</span><span data-en="Composite cost routing formula: αE + βD + γ(1−T)" data-ar="صيغة تكلفة التوجيه المركبة: αE + βD + γ(1−T)">Composite cost routing formula: αE + βD + γ(1−T)</span></div>
       <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C3</span><span data-en="Lightweight blockchain with PoA / PBFT-Lite consensus" data-ar="Blockchain خفيف مع إجماع PoA / PBFT-Lite">Lightweight blockchain with PoA / PBFT-Lite consensus</span></div>
       <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C4</span><span data-en="Python simulation with 30 Monte Carlo runs" data-ar="محاكاة Python مع 30 تشغيل Monte Carlo">Python simulation with 30 Monte Carlo runs</span></div>
-      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C5</span><span data-en="Adaptive γ weight increases when network is under attack" data-ar="وزن γ التكيفي يزداد عندما تكون الشبكة تحت الهجوم">Adaptive γ weight increases when network is under attack</span></div>
+      <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C5</span><span data-en="Adaptive α weight adjusts gradually with network conditions (exploratory)" data-ar="وزن α التكيفي يتعدّل تدريجيًا حسب حالة الشبكة (استكشافي)">Adaptive α weight adjusts gradually with network conditions (exploratory)</span></div>
       <div class="sg-step"><span class="sg-num" style="background:#f97316;color:#fff">C6</span><span data-en="Trust scores from blockchain directly update routing decisions" data-ar="درجات الثقة (trust scores) من blockchain تُحدّث قرارات التوجيه (routing) مباشرة">Trust scores from blockchain directly update routing decisions</span></div>
     </div>
   </div>
@@ -2895,14 +2923,14 @@ function buildPaper1(){
       plugins:{legend:{display:false}},
       scales:{x:{grid:{display:false},ticks:{color:'#9a7355',font:{family:'Inter'}}},
               y:{beginAtZero:true,grid:{color:'rgba(245,213,184,.5)'},ticks:{color:'#9a7355',font:{family:'Inter'}}}}}});
-  // Gaps table
+  // Gaps table — canonical G1–G6 labels from Paper 1 Table 13 / Paper 2 Figure 1
   const gaps=[
-    ['Gap 1','CH election ignores node trust','C1'],
-    ['Gap 2','No unified multi-criteria routing','C2'],
-    ['Gap 3','Blockchain too heavy for Class 1','C3'],
-    ['Gap 4','Limited multi-metric evaluation','C4'],
-    ['Gap 5','Static routing weights','C5'],
-    ['Gap 6','Security and routing are siloed','C6']];
+    ['G1','Energy inefficiency in CH selection','C1'],
+    ['G2','Insufficient resilience to compromised relays','C2'],
+    ['G3','Blockchain overhead unsuitable for sensor nodes','C3'],
+    ['G4','Static routing weights ignore network state','C5'],
+    ['G5','Absent unified energy-security cost function','C2'],
+    ['G6','No cross-layer integration of trust and routing','C6']];
   const tb=document.getElementById('p1-gaps');
   gaps.forEach(g=>{
     tb.innerHTML+=`<tr><td style="font-weight:700;color:var(--accent)">${g[0]}</td><td>${g[1]}</td><td><span class="pill pup">${g[2]}</span></td></tr>`;
