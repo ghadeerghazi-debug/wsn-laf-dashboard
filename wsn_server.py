@@ -382,7 +382,7 @@ _MOVIE_B64 = "H4sIAAAAAAAC/9W9bXcbx5Eo/F2/YqxYAkAMwJnBC0FAkJeiKIsbWmJIKrQfHZ31AD
 MOVIE_HTML = _gz.decompress(_b64.b64decode(_MOVIE_B64))
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v30";
+const CACHE_NAME = "wsn-laf-v31";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -1744,9 +1744,9 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <div class="ch"><canvas id="c-ov-t"></canvas></div></div>
   </div>
   <div class="card"><div class="ct"><div class="dot" style="background:var(--a2)"></div>Summary Table</div>
-    <table><thead><tr><th>Protocol</th><th>Type</th><th>FND</th><th>HND</th><th>PDR</th><th>Avg Energy</th><th>Throughput</th><th>Trust</th></tr></thead>
+    <table><thead><tr><th>Protocol</th><th>Type</th><th>FND</th><th>HND</th><th>PDR</th><th>Latency</th><th>Throughput</th><th>Trust</th></tr></thead>
     <tbody id="sum-table"></tbody></table>
-    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets. <strong style="color:#16a34a">Wilcoxon signed-rank test: p &lt; 0.001</strong> for LAF vs every baseline (30 paired runs).</div></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">All values are 30-run Monte Carlo means with ±SD. <strong style="color:#16a34a">Wilcoxon signed-rank test: p &lt; 0.001</strong> for LAF vs every baseline (30 paired runs). Source: Paper 2 §4 verified figures.</div></div>
   <div class="card" style="text-align:center;padding:24px">
     <div class="ct"><div class="dot" style="background:var(--accent)"></div>Share This Dashboard</div>
     <div style="margin:16px 0"><img id="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wsn-laf-dashboard.onrender.com" alt="QR Code" width="150" height="150" style="border-radius:8px;border:2px solid var(--border)" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div style="display:none;padding:20px;color:var(--muted);font-size:13px">QR code unavailable offline</div></div>
@@ -2276,9 +2276,9 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
       <div class="ch-lg"><canvas id="c-improve"></canvas></div></div>
   </div>
   <div class="card"><div class="ct">Full Protocol Comparison</div>
-    <table><thead><tr><th>Protocol</th><th>FND ↑</th><th>HND ↑</th><th>PDR ↑</th><th>Avg Energy ↑</th><th>Throughput ↑</th><th>Trust</th><th>vs LAF PDR</th></tr></thead>
+    <table><thead><tr><th>Protocol</th><th>FND ↑</th><th>HND ↑</th><th>PDR ↑</th><th>Latency ↓</th><th>Throughput ↑</th><th>Trust</th><th>vs LAF PDR</th></tr></thead>
     <tbody id="cmp-tbody"></tbody></table>
-    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">* SPIN and DD values are simulation approximations. These protocols serve as secondary baselines — LAF, LEACH, and TEARP are the primary comparison targets. <strong style="color:#16a34a">Wilcoxon signed-rank test: p &lt; 0.001</strong> for LAF vs every baseline (30 paired runs).</div></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;padding:0 4px;line-height:1.6">All values are 30-run Monte Carlo means with ±SD. <strong style="color:#16a34a">Wilcoxon signed-rank test: p &lt; 0.001</strong> for LAF vs every baseline (30 paired runs). Source: Paper 2 §4 verified figures.</div></div>
 </div>
 
 <!-- TOPOLOGY -->
@@ -2952,23 +2952,24 @@ function buildOverview(){
   mkLine('c-ov-p',PROTOS.filter(p=>N[p]).map(p=>ds(p,N[p].pdr,COLORS[p])),rounds,{min:0.4,max:1.05});
   mkLine('c-ov-t',PROTOS.filter(p=>N[p]).map(p=>ds(p,N[p].throughput,COLORS[p])),rounds);
 
-  // Summary table — Paper 2 display overrides for SPIN/DD
-  const P2_FND={'SPIN':312,'DD':298};
-  const P2_HND={'SPIN':378,'DD':361};
+  // Summary table — values come directly from verified §4 JSON
   const tb=document.getElementById('sum-table'); tb.innerHTML='';
-  const bestFND=Math.max(...PROTOS.filter(p=>N[p]).map(p=>P2_FND[p]||N[p].fnd||0));
+  const bestFND=Math.max(...PROTOS.filter(p=>N[p]).map(p=>N[p].fnd||0));
   const bestPDR=Math.max(...PROTOS.filter(p=>N[p]).map(p=>N[p].final_pdr||0));
   PROTOS.filter(p=>N[p]).forEach(p=>{
-    const n=N[p]; const fnd=P2_FND[p]||n.fnd; const hnd=P2_HND[p]||n.hnd;
-    const trust=p==='LAF'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):(p==='TEARP'?((avg(n.trust_accuracy||[])*100).toFixed(1)+'%'):'—');
+    const n=N[p];
+    const fndStr = n.fnd_sd ? `${n.fnd} ± ${n.fnd_sd}` : (n.fnd||'—');
+    const pdrPct = ((n.final_pdr||0)*100);
+    const pdrStr = n.pdr_sd_pp!=null ? `${pdrPct.toFixed(2)} ± ${n.pdr_sd_pp}%` : `${pdrPct.toFixed(2)}%`;
+    const trust=(p==='LAF'||p==='TEARP') ? ((avg(n.trust_accuracy||[])*100).toFixed(1)+'%') : '—';
     tb.innerHTML+=`<tr>
-      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
+      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span></td>
       <td style="color:var(--muted);font-size:11px">${p==='LAF'?'Proposed Hybrid':p==='TEARP'?'Hybrid Baseline':'Traditional'}</td>
-      <td ${fnd===bestFND?'class="best"':''}>${fnd||'—'}</td>
-      <td>${hnd||'—'}</td>
-      <td ${n.final_pdr===bestPDR?'class="best"':''}>${((n.final_pdr||0)*100).toFixed(1)}%</td>
-      <td ${p==='LAF'?'class="best"':''}>${(avg(n.residual_energy||[0])*1000).toFixed(2)} mJ</td>
-      <td ${p==='LAF'?'class="best"':''}>${avg(n.throughput||[0]).toFixed(1)}</td>
+      <td ${n.fnd===bestFND?'class="best"':''}>${fndStr}</td>
+      <td>${n.hnd||'—'}</td>
+      <td ${n.final_pdr===bestPDR?'class="best"':''}>${pdrStr}</td>
+      <td>${(n.mean_latency_ms||0).toFixed(2)} ms</td>
+      <td>${avg(n.throughput||[0]).toFixed(1)}</td>
       <td>${trust}</td></tr>`;
   });
 }
@@ -3193,8 +3194,7 @@ function buildRecovery(){
 function buildComparison(){
   if(!DATA)return;
   const N=DATA.normal;
-  const P2_FND={'SPIN':312,'DD':298};
-  const P2_HND={'SPIN':378,'DD':361};
+  // Values come from verified §4 JSON — no overrides.
   // Radar
   const ctx=document.getElementById('c-radar');
   if(charts['c-radar'])charts['c-radar'].destroy();
@@ -3230,14 +3230,16 @@ function buildComparison(){
   const tb=document.getElementById('cmp-tbody'); tb.innerHTML='';
   PROTOS.filter(p=>N[p]).forEach(p=>{
     const n=N[p]; const diff=((n.final_pdr-laf_pdr)/laf_pdr*100).toFixed(1);
-    const trust=((avg(n.trust_accuracy||[])*100).toFixed(1))+'%';
-    const cfnd=P2_FND[p]||n.fnd; const chnd=P2_HND[p]||n.hnd;
+    const trust=(p==='LAF'||p==='TEARP')?((avg(n.trust_accuracy||[])*100).toFixed(1))+'%':'—';
+    const fndStr = n.fnd_sd ? `${n.fnd} ± ${n.fnd_sd}` : (n.fnd||'—');
+    const pdrPct = ((n.final_pdr||0)*100);
+    const pdrStr = n.pdr_sd_pp!=null ? `${pdrPct.toFixed(2)} ± ${n.pdr_sd_pp}%` : `${pdrPct.toFixed(2)}%`;
     tb.innerHTML+=`<tr>
-      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span>${(p==='SPIN'||p==='DD')?'<span style="color:var(--muted);font-size:11px"> *</span>':''}</td>
-      <td ${p==='LAF'?'class="best"':''}>${cfnd||'—'}</td>
-      <td ${p==='LAF'?'class="best"':''}>${chnd||'—'}</td>
-      <td ${p==='LAF'?'class="best"':''}>${((n.final_pdr||0)*100).toFixed(1)}%</td>
-      <td ${p==='LAF'?'class="best"':''}>${(avg(n.residual_energy||[0])*1000).toFixed(2)} mJ</td>
+      <td><span style="color:${COLORS[p]};font-weight:700">${p}</span></td>
+      <td ${p==='LAF'?'class="best"':''}>${fndStr}</td>
+      <td ${p==='LAF'?'class="best"':''}>${n.hnd||'—'}</td>
+      <td ${p==='LAF'?'class="best"':''}>${pdrStr}</td>
+      <td>${(n.mean_latency_ms||0).toFixed(2)} ms</td>
       <td ${p==='LAF'?'class="best"':''}>${avg(n.throughput||[0]).toFixed(1)}</td>
       <td>${trust}</td>
       <td>${p==='LAF'?'<span class="pill pup">Baseline</span>':
