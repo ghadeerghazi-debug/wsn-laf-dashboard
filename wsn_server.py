@@ -382,7 +382,7 @@ _MOVIE_B64 = "H4sIAAAAAAAC/9W9bXcbx5Eo/F2/YqxYAkAMwJnBC0FAkJeiKIsbWmJIKrQfHZ31AD
 MOVIE_HTML = _gz.decompress(_b64.b64decode(_MOVIE_B64))
 
 SERVICE_WORKER = '''
-const CACHE_NAME = "wsn-laf-v31";
+const CACHE_NAME = "wsn-laf-v32";
 const URLS_TO_CACHE = [
   "/",
   "/api/data",
@@ -969,13 +969,11 @@ body.dark .preset-dd{background:#1c1c24;border-color:#2e2e3a}
 .pdg-note.partial{color:#b45309;background:rgba(180,83,9,.06)}
 .pdg-note.future{color:#0891b2;background:rgba(8,145,178,.06)}
 body.dark .pdg-note.partial{color:#fb923c}
-/* recalculate button */
-.pdg-recalc-btn{position:absolute;top:20px;right:20px;padding:10px 20px;border:2px solid #fff;
-  border-radius:12px;background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .25s;backdrop-filter:blur(6px)}
-.pdg-recalc-btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
-.pdg-recalc-btn.running{pointer-events:none;opacity:.7}
-.pdg-recalc-btn.running .material-icons-round{animation:spin 1s linear infinite}
+/* recalculate disabled note (replaces the live-recalc button) */
+.pdg-recalc-disabled{position:absolute;top:20px;right:20px;max-width:320px;padding:10px 14px;
+  border:1.5px solid rgba(255,255,255,.45);border-radius:12px;background:rgba(255,255,255,.12);
+  color:#fff;font-size:12px;font-weight:600;line-height:1.45;display:flex;align-items:center;
+  backdrop-filter:blur(6px)}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* terminal console */
 .pdg-terminal{background:#0d1117;border-radius:14px;overflow:hidden;margin-bottom:24px;
@@ -997,7 +995,7 @@ body.dark .pdg-note.partial{color:#fb923c}
   vertical-align:text-bottom;animation:blink 1s step-end infinite}
 @keyframes blink{50%{opacity:0}}
 @media(max-width:768px){
-  .pdg-recalc-btn{position:static;margin-top:12px;width:100%;justify-content:center}
+  .pdg-recalc-disabled{position:static;margin-top:12px;width:100%;max-width:none;justify-content:center}
   .pdg-summary{flex-direction:column}
   .pdg-row{flex-direction:column;gap:8px;align-items:flex-start}
   .pdg-term-body{font-size:11px;padding:12px 14px}
@@ -2315,9 +2313,9 @@ body.dark .btab-bar{background:#1c1c24;border-color:#2a2a36}
   <div class="pdg-header">
     <h2>Proposal Defense — Target Achievement</h2>
     <p>Shajan Mohammed Mahdi · Mustansiriyah University · 2025</p>
-    <button class="pdg-recalc-btn" id="pdg-recalc-btn" onclick="recalcPDGoals()">
-      <span class="material-icons-round" style="font-size:18px">refresh</span> Recalculate Live
-    </button>
+    <div class="pdg-recalc-disabled" id="pdg-recalc-note">
+      <span class="material-icons-round" style="font-size:18px;vertical-align:middle;margin-right:6px">info</span><span>Live recalculation temporarily disabled — displaying verified 30-run Monte Carlo results from Paper 2.</span>
+    </div>
   </div>
   <div class="pdg-summary" id="pdg-summary"></div>
   <div class="pdg-terminal" id="pdg-terminal" style="display:none">
@@ -3637,8 +3635,15 @@ function buildPDGoals(){
   document.getElementById('pdg-cards').innerHTML=html;
 }
 
-// ── RECALCULATE PD GOALS (terminal console) ─────────────────────────────────
+// ── RECALCULATE PD GOALS — DISABLED ─────────────────────────────────────────
+// Live recalculation is temporarily disabled until the patched
+// wsn_simulation.py lands. The function is kept as a no-op stub so any
+// stray caller (older bookmarks, kbd shortcuts) shows a clear toast.
 async function recalcPDGoals(){
+  showToast('Live recalculation is temporarily disabled. Showing verified 30-run results from Paper 2.','info');
+  return;
+}
+async function _recalcPDGoalsLegacy(){
   const btn=document.getElementById('pdg-recalc-btn');
   const term=document.getElementById('pdg-terminal');
   const body=document.getElementById('pdg-term-body');
@@ -3801,17 +3806,13 @@ if(window.DeviceMotionEvent){
     const force=Math.abs(a.x)+Math.abs(a.y)+Math.abs(a.z);
     if(force>35&&Date.now()-lastShake>3000){
       lastShake=Date.now();
-      showToast('Shake detected — recalculating...','vibration');
-      // If on PD Goals page, use recalc; otherwise re-fetch data
-      const pdPage=document.getElementById('page-pdgoals');
-      if(pdPage&&pdPage.classList.contains('on')){
-        recalcPDGoals();
-      }else{
-        fetch('/api/data').then(r=>r.json()).then(d=>{
-          DATA=d;renderAll();updateStatsTicker();updateHealthGauge();
-          showToast('Data refreshed','check_circle');
-        }).catch(()=>{});
-      }
+      showToast('Shake detected — refreshing data','vibration');
+      // Live recalc is disabled until the patched simulation lands;
+      // shake just re-fetches the verified JSON.
+      fetch('/api/data').then(r=>r.json()).then(d=>{
+        DATA=d;renderAll();updateStatsTicker();updateHealthGauge();
+        showToast('Data refreshed','check_circle');
+      }).catch(()=>{});
     }
   });
 }
